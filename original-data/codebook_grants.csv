@@ -1,0 +1,4 @@
+grants,code,grants2,code2,grants3,code3
+No,0,No,0,Mild,1
+Yes,1,Unsure,1,Moderate,2
+,,Yes,2,Severe,3

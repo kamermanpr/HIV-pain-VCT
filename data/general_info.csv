@@ -1,0 +1,543 @@
+PID,date,age,sex,population,language,countryOB,formal_schooling,school_grade,still_in_school,post_school_qualification,educational_level,employment,grant,grant_type
+001,2013-08-19,35,male,african,sotho,south africa,yes,9,no,no,secondary school,NA,No,NA
+003,2013-08-19,50,female,african,zulu,south africa,yes,2,no,no,primary school,on disability,Yes,disability grant
+004,2013-08-19,38,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+005,2013-08-20,37,male,african,sotho,south africa,yes,10,no,no,secondary school,NA,No,NA
+006,2013-08-20,30,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+007,2013-08-20,25,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+008,2013-08-21,39,male,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,No,NA
+009,2013-08-21,27,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+010,2013-08-21,23,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+011,2013-08-22,32,male,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+012,2013-08-22,36,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+013,2013-08-22,30,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+014,2013-08-27,41,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+015,2013-08-28,21,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+016,2013-08-28,26,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+017,2013-08-28,35,male,african,pedi,south africa,yes,12,no,no,secondary school,NA,No,NA
+018,2013-08-28,43,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+019,2013-08-28,54,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+020,2013-09-02,26,male,african,other,other,yes,3,no,no,primary school,NA,No,NA
+021,2013-09-03,35,male,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+022,2013-09-05,38,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+023,2013-09-05,34,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+024,2013-09-05,29,male,african,pedi,south africa,yes,NA,NA,yes,NA,NA,No,NA
+025,2013-09-05,50,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+026,2013-09-05,54,male,african,xhosa,south africa,yes,9,no,no,secondary school,NA,No,NA
+027,2013-09-06,21,male,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+028,2013-09-06,23,male,african,zulu,south africa,yes,NA,NA,yes,NA,NA,No,NA
+029,2013-09-09,47,female,african,tswana,south africa,yes,11,no,no,secondary school,NA,No,NA
+030,2013-09-09,41,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+031,2013-09-09,29,female,african,sotho,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+032,2013-09-10,33,male,african,zulu,south africa,no,NA,NA,NA,NA,NA,No,NA
+033,2013-09-10,30,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+034,2013-09-13,39,male,african,tshonga,other,yes,11,no,no,secondary school,NA,No,NA
+035,2013-09-13,23,female,african,zulu,south africa,yes,NA,NA,yes,NA,NA,No,NA
+036,2013-09-13,27,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+037,2013-09-16,33,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+038,2013-09-16,25,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+039,2013-09-17,20,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+040,2013-09-18,27,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+041,2013-09-18,37,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+042,2013-09-19,32,male,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+043,2013-09-19,34,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+044,2013-09-20,26,male,mixed race,afrikaans,south africa,yes,12,no,no,secondary school,NA,No,NA
+045,2013-09-20,58,male,african,zulu,south africa,yes,8,no,no,secondary school,NA,No,NA
+046,2013-09-25,38,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+047,2013-09-25,26,female,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,Yes,NA
+048,2013-09-25,26,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+049,2013-09-26,42,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+050,2013-09-26,20,female,african,tswana,south africa,yes,12,yes,no,secondary school,NA,No,NA
+051,2013-09-30,22,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+052,2013-09-30,20,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+053,2013-10-04,35,female,african,sotho,south africa,yes,12,NA,NA,NA,NA,No,NA
+054,2013-10-08,42,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+055,2013-10-08,47,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+056,2013-10-11,20,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+057,2013-10-11,37,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+058,2013-10-14,32,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+059,2013-10-15,28,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+060,2013-10-16,34,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+061,2013-10-16,48,female,african,tswana,south africa,no,NA,NA,NA,NA,NA,No,NA
+062,2013-10-18,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+063,2013-10-21,20,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+064,2013-10-24,53,male,african,zulu,south africa,yes,12,no,yes,tertiary,on pension,Yes,pension
+065,2013-10-28,27,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+066,2013-10-28,38,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+067,2013-10-29,27,male,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+068,2013-10-29,27,male,african,other,other,yes,12,no,no,secondary school,NA,No,NA
+069,2013-10-31,52,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+070,2013-11-01,23,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+071,2013-11-07,23,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+072,2013-11-11,38,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+073,2013-11-11,30,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+074,2013-11-12,40,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+075,2013-11-13,22,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+076,2013-11-13,38,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+077,2013-11-13,37,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+078,2013-11-13,53,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+079,2013-11-13,20,female,african,xhosa,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+080,2013-11-13,27,male,african,venda,south africa,no,NA,NA,NA,NA,NA,No,NA
+081,2013-11-14,44,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+082,2013-11-14,44,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+083,2013-11-14,35,female,african,venda,south africa,no,NA,NA,NA,NA,NA,Yes,child grant
+084,2013-11-15,31,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+085,2013-11-15,33,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+086,2013-11-18,31,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+087,2013-11-18,31,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+088,2013-11-19,23,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+089,2013-11-19,24,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+090,2013-11-19,28,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+091,2013-11-19,23,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+092,2013-11-20,25,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,NA
+093,2013-11-20,26,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+094,2013-11-21,31,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+095,2013-11-21,28,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+096,2013-11-22,51,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+097,2013-11-25,26,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+098,2013-11-25,24,female,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+099,2013-11-27,43,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+1,2013-08-19,35,male,african,sotho,south africa,yes,9,no,no,secondary school,NA,No,NA
+100,2013-11-28,44,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+101,2013-11-28,26,female,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+102,2013-11-28,28,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+103,2013-11-28,29,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+104,2013-11-29,21,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+105,2013-11-29,22,male,african,tshonga,south africa,yes,11,no,no,secondary school,NA,No,NA
+106,2013-12-02,29,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+107,2013-12-02,25,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+108,2013-12-03,35,female,african,sotho,south africa,yes,12,NA,NA,NA,NA,No,NA
+109,2013-12-03,25,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+110,2013-12-03,51,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+111,2013-12-04,48,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+112,2013-12-04,46,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+113,2013-12-05,25,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+114,2013-12-05,30,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+115,2013-12-06,32,male,african,zulu,south africa,yes,NA,NA,yes,NA,NA,No,NA
+116,2013-12-11,25,female,african,NA,south africa,yes,12,NA,NA,NA,NA,NA,NA
+117,2013-12-11,26,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+118,2014-01-06,23,female,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+119,2014-01-06,29,male,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+120,2014-01-06,26,male,african,zulu,south africa,yes,10,no,yes,tertiary,NA,No,NA
+121,2014-01-07,26,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+122,2014-01-07,31,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+123,2014-01-27,22,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+124,2014-01-27,28,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+125,2014-01-28,49,male,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+126,2014-01-30,29,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+127,2014-01-31,29,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+128,2014-03-02,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+129,2014-04-02,33,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+130,2014-02-13,38,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+131,2014-02-13,59,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+132,2014-02-13,31,male,african,other,south africa,yes,12,no,no,secondary school,NA,No,NA
+133,2014-02-14,29,male,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+134,2014-02-18,45,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+135,2014-02-18,31,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+136,2014-02-18,26,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+137,2014-02-20,22,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+138,2014-02-20,26,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+139,2014-02-20,56,female,african,tshonga,south africa,yes,11,no,no,secondary school,NA,No,NA
+140,2014-02-21,27,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+141,2014-02-26,26,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+142,2014-02-26,25,male,african,zulu,south africa,yes,10,no,yes,tertiary,NA,No,NA
+143,2014-02-26,19,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+144,2014-02-26,19,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+145,2014-02-27,18,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+146,2014-02-27,38,female,african,sotho,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+147,2014-02-28,29,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+148,2014-02-28,42,male,african,sotho,south africa,yes,8,no,no,secondary school,on disability,Yes,disability grant
+149,2014-03-03,42,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+150,2014-04-03,24,male,african,other,south africa,yes,12,no,yes,tertiary,NA,No,NA
+151,2014-07-03,32,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+152,2014-10-03,20,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+153,2014-11-03,36,female,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,No,NA
+154,2014-11-03,39,NA,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+155,2014-12-03,28,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+156,2014-03-17,38,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+157,2014-03-17,38,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+158,2014-03-18,37,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+159,2014-04-03,24,male,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+160,2014-04-03,37,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+161,2014-04-04,45,female,african,xhosa,south africa,yes,9,no,no,secondary school,NA,Yes,child grant
+162,2014-04-07,38,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+163,2014-04-07,40,male,african,zulu,south africa,yes,5,no,no,primary school,NA,No,NA
+164,2014-04-07,30,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+165,2014-04-07,29,male,african,pedi,south africa,yes,12,no,no,secondary school,NA,No,NA
+166,2014-04-09,37,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+167,2014-04-09,37,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+168,2014-04-09,39,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+169,2014-04-10,33,female,african,tswana,south africa,yes,NA,NA,no,NA,NA,Yes,child grant
+170,2014-04-22,68,male,african,sotho,south africa,yes,10,no,no,secondary school,on pension,Yes,pension
+171,2014-04-22,30,female,african,other,other,yes,12,no,no,secondary school,NA,No,NA
+172,2014-04-22,21,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+173,2014-04-23,47,female,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,No,NA
+174,2014-04-23,35,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+175,2014-04-23,28,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+176,2014-04-29,21,female,african,tshonga,south africa,yes,11,no,no,secondary school,NA,No,NA
+177,2014-04-29,35,male,african,tshonga,south africa,yes,10,no,no,secondary school,NA,No,NA
+178,2014-04-29,44,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+179,2014-04-30,25,NA,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+180,2014-05-05,37,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+181,2014-05-05,27,female,african,xhosa,south africa,NA,11,no,no,secondary school,NA,No,NA
+182,2014-05-06,27,male,african,zulu,south africa,no,NA,NA,NA,NA,NA,No,NA
+183,2014-05-06,50,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+184,2014-05-08,29,male,african,zulu,south africa,yes,10,no,yes,tertiary,NA,No,NA
+185,2014-05-08,24,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+186,2014-05-08,42,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+187,2014-05-08,25,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+188,2014-05-09,25,female,african,other,other,yes,12,no,yes,tertiary,NA,No,NA
+189,2014-05-09,34,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+190,2014-05-09,46,female,african,zulu,south africa,yes,10,no,yes,tertiary,NA,Yes,child grant
+191,2014-05-12,21,female,african,tshonga,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+192,2014-05-12,NA,male,african,xhosa,south africa,yes,9,no,no,secondary school,NA,No,NA
+193,2014-05-12,30,male,african,zulu,south africa,yes,NA,NA,no,NA,NA,No,NA
+194,2014-05-13,47,female,african,sotho,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+195,2014-05-13,57,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+196,2014-05-13,41,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+197,2014-05-14,47,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+198,2014-05-14,34,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+199,2014-05-15,26,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+200,2014-05-15,28,male,african,tshonga,south africa,yes,11,no,yes,tertiary,NA,No,NA
+201,2014-05-16,66,female,african,sotho,south africa,no,NA,NA,NA,NA,on pension,Yes,pension
+202,2014-05-16,30,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+203,2014-05-19,46,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+204,2014-05-19,28,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+205,2014-05-20,43,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+206,2014-05-21,27,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+207,2014-05-21,19,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+208,2014-05-21,22,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+209,2014-05-21,45,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+210,2014-05-21,48,male,african,other,south africa,yes,12,no,no,secondary school,NA,No,NA
+211,2014-05-22,40,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+212,2014-05-22,40,female,african,other,south africa,yes,12,no,yes,tertiary,NA,No,NA
+213,2014-05-22,19,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+214,2014-05-23,24,female,african,sotho,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+215,2014-05-23,34,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+216,2014-05-23,20,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+217,2014-05-23,21,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+218,2014-05-26,20,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+219,2014-05-26,28,female,african,sotho,other,yes,12,no,no,secondary school,NA,No,NA
+220,2014-05-26,28,female,african,sotho,other,yes,9,no,no,secondary school,NA,No,NA
+221,2014-05-26,20,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+222,2014-05-27,22,male,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+223,2014-05-27,31,male,african,pedi,south africa,yes,10,no,no,secondary school,NA,No,NA
+224,2014-05-28,63,female,african,zulu,south africa,yes,10,no,yes,tertiary,on pension,Yes,pension
+225,2014-05-28,62,female,african,zulu,south africa,yes,10,no,no,secondary school,on pension,Yes,pension
+226,2014-05-28,67,male,african,tswana,south africa,yes,11,no,yes,tertiary,on pension,Yes,pension
+227,2014-05-28,26,male,african,xhosa,south africa,yes,9,no,no,secondary school,NA,No,NA
+228,2014-05-28,19,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+229,2014-05-29,29,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+230,2014-05-29,28,female,african,pedi,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+231,2014-05-29,28,male,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+232,2014-05-29,24,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+233,2014-06-02,37,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+234,2014-06-02,33,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+235,2014-06-03,34,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+236,2014-06-03,31,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+237,2014-06-03,25,female,african,tshonga,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+238,2014-06-03,39,male,african,sotho,south africa,yes,6,no,no,primary school,NA,No,NA
+239,2014-06-03,35,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+240,2014-06-04,28,female,african,sotho,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+241,2014-06-04,34,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+242,2014-06-05,52,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+243,2014-06-05,41,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+244,2014-06-05,23,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+245,2014-06-05,38,male,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+246,2014-06-05,19,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+247,2014-06-05,30,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+248,2014-06-06,47,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+249,2014-06-17,34,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+250,2014-06-18,19,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+251,2014-06-18,19,female,african,tshonga,south africa,yes,11,yes,yes,tertiary,NA,No,NA
+252,2014-06-18,40,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+253,2014-06-19,38,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+254,2014-06-20,35,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+255,2014-06-20,37,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+256,2014-06-23,31,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+257,2014-06-23,30,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+258,2014-06-23,39,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+259,2014-06-23,28,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+260,2014-06-23,54,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+261,2014-06-23,21,female,african,zulu,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+262,2014-06-24,19,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+263,2014-06-25,46,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+264,2014-06-25,29,male,african,zulu,south africa,yes,9,no,yes,tertiary,NA,No,NA
+265,2014-06-25,67,male,african,venda,south africa,yes,12,no,no,secondary school,on pension,Yes,pension
+266,2014-06-26,57,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+267,2014-06-26,53,female,african,xhosa,south africa,yes,4,no,no,primary school,NA,Yes,child grant
+268,2014-06-26,37,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+269,2014-06-27,NA,male,african,sotho,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+270,2014-06-27,44,female,african,zulu,south africa,yes,8,no,no,secondary school,NA,No,NA
+271,2014-06-27,47,female,african,other,south africa,yes,12,no,yes,tertiary,NA,No,NA
+272,2014-06-27,21,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+273,2014-06-30,25,male,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+274,2014-06-30,28,male,african,zulu,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+275,2014-06-30,27,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+276,2014-07-01,25,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+277,2014-07-02,31,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+278,2014-07-02,23,female,african,tshonga,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+279,2014-07-03,44,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+280,2014-07-04,56,male,african,zulu,south africa,yes,7,no,no,primary school,NA,No,NA
+281,2014-07-04,49,male,african,sotho,south africa,yes,10,no,yes,tertiary,NA,No,NA
+282,2014-07-07,25,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+283,2014-07-07,48,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+284,2014-07-07,56,male,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+285,2014-07-08,42,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+286,2014-07-09,23,male,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+287,2014-07-10,234,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+288,2014-07-10,22,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+289,2014-07-10,16,female,african,zulu,south africa,yes,11,yes,NA,NA,NA,No,NA
+290,2014-07-10,23,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+291,2014-07-11,30,female,african,zulu,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+292,2014-07-14,30,female,african,tswana,south africa,NA,12,no,yes,tertiary,NA,Yes,child grant
+293,2014-07-14,32,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+294,2014-07-14,36,male,african,sotho,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+295,2014-07-15,35,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+296,2014-07-16,21,male,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+297,2014-07-17,48,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+298,2014-07-17,42,male,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+299,2014-07-17,34,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+300,2014-07-18,44,male,african,zulu,south africa,yes,9,no,no,secondary school,NA,No,NA
+301,2014-07-21,40,female,african,tshonga,south africa,yes,9,no,no,secondary school,NA,Yes,child grant
+302,2014-07-21,15,female,african,tshonga,south africa,yes,10,yes,yes,tertiary,NA,No,NA
+303,2014-07-21,34,female,african,pedi,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+304,2014-07-21,37,male,african,zulu,south africa,yes,7,no,no,primary school,NA,No,NA
+305,2014-07-22,50,female,african,sotho,south africa,yes,9,no,no,secondary school,NA,No,NA
+306,2014-07-22,65,female,african,xhosa,south africa,yes,8,no,no,secondary school,on pension,Yes,pension
+307,2014-07-22,54,female,african,xhosa,south africa,yes,9,no,no,secondary school,NA,Yes,child grant
+308,2014-07-22,29,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+309,2014-07-22,26,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+310,2014-07-24,27,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+311,2014-07-25,41,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+312,2014-07-25,45,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+313,2014-07-25,40,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+314,2014-07-28,42,male,african,tshonga,south africa,yes,10,no,no,secondary school,NA,No,NA
+315,2014-07-28,32,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+316,2014-08-01,24,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+317,2014-08-01,31,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+318,2014-08-01,28,male,african,tswana,other,yes,12,no,no,secondary school,NA,No,NA
+319,2014-08-04,53,male,african,zulu,south africa,yes,9,no,no,secondary school,NA,Yes,NA
+320,2014-08-04,35,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+321,2014-08-04,37,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+322,2014-08-06,39,male,african,zulu,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+323,2014-08-06,21,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+324,2014-08-07,32,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+325,2014-08-07,30,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+326,2014-08-07,39,female,african,venda,south africa,yes,11,no,no,secondary school,NA,No,NA
+327,2014-08-08,19,female,african,xhosa,south africa,yes,9,no,no,secondary school,NA,No,NA
+328,2014-08-11,31,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+329,2014-08-12,26,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+330,2014-08-14,44,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+331,2014-08-15,22,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+332,2014-08-15,33,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+333,2014-08-19,26,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+334,2014-08-20,51,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+3345,2014-08-29,23,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+335,2014-08-21,35,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+336,2014-08-21,24,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+337,2014-08-22,72,female,african,sotho,south africa,yes,11,no,yes,tertiary,on pension,Yes,pension
+338,2014-08-22,64,female,african,zulu,south africa,yes,8,no,no,secondary school,on pension,Yes,pension
+339,2014-08-25,32,female,african,zulu,south africa,yes,12,yes,yes,tertiary,NA,Yes,child grant
+340,2014-08-25,49,male,african,zulu,south africa,yes,10,no,no,secondary school,on disability,Yes,disability grant
+341,2014-08-18,40,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+342,2014-08-18,36,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+343,2014-08-27,39,male,african,venda,south africa,yes,11,no,yes,tertiary,NA,No,NA
+344,2014-08-28,30,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+345,2014-08-29,23,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+346,2014-09-02,47,male,african,sotho,south africa,yes,10,no,no,secondary school,NA,No,NA
+347,2014-09-02,60,male,african,zulu,south africa,yes,9,no,no,secondary school,NA,No,NA
+348,2014-09-04,38,male,african,sotho,other,yes,12,no,no,secondary school,NA,No,NA
+349,2014-09-05,27,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+350,2014-09-05,44,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+351,2014-09-05,31,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+352,2014-09-08,29,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+353,2014-09-09,24,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+354,2014-09-09,46,female,african,sotho,south africa,yes,10,no,yes,tertiary,NA,No,NA
+355,2014-09-09,28,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+356,2014-09-09,32,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+357,2014-09-12,32,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+358,2014-09-12,19,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+359,2014-09-15,32,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+360,2014-09-15,40,male,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+361,2014-09-15,53,female,african,tswana,south africa,yes,8,no,no,secondary school,NA,No,NA
+362,2014-09-16,38,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+363,2014-09-16,38,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+364,2014-09-17,21,female,african,zulu,south africa,yes,11,yes,yes,tertiary,NA,No,NA
+365,2014-09-17,19,female,african,xhosa,south africa,yes,11,yes,no,secondary school,NA,No,NA
+366,2014-09-19,32,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+367,2014-09-19,35,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+368,2014-09-22,46,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+369,2014-09-22,38,female,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+370,2014-09-22,23,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+371,2014-09-23,26,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+372,2014-09-25,33,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+373,2014-09-25,35,female,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+374,2014-09-26,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+375,2014-09-26,18,male,african,pedi,south africa,yes,12,no,no,secondary school,NA,No,NA
+376,2014-09-29,46,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+377,2014-09-29,64,female,african,zulu,south africa,yes,11,no,yes,tertiary,on pension,Yes,pension
+378,2014-09-30,56,male,african,tswana,south africa,no,NA,NA,NA,NA,on disability,Yes,disability grant
+379,2014-09-30,35,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+380,2014-10-01,52,female,african,zulu,south africa,yes,5,no,no,primary school,NA,Yes,child grant
+381,2014-10-02,29,female,african,venda,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+382,2014-10-02,39,male,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+383,2014-10-14,39,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+384,2014-10-03,42,male,african,zulu,south africa,yes,10,no,yes,tertiary,NA,No,NA
+385,2014-10-03,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+386,2014-10-07,43,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+387,2014-10-07,28,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+388,2014-10-08,35,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+389,2014-10-08,20,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+390,2014-10-08,33,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+391,2014-10-09,31,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+392,2014-10-09,26,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+393,2014-10-09,25,female,african,other,south africa,yes,11,no,no,secondary school,NA,No,NA
+394,2014-10-09,24,female,african,xhosa,south africa,yes,9,no,no,secondary school,NA,No,NA
+395,2014-10-09,21,female,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+396,2014-10-10,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+397,2014-10-10,58,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+398,2014-10-14,59,female,african,venda,south africa,yes,12,no,no,secondary school,on disability,Yes,disability grant
+399,2014-10-14,26,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+400,2014-10-15,26,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+401,2014-10-16,48,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+402,2014-10-16,22,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+403,2014-10-17,33,female,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+404,2014-10-17,26,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+405,2014-10-17,30,female,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+406,2014-10-17,30,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+407,2014-11-04,38,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+408,2014-11-05,31,male,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+409,2014-11-06,51,male,african,zulu,south africa,yes,2,no,yes,primary school,NA,No,NA
+410,2014-11-06,16,female,african,tswana,south africa,yes,11,yes,NA,NA,NA,No,NA
+411,2014-11-06,18,female,african,tswana,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+412,2014-11-07,56,male,african,venda,south africa,yes,8,no,yes,tertiary,NA,No,NA
+413,2014-11-07,24,female,african,sotho,south africa,yes,12,no,no,secondary school,NA,No,NA
+414,2014-11-07,48,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+415,2014-11-07,25,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+416,2014-11-10,48,female,african,tswana,south africa,yes,11,no,no,secondary school,NA,No,NA
+417,2014-11-10,49,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+418,2014-11-10,32,male,african,tshonga,south africa,yes,12,no,no,secondary school,NA,No,NA
+419,2014-11-12,54,male,african,tswana,south africa,yes,10,no,no,secondary school,NA,No,NA
+420,2014-11-12,25,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+421,2014-11-13,58,female,african,zulu,south africa,yes,4,no,no,primary school,NA,No,NA
+422,2014-11-13,36,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+423,2014-11-13,46,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+424,2014-11-14,32,male,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+425,2014-11-14,24,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+426,2014-11-17,48,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+427,2014-11-18,40,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+428,2014-11-18,46,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+429,2014-11-19,37,female,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+430,2014-11-19,44,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+431,2014-11-19,47,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+432,2014-11-19,19,female,african,zulu,south africa,yes,11,yes,yes,tertiary,NA,No,NA
+433,2014-11-20,26,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+434,2014-11-20,27,female,african,tswana,south africa,yes,11,yes,yes,tertiary,NA,No,NA
+435,2014-11-20,53,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+436,2014-11-21,30,female,african,xhosa,south africa,yes,11,no,no,secondary school,NA,No,NA
+437,2014-11-25,55,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+438,2014-11-25,33,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+439,2014-11-25,27,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+440,2014-11-11,22,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+441,2014-11-26,32,female,african,sotho,other,yes,3,no,no,primary school,NA,No,NA
+442,2014-11-26,20,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+443,2014-11-26,29,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+444,2014-11-26,31,female,african,zulu,south africa,yes,10,no,yes,tertiary,NA,Yes,child grant
+445,2014-11-26,22,female,african,tswana,south africa,yes,12,no,yes,tertiary,NA,No,NA
+446,2014-11-27,28,female,african,sotho,south africa,yes,10,no,no,secondary school,NA,Yes,child grant
+447,2014-11-27,25,male,african,sotho,other,yes,12,no,no,secondary school,NA,No,NA
+448,2014-11-28,31,male,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+449,2014-12-01,47,male,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+450,2014-12-01,26,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+451,2014-12-01,31,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+452,2014-12-01,42,female,african,tswana,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+453,2014-12-01,34,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+454,2014-12-02,31,male,african,tshonga,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+455,2014-12-02,44,male,african,tshonga,south africa,yes,11,no,no,secondary school,NA,No,NA
+456,2014-12-03,49,female,african,zulu,south africa,yes,8,no,no,secondary school,NA,No,NA
+457,2014-12-03,72,male,african,sotho,south africa,yes,8,no,no,secondary school,on pension,Yes,pension
+458,2014-12-04,52,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+459,2014-12-04,21,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+460,2014-12-04,29,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+461,2014-12-04,47,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+462,2014-12-05,33,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+463,2014-12-05,46,female,african,tswana,south africa,yes,12,no,no,secondary school,on disability,Yes,disability grant
+464,2014-12-05,44,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+465,2014-12-08,42,male,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+466,2014-12-08,47,female,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+467,2014-12-09,35,male,african,pedi,south africa,yes,12,no,no,secondary school,NA,No,NA
+468,2014-12-09,28,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+469,2014-12-09,16,female,african,zulu,south africa,yes,9,no,no,secondary school,NA,Yes,child grant
+470,2014-12-10,31,female,african,sotho,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+471,2014-12-12,36,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+472,2014-12-12,39,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+473,2014-12-12,29,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+474,2014-12-12,27,female,african,tshonga,south africa,NA,12,no,yes,tertiary,NA,No,NA
+475,2015-01-13,43,male,african,zulu,south africa,yes,8,no,no,secondary school,NA,No,NA
+476,2015-01-14,28,male,african,xhosa,south africa,yes,11,no,yes,tertiary,NA,No,NA
+477,2015-01-14,46,female,african,sotho,south africa,yes,11,no,yes,tertiary,NA,No,NA
+478,2015-01-15,33,male,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+479,2015-01-15,61,male,african,tshonga,south africa,yes,2,no,no,primary school,NA,No,NA
+480,2015-01-16,19,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+481,2015-01-19,55,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+482,2015-01-21,25,male,african,zulu,other,yes,11,no,no,secondary school,NA,No,NA
+483,2015-01-21,32,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+484,2015-01-22,24,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+485,2015-01-22,45,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+486,2015-01-23,48,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+487,2015-01-26,23,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+488,2015-01-26,26,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+489,2014-01-26,39,male,african,sotho,south africa,yes,12,no,yes,tertiary,NA,No,NA
+490,2015-01-27,41,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+491,2015-01-27,37,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+492,2015-01-28,41,male,african,zulu,south africa,yes,7,no,no,primary school,NA,No,NA
+493,2015-01-28,65,male,african,xhosa,south africa,yes,8,no,yes,tertiary,on pension,Yes,pension
+494,2015-01-29,43,female,african,tswana,south africa,yes,11,no,no,secondary school,NA,No,NA
+495,2015-01-30,17,male,african,xhosa,south africa,yes,10,yes,yes,tertiary,NA,No,NA
+496,2015-01-30,19,male,african,xhosa,south africa,yes,12,no,no,secondary school,NA,No,NA
+497,2015-02-02,28,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,No,NA
+498,2015-02-02,29,male,african,sotho,south africa,yes,10,no,yes,tertiary,NA,No,NA
+499,2015-02-03,55,male,african,sotho,south africa,yes,11,no,no,secondary school,NA,No,NA
+500,2015-02-04,56,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+501,2014-02-04,34,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+502,2015-02-04,55,female,african,zulu,south africa,yes,8,no,no,secondary school,NA,Yes,child grant
+503,2015-02-04,24,male,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+504,2015-02-05,31,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,No,NA
+505,2015-02-05,27,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,Yes,child grant
+506,2015-02-06,42,male,african,tswana,south africa,yes,11,no,yes,tertiary,NA,No,NA
+507,2015-02-06,27,female,african,pedi,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+508,2015-02-09,43,male,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+509,2015-02-09,18,female,african,zulu,other,yes,12,yes,yes,tertiary,NA,No,NA
+510,2015-02-09,19,male,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+511,2015-02-10,43,male,african,xhosa,south africa,yes,12,no,yes,tertiary,NA,No,NA
+512,2015-02-10,25,male,african,tshonga,south africa,yes,12,yes,yes,tertiary,NA,No,NA
+513,2015-02-11,39,male,african,pedi,south africa,yes,12,no,yes,tertiary,NA,No,NA
+514,2015-02-12,28,female,african,tshonga,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+515,2015-02-13,52,female,african,zulu,south africa,yes,7,no,no,primary school,NA,No,NA
+516,2015-02-13,34,female,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+517,2015-02-17,35,female,african,venda,south africa,yes,11,no,yes,tertiary,NA,Yes,child grant
+518,2015-02-17,38,male,african,venda,south africa,yes,11,no,yes,tertiary,NA,No,NA
+519,2015-02-17,44,female,african,pedi,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+520,2015-02-23,34,female,african,tshonga,other,yes,6,no,no,primary school,NA,No,NA
+521,2015-02-23,38,male,african,tshonga,other,yes,6,no,no,primary school,NA,No,NA
+522,2015-02-25,28,male,african,venda,south africa,yes,12,no,yes,tertiary,NA,No,NA
+523,2015-02-25,33,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+524,2015-02-25,41,female,african,venda,south africa,yes,12,no,no,secondary school,NA,No,NA
+525,2015-04-08,30,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+526,2015-04-09,33,male,african,tshonga,south africa,yes,12,no,yes,tertiary,NA,No,NA
+527,2015-04-14,33,female,african,zulu,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+528,2015-04-14,26,female,african,zulu,south africa,yes,12,no,yes,tertiary,NA,No,NA
+529,2014-04-15,28,female,african,zulu,south africa,yes,8,no,no,secondary school,NA,No,NA
+530,2015-04-15,32,female,african,zulu,south africa,yes,4,no,no,primary school,NA,Yes,child grant
+531,2015-04-15,30,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+532,2015-04-15,39,female,african,zulu,south africa,yes,11,yes,yes,tertiary,NA,No,NA
+533,2015-04-16,29,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+534,2015-04-20,32,female,african,zulu,south africa,yes,11,no,yes,tertiary,NA,No,NA
+535,2015-04-21,23,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+536,2015-04-21,27,male,african,tswana,south africa,yes,12,no,no,secondary school,NA,No,NA
+537,2015-05-07,24,female,african,zulu,south africa,yes,2,no,no,primary school,NA,No,NA
+538,2015-05-07,21,female,african,zulu,south africa,yes,11,no,no,secondary school,NA,Yes,child grant
+539,2015-05-19,36,female,african,xhosa,south africa,yes,12,no,no,secondary school,NA,Yes,child grant
+540,2015-05-20,23,female,african,zulu,south africa,yes,10,no,no,secondary school,NA,No,NA
+541,2015-05-20,45,female,african,sotho,south africa,yes,8,no,no,secondary school,NA,Yes,child grant

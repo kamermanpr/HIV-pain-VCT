@@ -1,0 +1,544 @@
+PID,date,v_number,age,sex,P_group,laguage,countryOB,Education,Schooled_other1,Schooled_other2,Employment,Grants,G_specify
+001,19-Aug-13,1,35,1,Black,Sotho,South Africa,Schooled,9,None,Unemployed,0,
+003,19-Aug-13,1,50,2,Black,Zolu,South Africa,Schooled,2,None,Employed (part time/piece work),1,Disability
+004,19-Aug-13,1,38,1,Black,Zolu,South Africa,Schooled,Matric,No,Employed,0,
+005,20-Aug-13,1,37,1,Black,Sotho,South Africa,Schooled,10,No,Employed,0,
+006,20-Aug-13,1,30,1,Black,Zolu,South Africa,Schooled,Matric,Yes- IT Web Design,Employed (part time/piece work),0,
+007,20-Aug-13,1,25,1,Black,Xhosa,South Africa,Schooled,Matric,Enrolled at Unisa- LLB,Employed (part time/piece work),0,
+008,21-Aug-13,1,39,1,Black,Xhosa,South Africa,Schooled,11,"Technicon- Brick laying, Carpentry, Plumbling",Unemployed,0,
+009,21-Aug-13,1,27,2,Black,Zolu,South Africa,Schooled,Matric,Nursing,Unemployed,0,
+010,21-Aug-13,1,23,2,Black,Xhosa,South Africa,Schooled,Matric,Diploma in Nature Conservation,Unemployed,0,
+011,22-Aug-13,1,32,1,Black,Tswana,South Africa,Schooled,Matric,Certificates,Employed,0,
+012,22-Aug-13,1,36,2,Black,Xhosa,South Africa,Schooled,11,None,Unemployed,1,Child Grant
+013,22-Aug-13,1,30,1,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+014,27-Aug-13,1,41,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+015,28-Aug-13,1,21,2,Black,Xhosa,South Africa,Schooled,Matric,None,Unemployed,0,
+016,28-Aug-13,1,26,2,Black,Zolu,South Africa,Schooled,11,College- Call centre,Unemployed,1,Child grant
+017,28-Aug-13,1,35,1,Black,Pedi,South Africa,Schooled,Matric,None,Employed (part time/piece work),0,
+018,28-Aug-13,1,43,1,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+019,28-Aug-13,1,54,2,Black,Sotho,South Africa,Schooled,Matric,"Book keeping, Care giver, First aid, Home Base care",Employed,0,
+020,02-Sep-13,1,26,1,Black,Other,Other,Schooled,Form 3,None,Unemployed,0,
+021,03-Sep-13,1,35,1,Black,Tshonga,South Africa,Schooled,Matric,No,Employed (part time/piece work),0,
+022,05-Sep-13,1,38,1,Black,Zolu,South Africa,Schooled,11,None,Unemployed,0,
+023,05-Sep-13,1,34,2,Black,Sotho,South Africa,Schooled,Matric,Diploma- Mechanical engineering,Unemployed,0,
+024,05-Sep-13,1,29,1,Black,Pedi,South Africa,Schooled,,Degree,Employed,0,
+025,05-Sep-13,1,50,1,Black,Zolu,South Africa,Schooled,Matric,No,Employed- Self employed,0,
+026,05-Sep-13,1,54,1,Black,Xhosa,South Africa,Schooled,9,None,Unemployed,0,
+027,06-Sep-13,1,21,1,Black,Tswana,South Africa,Schooled,Matric,Degree- Business science,Employed (part time/piece work),0,
+028,06-Sep-13,1,23,1,Black,Zolu,South Africa,Schooled,,IT Qualifications,Unemployed,0,
+029,09-Sep-13,1,47,2,Black,Tswana,South Africa,Schooled,11,None,Unemployed,0,
+030,09-Sep-13,1,41,1,Black,Sotho,South Africa,Schooled,Matric,Diploma in marketing,Employed,0,
+031,09-Sep-13,1,29,2,Black,Sotho,South Africa,Schooled,11,None,Unemployed,1,Child Grant
+032,10-Sep-13,1,33,1,Black,Zolu,South Africa,No formal schooling,,,Employed- Self employed,0,
+033,10-Sep-13,1,30,2,Black,Zolu,South Africa,Schooled,11,Diploma- JRA,Unemployed,1,Child grant- 2 children
+034,13-Sep-13,1,39,1,Black,Tshonga,Other,Schooled,11,None,Employed,0,
+035,13-Sep-13,1,23,2,Black,Zolu,South Africa,Schooled,,IT,Unemployed,0,
+036,13-Sep-13,1,27,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,1,Child grant
+037,16-Sep-13,1,33,1,Black,Zolu,South Africa,Schooled,Matric,Diploma- Sound Engineering,Employed,0,
+038,16-Sep-13,1,25,1,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+039,17-Sep-13,1,20,2,Black,Sotho,South Africa,Schooled,Matric,Busy with nursing course,Unemployed,0,
+040,18-Sep-13,1,27,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed (part time/piece work),0,
+041,18-Sep-13,1,37,2,Black,Tswana,South Africa,Schooled,Matric,Degree in Radiology,Employed,0,
+042,19-Sep-13,1,32,1,Black,Sotho,South Africa,Schooled,11,Fitting carpet,Employed (part time/piece work),0,
+043,19-Sep-13,1,34,2,Black,Zolu,South Africa,Schooled,11,No,Unemployed,1,Child grant
+044,20-Sep-13,1,26,1,Other- Mixed race,Afrikaans,South Africa,Schooled,Grade 11- NCS Level 4 Matric,No,Unemployed,0,
+045,20-Sep-13,1,58,1,Black,Zolu,South Africa,Schooled,8,None,Employed,0,
+046,25-Sep-13,1,38,2,Black,Zolu,South Africa,Schooled,Tertiary,None,Employed,0,
+047,25-Sep-13,1,26,2,Black,Xhosa,South Africa,Schooled,11,Short Courses- Nails/Cosmetics; Call centre; construction; etc.,Unemployed,1,
+048,25-Sep-13,1,26,1,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+049,26-Sep-13,1,42,1,Black,Zolu,South Africa,Schooled,Matric,Diploma- Business Management,Employed,0,
+050,26-Sep-13,1,20,2,Black,Tswana,South Africa,Schooled,Matric (still in matric),None,,0,
+051,30-Sep-13,1,22,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,0,
+052,30-Sep-13,1,20,1,Black,Zolu,South Africa,Schooled,Matric,Learnership- Business Practical,Unemployed,0,
+053,04-Oct-13,1,35,2,Black,Sotho,South Africa,Schooled,Matric,,Employed,0,
+054,08-Oct-13,1,42,1,Black,Xhosa,South Africa,Schooled,Matric,Degree- Business administration,Employed (part time/piece work) Self employed,0,
+055,08-Oct-13,1,47,2,Black,Sotho,South Africa,Schooled,Matric,"Technical courses, Office practice",Unemployed,0,
+056,11-Oct-13,1,20,2,Black,Venda,South Africa,Schooled,Matric,Degree- Public management in governance,Unemployed,0,
+057,11-Oct-13,1,37,1,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,0,
+058,14-Oct-13,1,32,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed- volunteer,0,
+059,15-Oct-13,1,28,2,Black,Zolu,South Africa,Schooled,Matric,none,Unemployed,0,
+060,16-Oct-13,1,34,1,Black,Sotho,South Africa,Schooled,matric,FET College- Business management,Employed,0,
+061,16-Oct-13,1,48,2,Black,Tswana,South Africa,No formal schooling,,,Employed,0,
+062,18-Oct-13,1,23,2,Black,Zolu,South Africa,Schooled,Matric,College- Diploma- Project management,Employed,0,
+063,21-Oct-13,1,20,2,Black,Xhosa,South Africa,Schooled,Grade 11,none,Employed,0,
+064,24-Oct-13,1,53,1,Black,Zolu,South Africa,Schooled,matric,Diploma- Education,Unemployed,1,Retirement- Pension
+065,28-Oct-13,1,27,2,Black,Tshonga,South Africa,Schooled,matric,none,Unemployed,0,
+066,28-Oct-13,1,38,1,Black,Zolu,South Africa,Schooled,matric,no,Employed,0,
+067,29-Oct-13,1,27,1,Black,Tswana,South Africa,Schooled,matric,Currently in UNISA- LLB,Employed,0,
+068,29-Oct-13,1,27,1,Black,Other,Other,Schooled,Form 4- Grade 11,none,Employed- self employed,0,
+069,31-Oct-13,1,52,1,Black,Zolu,South Africa,Schooled,matric,Diploma- computer course,Employed- self employed,0,
+070,01-Nov-13,1,23,1,Black,Sotho,South Africa,Schooled,matric,IT- Diploma,Unemployed,0,
+071,07-Nov-13,1,23,1,Black,Tswana,South Africa,Schooled,matric,none,Employed,0,
+072,11-Nov-13,1,38,1,Black,Tshonga,South Africa,Schooled,matric,Diploma-Logistics,Employed,0,
+073,11-Nov-13,1,30,1,Black,Xhosa,South Africa,Schooled,matric,none,Unemployed,0,
+074,12-Nov-13,1,40,1,Black,Sotho,South Africa,Schooled,matric,Diploma- Cosmotologist,Employed- self employed,0,
+075,13-Nov-13,1,22,1,Black,Sotho,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+076,13-Nov-13,1,38,2,Black,Venda,South Africa,Schooled,matric,Enrolled nurse,Employed,0,
+077,13-Nov-13,1,37,1,Black,Zolu,South Africa,Schooled,Grade 11,none,Unemployed,0,
+078,13-Nov-13,1,53,1,Black,Sotho,South Africa,Schooled,matric,Post matric in project management,Unemployed,0,
+079,13-Nov-13,1,20,2,Black,Xhosa,South Africa,Schooled,Grade 10,none,Unemployed,1,Child grant
+080,13-Nov-13,1,27,1,Black,Venda,South Africa,No formal schooling,,,Employed (part time/piece work),0,
+081,14-Nov-13,1,44,2,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+082,14-Nov-13,1,44,2,Black,Zolu,South Africa,Schooled,Grade 10,none,Unemployed,0,
+083,14-Nov-13,1,35,2,Black,Venda,South Africa,No formal schooling,,,Employed (part time/piece work),1,child grant
+084,15-Nov-13,1,31,2,Black,Xhosa,South Africa,Schooled,matric,none,Employed- self employed,1,child grant- 3 kids
+085,15-Nov-13,1,33,2,Black,Xhosa,South Africa,Schooled,matric,Diploma- Social Auxillery,Employed (part time/piece work)- Volunteer,1,Child grant- 2 kids
+086,18-Nov-13,1,31,1,Black,Sotho,South Africa,Schooled,matric,Diploma- Technical engineering,Employed,0,
+087,18-Nov-13,1,31,2,Black,Zolu,South Africa,Schooled,matric,Diploma- Office administration,Unemployed,1,Child grant- 2kids
+088,19-Nov-13,1,23,2,Black,Tshonga,South Africa,Schooled,matric,none,Unemployed,0,
+089,19-Nov-13,1,24,2,Black,Tshonga,South Africa,Schooled,matric,none,Employed (part time/piece work),1,Child grant
+090,19-Nov-13,1,28,1,Black,Zolu,South Africa,Schooled,matric,"Government course- In computers, First aid, Document controlling",Unemployed,0,
+091,19-Nov-13,1,23,2,Black,Sotho,South Africa,Schooled,matric,none,Employed,0,
+092,20-Nov-13,1,25,2,Black,Zolu,South Africa,Schooled,Grade 11,none,Employed (part time/piece work),1,
+093,20-Nov-13,1,26,2,Black,Zolu,South Africa,Schooled,grade 11,home base care,Unemployed,1,child grant
+094,21-Nov-13,1,31,2,Black,Sotho,South Africa,Schooled,Matric,College- N6 in HR,Unemployed,1,Child grant
+095,21-Nov-13,1,28,2,Black,Sotho,South Africa,Schooled,matric,call centre course,Unemployed,1,child grant
+096,22-Nov-13,1,51,2,Black,Zolu,South Africa,Schooled,grade 11,none,Unemployed,1,child grant
+097,25-Nov-13,1,26,1,Black,Xhosa,South Africa,Schooled,matric,none,Unemployed,0,
+098,25-Nov-13,1,24,2,Black,Pedi,South Africa,Schooled,matric,Busy with nursing course,Employed,0,
+099,27-Nov-13,1,43,2,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+1,19-Aug-13,1,35,1,Black,Sotho,South Africa,Schooled,9,None,Unemployed,0,
+100,28-Nov-13,1,44,1,Black,Sotho,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+101,28-Nov-13,1,26,2,Black,Pedi,South Africa,Schooled,matric,EMS Course/ Hair dressing course,Employed,0,
+102,28-Nov-13,1,28,2,Black,Zolu,South Africa,Schooled,matric,none,Employed (part time/piece work),1,child grant
+103,28-Nov-13,1,29,2,Black,Zolu,South Africa,Schooled,matric,enrolled nurse,Unemployed,1,child grant
+104,29-Nov-13,1,21,2,Black,Zolu,South Africa,Schooled,matric,Degree in law,Employed (part time/piece work),0,
+105,29-Nov-13,1,22,1,Black,Tshonga,South Africa,Schooled,Grade 11,none,Employed,0,
+106,02-Dec-13,1,29,1,Black,Sotho,South Africa,Schooled,matric,councelling in human development- course,Employed (part time/piece work),0,
+107,02-Dec-13,1,25,2,Black,Zolu,South Africa,Schooled,matric,IT certificate. HIV/AIDS councelling and testing. Call centre course. Peer group education.,Unemployed,0,
+108,03-Dec-13,1,35,2,Black,Sotho,South Africa,Schooled,matric,,Employed,0,
+109,03-Dec-13,1,25,2,Black,Tswana,South Africa,Schooled,matric,national diploma in internal auditing. Currently doing a certificate in management and development,Employed (part time/piece work),0,
+110,03-Dec-13,1,51,2,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+111,04-Dec-13,1,48,1,Black,Tswana,South Africa,Schooled,matric,none,Unemployed,0,
+112,04-Dec-13,1,46,2,Black,Tswana,South Africa,Schooled,matric,none,Unemployed,1,child grant
+113,05-Dec-13,1,25,1,Black,Xhosa,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+114,05-Dec-13,1,30,1,Black,Tshonga,South Africa,Schooled,matric,currently doing LLB- Law,Employed (part time/piece work),0,
+115,06-Dec-13,1,32,1,Black,Zolu,South Africa,Schooled,,Motor mechanic course,Unemployed,0,
+116,11-Dec-13,1,25,2,Black,,South Africa,Schooled,matric,,,,
+117,11-Dec-13,1,26,2,Black,Sotho,South Africa,Schooled,matric,none,Employed,1,child grant
+118,06-Jan-14,1,23,2,Black,Venda,South Africa,Schooled,matric,none,,0,
+119,06-Jan-14,1,29,1,Black,Venda,South Africa,Schooled,matric,Boilermaker,Employed,0,
+120,06-Jan-14,1,26,1,Black,Zolu,South Africa,Schooled,grade 10,hospitality level 4,Unemployed,0,
+121,07-Jan-14,1,26,1,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,0,
+122,07-Jan-14,1,31,1,Black,Xhosa,South Africa,Schooled,matric,Technical drawing,Employed- self employed,0,
+123,27-Jan-14,1,22,2,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,0,
+124,27-Jan-14,1,28,2,Black,Zolu,South Africa,Schooled,Grade 10,none,Unemployed,1,child grant- 2 kids
+125,28-Jan-14,1,49,1,Black,Sotho,South Africa,Schooled,grade 11,course in bricklaying,Unemployed,0,
+126,30-Jan-14,1,29,2,Black,Tshonga,South Africa,Schooled,matric,BAA- Basic Ambulance,Unemployed,1,child grant- 2kids
+127,31-Jan-14,1,29,2,Black,Tshonga,South Africa,Schooled,matric,none,Employed,1,child grant- 2kids
+128,02-Mar-14,1,23,2,Black,Zolu,South Africa,Schooled,matric,hospitality course,Unemployed,0,
+129,02-Apr-14,1,33,1,Black,Zolu,South Africa,Schooled,matric,nursing,Employed,0,
+130,13-Feb-14,1,38,1,Black,Zolu,South Africa,Schooled,matric,n6,Employed,0,
+131,13-Feb-14,1,59,1,Black,Zolu,South Africa,Schooled,GRADE 11,NONE,Employed,0,
+132,13-Feb-14,1,31,1,Black,Other,South Africa,Schooled,MATRIC,NONE,Unemployed,0,
+133,14-Feb-14,1,29,1,Black,Tswana,South Africa,Schooled,MATRIC,INFORMATION SCIENCE,Employed,0,
+134,18-Feb-14,1,45,1,Black,Zolu,South Africa,Schooled,MATRIC,"N1, N2, N3 IN PLUMBING",Employed (part time/piece work),0,
+135,18-Feb-14,1,31,2,Black,Xhosa,South Africa,Schooled,GRADE11,NONE,Employed,1,child grant-3 kids
+136,18-Feb-14,1,26,1,Black,Zolu,South Africa,Schooled,MATRIC,LEANERSHIP IN ART AND CULTURE ADMIN,Unemployed,0,
+137,20-Feb-14,1,22,2,Black,Zolu,South Africa,Schooled,GRADE 11,NONE,Unemployed,0,
+138,20-Feb-14,1,26,2,Black,Sotho,South Africa,Schooled,MATRIC,NONE,Unemployed,1,child grant
+139,20-Feb-14,1,56,2,Black,Tshonga,South Africa,Schooled,GRADE 11,NONE,Employed (part time/piece work),0,
+140,21-Feb-14,1,27,2,Black,Xhosa,South Africa,Schooled,MATRIC,NONE,Unemployed,0,
+141,26-Feb-14,1,26,1,Black,Xhosa,South Africa,Schooled,MATRIC,NONE,Unemployed,0,
+142,26-Feb-14,1,25,1,Black,Zolu,South Africa,Schooled,GRADE 10,DID DANCING,Unemployed,0,
+143,26-Feb-14,1,19,1,Black,Zolu,South Africa,Schooled,GRADE 11,NONE,Unemployed,0,
+144,26-Feb-14,1,19,1,Black,Zolu,South Africa,Schooled,GRADE 11,NONE,Unemployed,0,
+145,27-Feb-14,1,18,1,Black,Sotho,South Africa,Schooled,GRADE 11,NONE,Unemployed,0,
+146,27-Feb-14,1,38,2,Black,Sotho,South Africa,Schooled,GRADE 11,SECURITY AND FIRST AID CERTIFICATE,Employed (part time/piece work),1,child grant-4 kids
+147,28-Feb-14,1,29,2,Black,Tshonga,South Africa,Schooled,MATRIC,DIPLOMA IN PROJECT MANAGEMENT,Employed,0,
+148,28-Feb-14,1,42,1,Black,Sotho,South Africa,Schooled,GRADE 8,NONE,Unemployed,1,DISABILITY GRANT
+149,03-Mar-14,1,42,1,Black,Sotho,South Africa,Schooled,MATRIC,DIPLOMA IN COMPUTER,Unemployed,0,
+150,03-Apr-14,1,24,1,Black,Other,South Africa,Schooled,matric,degree in medicine,Unemployed,0,
+151,03-Jul-14,1,32,2,Black,Xhosa,South Africa,Schooled,matric,management services national dimploma,Unemployed,0,
+152,03-Oct-14,1,20,2,Black,Zolu,South Africa,Schooled,matric,certificate college qualification,Employed (part time/piece work),0,
+153,03-Nov-14,1,36,2,Black,Xhosa,South Africa,Schooled,GRADE 11,COUNSELLING,Employed,0,
+154,03-Nov-14,1,39,,Black,Tswana,South Africa,Schooled,MATRIC,DEGREE IN BED EDUCATION,Employed,0,
+155,03-Dec-14,1,28,2,Black,Sotho,South Africa,Schooled,MATRIC,NONE,Employed,1,child grant-2 kids
+156,17-Mar-14,1,38,1,Black,Zolu,South Africa,Schooled,MATRIC,HUMAN RESOURCES CERTIFICATE,Employed,0,
+157,17-Mar-14,1,38,1,Black,Zolu,South Africa,Schooled,matric,human resources certificate,Employed,0,
+158,18-Mar-14,1,37,2,Black,Xhosa,South Africa,Schooled,11,none,Unemployed,1,child grant-2 kids
+159,03-Apr-14,1,24,1,Black,Pedi,South Africa,Schooled,matric,diploma in logistics,Unemployed,0,
+160,03-Apr-14,1,37,1,Black,Sotho,South Africa,Schooled,matric,none,Employed,0,
+161,04-Apr-14,1,45,2,Black,Xhosa,South Africa,Schooled,9,none,Unemployed,1,child grant-3 kids
+162,07-Apr-14,1,38,2,Black,Zolu,South Africa,Schooled,matric,computer skills course,Unemployed,1,child grant-2 kids
+163,07-Apr-14,1,40,1,Black,Zolu,South Africa,Schooled,5,none,Unemployed,0,
+164,07-Apr-14,1,30,2,Black,Tswana,South Africa,Schooled,matric,computer  course,Unemployed,0,
+165,07-Apr-14,1,29,1,Black,Pedi,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+166,09-Apr-14,1,37,2,Black,Zolu,South Africa,Schooled,matric,travel and tourisim,Unemployed,0,
+167,09-Apr-14,1,37,1,Black,Zolu,South Africa,Schooled,11,none,Unemployed,0,
+168,09-Apr-14,1,39,1,Black,Zolu,South Africa,Schooled,matric,"aidsawareness, sexual offerdas pre-reliase, anger management certificates",self employed,0,
+169,10-Apr-14,1,33,2,Black,Tswana,South Africa,Schooled,,none,Unemployed,1,child grant-3 kids
+170,22-Apr-14,1,68,1,Black,Sotho,South Africa,Schooled,grade 10,none,Unemployed,1,pension
+171,22-Apr-14,1,30,2,Black,Other,Other,Schooled,matric,none,self employed,0,
+172,22-Apr-14,1,21,2,Black,Xhosa,South Africa,Schooled,matric,I.T,Unemployed,0,
+173,23-Apr-14,1,47,2,Black,Xhosa,South Africa,Schooled,11,secrurity course,Employed,0,
+174,23-Apr-14,1,35,2,Black,Zolu,South Africa,Schooled,matric,I.T,Employed,0,
+175,23-Apr-14,1,28,1,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,0,
+176,29-Apr-14,1,21,2,Black,Tshonga,South Africa,Schooled,11,none,Unemployed,0,
+177,29-Apr-14,1,35,1,Black,Tshonga,South Africa,Schooled,10,none,Unemployed,0,
+178,29-Apr-14,1,44,1,Black,Zolu,South Africa,Schooled,10,NONE,Unemployed,0,
+179,30-Apr-14,1,25,,Black,Zolu,South Africa,Schooled,11,BUSINESS MANAGEMENT,Unemployed,1,CHILD GRANT
+180,05-May-14,1,37,1,Black,Tshonga,South Africa,Schooled,MATRIC,HAIR DRESSER,Unemployed,0,
+181,05-May-14,1,27,2,Black,Xhosa,South Africa,,11,NONE,Unemployed,0,
+182,06-May-14,1,27,1,Black,Zolu,South Africa,No formal schooling,,,SELF EMPLOYED,0,
+183,06-May-14,1,50,2,Black,Zolu,South Africa,Schooled,MATRIC,ADMINISTRATION,Unemployed,0,
+184,08-May-14,1,29,1,Black,Zolu,South Africa,Schooled,10,NCV ERD CERTIFICATE,Unemployed,0,
+185,08-May-14,1,24,2,Black,Zolu,South Africa,Schooled,10,none,Unemployed,0,
+186,08-May-14,1,42,1,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+187,08-May-14,1,25,2,Black,Tshonga,South Africa,Schooled,matric,ILS paramedic diploma,Employed,0,
+188,09-May-14,1,25,2,Black,Other,Other,Schooled,matric,diploma in marketing,Unemployed,0,
+189,09-May-14,1,34,2,Black,Sotho,South Africa,Schooled,matric,dimploma in office admin,Unemployed,1,child grant-2 kids
+190,09-May-14,1,46,2,Black,Zolu,South Africa,Schooled,10,"care giver, security",Unemployed,1,disability grant for the child
+191,12-May-14,1,21,2,Black,Tshonga,South Africa,Schooled,11,none,Unemployed,1,child grant
+192,12-May-14,1,,1,Black,Xhosa,South Africa,Schooled,9,none,Employed,0,
+193,12-May-14,1,30,1,Black,Zolu,South Africa,Schooled,,none,Unemployed,0,
+194,13-May-14,1,47,2,Black,Sotho,South Africa,Schooled,11,none,Employed,1,child grant-2 kids
+195,13-May-14,1,57,2,Black,Sotho,South Africa,Schooled,matric,"nursing, child mainder, paramedic",Employed,0,
+196,13-May-14,1,41,2,Black,Xhosa,South Africa,Schooled,11,none,Employed,1,child grant
+197,14-May-14,1,47,1,Black,Xhosa,South Africa,Schooled,matric,none,Employed,0,
+198,14-May-14,1,34,2,Black,Xhosa,South Africa,Schooled,11,NONE,Unemployed,1,CHILD GRANT
+199,15-May-14,1,26,1,Black,Sotho,South Africa,Schooled,11,NONE,Unemployed,0,
+200,15-May-14,1,28,1,Black,Tshonga,South Africa,Schooled,11,secrurity course,Unemployed,0,
+201,16-May-14,1,66,2,Black,Sotho,South Africa,No formal schooling,,,pensioner,1,pension
+202,16-May-14,1,30,1,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+203,19-May-14,1,46,1,Black,Zolu,South Africa,Schooled,matric,diploma in I,self empoyed,0,
+204,19-May-14,1,28,2,Black,Zolu,South Africa,Schooled,matric,motor machanic dimploma,Employed (part time/piece work),0,
+205,20-May-14,1,43,1,Black,Zolu,South Africa,Schooled,10,none,Unemployed,0,
+206,21-May-14,1,27,2,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,1,child grant
+207,21-May-14,1,19,2,Black,Xhosa,South Africa,Schooled,matric,diploma in media,Unemployed,0,
+208,21-May-14,1,22,2,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,1,child grant
+209,21-May-14,1,45,2,Black,Zolu,South Africa,Schooled,11,none,Unemployed,1,child grant-2 kids
+210,21-May-14,1,48,1,Black,Other,South Africa,Schooled,matric,none,Unemployed,0,
+211,22-May-14,1,40,1,Black,Tswana,South Africa,Schooled,matric,none,Unemployed,0,
+212,22-May-14,1,40,2,Black,Other,South Africa,Schooled,matric,diploma in nursing,Employed,0,
+213,22-May-14,1,19,2,Black,Sotho,South Africa,Schooled,matric,none,Unemployed,0,
+214,23-May-14,1,24,2,Black,Sotho,South Africa,Schooled,11,none,Unemployed,1,child grant
+215,23-May-14,1,34,2,Black,Zolu,South Africa,Schooled,11,"home care, basic hiv, first aid level 1 and  2",Unemployed,1,child grant
+216,23-May-14,1,20,2,Black,Xhosa,South Africa,Schooled,11,none,Unemployed,0,
+217,23-May-14,1,21,2,Black,Xhosa,South Africa,Schooled,matric,none,Employed (part time/piece work),1,child grant
+218,26-May-14,1,20,1,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,0,
+219,26-May-14,1,28,2,Black,Sotho,Other,Schooled,matric,none,Unemployed,0,
+220,26-May-14,1,28,2,Black,Sotho,Other,Schooled,9,none,Unemployed,0,
+221,26-May-14,1,20,2,Black,Zolu,South Africa,Schooled,11,none,Unemployed,0,
+222,27-May-14,1,22,1,Black,Sotho,South Africa,Schooled,11,marchenic course,Unemployed,0,
+223,27-May-14,1,31,1,Black,Pedi,South Africa,Schooled,10,none,Employed,0,
+224,28-May-14,1,63,2,Black,Zolu,South Africa,Schooled,10,"child minder,chef",Unemployed,1,pension
+225,28-May-14,1,62,2,Black,Zolu,South Africa,Schooled,10,none,Unemployed,1,pension
+226,28-May-14,1,67,1,Black,Tswana,South Africa,Schooled,11,drival and lifting training,Unemployed,1,pension
+227,28-May-14,1,26,1,Black,Xhosa,South Africa,Schooled,9,none,Unemployed,0,
+228,28-May-14,1,19,2,Black,Tshonga,South Africa,Schooled,matric,none,Unemployed,0,
+229,29-May-14,1,29,1,Black,Tshonga,South Africa,Schooled,matric,raido graphic,Employed,0,
+230,29-May-14,1,28,2,Black,Pedi,South Africa,Schooled,matric,none,Unemployed,1,child grant
+231,29-May-14,1,28,1,Black,Venda,South Africa,Schooled,matric,none,Unemployed,0,
+232,29-May-14,1,24,2,Black,Zolu,South Africa,Schooled,matric,"counselor,nursing",Unemployed,0,
+233,02-Jun-14,1,37,2,Black,Sotho,South Africa,Schooled,matric,"degree in business administation, national higher diploma, marketing and sales management",Unemployed,1,child grant
+234,02-Jun-14,1,33,1,Black,Zolu,South Africa,Schooled,matric,eletrical certificate,self employed,0,
+235,03-Jun-14,1,34,2,Black,Zolu,South Africa,Schooled,matric,nursing,Employed,0,
+236,03-Jun-14,1,31,2,Black,Zolu,South Africa,Schooled,matric,profetional nursing,Employed,0,
+237,03-Jun-14,1,25,2,Black,Tshonga,South Africa,Schooled,11,business practical,Unemployed,1,child grant
+238,03-Jun-14,1,39,1,Black,Sotho,South Africa,Schooled,6,none,Employed,0,
+239,03-Jun-14,1,35,1,Black,Sotho,South Africa,Schooled,matric,none,self employed,0,
+240,04-Jun-14,1,28,2,Black,Sotho,South Africa,Schooled,11,ecd child development,Employed (part time/piece work),1,child grant
+241,04-Jun-14,1,34,1,Black,Tswana,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+242,05-Jun-14,1,52,1,Black,Zolu,South Africa,Schooled,11,none,Employed,0,
+243,05-Jun-14,1,41,2,Black,Sotho,South Africa,Schooled,matric,c.c.d certiticate,Employed,1,child grant- 2 kids
+244,05-Jun-14,1,23,1,Black,Zolu,South Africa,Schooled,11,none,Employed (part time/piece work),0,
+245,05-Jun-14,1,38,1,Black,Xhosa,South Africa,Schooled,11,none,Unemployed,0,
+246,05-Jun-14,1,19,2,Black,Tshonga,South Africa,Schooled,matric,none,Unemployed,0,
+247,05-Jun-14,1,30,2,Black,Zolu,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+248,06-Jun-14,1,47,2,Black,Tshonga,South Africa,Schooled,matric,none,Employed,0,
+249,17-Jun-14,1,34,1,Black,Zolu,South Africa,Schooled,matric,diploma in business management,Employed,0,
+250,18-Jun-14,1,19,2,Black,Tshonga,South Africa,Schooled,matric,I.T course,Unemployed,0,
+251,18-Jun-14,1,19,2,Black,Tshonga,South Africa,Schooled,11,still in school,Unemployed,0,
+252,18-Jun-14,1,40,1,Black,Zolu,South Africa,Schooled,matric,diploma in civil engineering,self employed,0,
+253,19-Jun-14,1,38,1,Black,Sotho,South Africa,Schooled,matric,human resource,Employed,0,
+254,20-Jun-14,1,35,1,Black,Zolu,South Africa,Schooled,10,none,self employed,0,
+255,20-Jun-14,1,37,2,Black,Zolu,South Africa,Schooled,matric,none,Unemployed,0,
+256,23-Jun-14,1,31,2,Black,Zolu,South Africa,Schooled,11,none,Unemployed,1,child grant- 3 kids
+257,23-Jun-14,1,30,2,Black,Xhosa,South Africa,Schooled,matric,none,Employed,0,
+258,23-Jun-14,1,39,1,Black,Zolu,South Africa,Schooled,matric,"diploma inpastorage, marriade counsellor",Employed,0,
+259,23-Jun-14,1,28,1,Black,Zolu,South Africa,Schooled,matric,diploma in nursing,Employed,0,
+260,23-Jun-14,1,54,1,Black,Sotho,South Africa,Schooled,matric,diploma in media,Unemployed,0,
+261,23-Jun-14,1,21,2,Black,Zolu,South Africa,Schooled,matric,marketing still in school,Unemployed,0,
+262,24-Jun-14,1,19,2,Black,Zolu,South Africa,Schooled,matric,none,Employed (part time/piece work),0,
+263,25-Jun-14,1,46,1,Black,Zolu,South Africa,Schooled,11,meter reading course,Employed,0,
+264,25-Jun-14,1,29,1,Black,Zolu,South Africa,Schooled,9,hospitality course,Unemployed,0,
+265,25-Jun-14,1,67,1,Black,Venda,South Africa,Schooled,matric,none,Unemployed,1,pension
+266,26-Jun-14,1,57,2,Black,Zolu,South Africa,Schooled,11,neno,Unemployed,0,
+267,26-Jun-14,1,53,2,Black,Xhosa,South Africa,Schooled,4,none,Unemployed,1,child grant- 2 kides and foster care grant for 1 child
+268,26-Jun-14,1,37,1,Black,Zolu,South Africa,Schooled,11,secrurity course,Unemployed,0,
+269,27-Jun-14,1,,1,Black,Sotho,South Africa,Schooled,matric,nursing still in school,Employed,0,
+270,27-Jun-14,1,44,2,Black,Zolu,South Africa,Schooled,8,none,Employed (part time/piece work),0,
+271,27-Jun-14,1,47,2,Black,Other,South Africa,Schooled,matric,diploma in nursing,Employed,0,
+272,27-Jun-14,1,21,1,Black,Tswana,South Africa,Schooled,matric,none,Unemployed,0,
+273,30-Jun-14,1,25,1,Black,Tswana,South Africa,Schooled,matric,computer course,Unemployed,0,
+274,30-Jun-14,1,28,1,Black,Zolu,South Africa,Schooled,matric,marketing still in school,Employed (part time/piece work),0,
+275,30-Jun-14,1,27,2,Black,Sotho,South Africa,Schooled,matric,none,Unemployed,1,child grant- 2 kids
+276,01-Jul-14,1,25,1,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+277,02-Jul-14,1,31,2,Black,Tswana,South Africa,Schooled,matric,"computer literacy,catering course",Unemployed,0,
+278,02-Jul-14,1,23,2,Black,Tshonga,South Africa,Schooled,10,none,Unemployed,1,child grant-3 kids
+279,03-Jul-14,1,44,1,Black,Tswana,South Africa,Schooled,matric,none,Unemployed,0,
+280,04-Jul-14,1,56,1,Black,Zolu,South Africa,Schooled,7,none,Unemployed,0,
+281,04-Jul-14,1,49,1,Black,Sotho,South Africa,Schooled,10,office admin,Unemployed,0,
+282,07-Jul-14,1,25,2,Black,Xhosa,South Africa,Schooled,matric,Diploma in Marketing,Employed (part time/piece work),0,
+283,07-Jul-14,1,48,2,Black,Zolu,South Africa,Schooled,matric,none,Employed,0,
+284,07-Jul-14,1,56,1,Black,Venda,South Africa,Schooled,matric,none,Employed,0,
+285,08-Jul-14,1,42,2,Black,Zolu,South Africa,Schooled,10,none,Unemployed,1,child grant- 3kids
+286,09-Jul-14,1,23,1,Black,Venda,South Africa,Schooled,matric,basic ambulance assustance and fire fighter certificates,Unemployed,0,
+287,10-Jul-14,1,234,2,Black,Zolu,South Africa,Schooled,11,none,Unemployed,1,child grant
+288,10-Jul-14,1,22,2,Black,Sotho,South Africa,Schooled,Matric,Profetinal Maths,Unemployed,0,
+289,10-Jul-14,1,16,2,Black,Zolu,South Africa,Schooled,11_Still in School,,Unemployed,0,
+290,10-Jul-14,1,23,1,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+291,11-Jul-14,1,30,2,Black,Zolu,South Africa,Schooled,Matric,Nursing Still in School,Employed,0,
+292,14-Jul-14,1,30,2,Black,Tswana,South Africa,,Matric,"Crerica, Business and Cecritary course",Employed,1,Child Grant
+293,14-Jul-14,1,32,1,Black,Xhosa,South Africa,Schooled,Matric,"Business Manegment, Golf Industry Certificate",Unemployed,0,
+294,14-Jul-14,1,36,1,Black,Sotho,South Africa,Schooled,Matric,Degree in LLB still in Tertiary,Self Employed,0,
+295,15-Jul-14,1,35,1,Black,Zolu,South Africa,Schooled,11,Eletrical Enginiring N4,Self Employed,0,
+296,16-Jul-14,1,21,1,Black,Xhosa,South Africa,Schooled,11,None,Unemployed,0,
+297,17-Jul-14,1,48,2,Black,Zolu,South Africa,Schooled,Matric,none,Employed,0,
+298,17-Jul-14,1,42,1,Black,Sotho,South Africa,Schooled,11,contraction certificate,self employed,0,
+299,17-Jul-14,1,34,2,Black,Tswana,South Africa,Schooled,matric,degree in admin,Employed,0,
+300,18-Jul-14,1,44,1,Black,Zolu,South Africa,Schooled,9,none,Employed,0,
+301,21-Jul-14,1,40,2,Black,Tshonga,South Africa,Schooled,9,none,Unemployed,1,child grant
+302,21-Jul-14,1,15,2,Black,Tshonga,South Africa,Schooled,10,Still in School,Unemployed,0,
+303,21-Jul-14,1,34,2,Black,Pedi,South Africa,Schooled,11,None,Unemployed,1,Child grant
+304,21-Jul-14,1,37,1,Black,Zolu,South Africa,Schooled,7,None,Unemployed,0,
+305,22-Jul-14,1,50,2,Black,Sotho,South Africa,Schooled,9,None,Employed,0,
+306,22-Jul-14,1,65,2,Black,Xhosa,South Africa,Schooled,8,None,Unemployed,1,Pension
+307,22-Jul-14,1,54,2,Black,Xhosa,South Africa,Schooled,9,None,Unemployed,1,Child Grant- 3 Kids
+308,22-Jul-14,1,29,1,Black,Sotho,South Africa,Schooled,11,None,Self Employed,0,
+309,22-Jul-14,1,26,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed (part time/piece work),1,Child Grant
+310,24-Jul-14,1,27,2,Black,Venda,South Africa,Schooled,Matric,Diploma in Nursing,Employed,0,
+311,25-Jul-14,1,41,1,Black,Zolu,South Africa,Schooled,Matric,Diploma in Business Manegement,Employed,0,
+312,25-Jul-14,1,45,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,1,Child Grant
+313,25-Jul-14,1`,40,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+314,28-Jul-14,1,42,1,Black,Tshonga,South Africa,Schooled,10,None,Employed,0,
+315,28-Jul-14,1,32,2,Black,Zolu,South Africa,Schooled,11,none,Unemployed,1,Chid grant
+316,01-Aug-14,1,24,2,Black,Venda,South Africa,Schooled,Matric,Hair Dresser Certificate,Unemployed,0,
+317,01-Aug-14,1,31,1,Black,Zolu,South Africa,Schooled,11,cetaring Certificate,Unemployed,0,
+318,01-Aug-14,1,28,1,Black,Tswana,Other,Schooled,Matric,None,Employed,0,
+319,04-Aug-14,1,53,1,Black,Zolu,South Africa,Schooled,9,None,Unemployed,1,
+320,04-Aug-14,1,35,2,Black,Zolu,South Africa,Schooled,Matruc,None,Employed,0,
+321,04-Aug-14,1,37,1,Black,Zolu,South Africa,Schooled,10,None,Unemployed,0,
+322,06-Aug-14,1,39,1,Black,Zolu,South Africa,Schooled,Matric,HR- Still in school,Employed (part time/piece work),0,
+323,06-Aug-14,1,21,2,Black,Zolu,South Africa,Schooled,"Matric
+Matric",None,Employed,0,
+324,07-Aug-14,1,32,1,Black,Sotho,South Africa,Schooled,Matric,Computor Course,Employed,0,
+325,07-Aug-14,1,30,1,Black,Sotho,South Africa,Schooled,Matric,Machenic Enginnering,Unemployed,0,
+326,07-Aug-14,1,39,2,Black,Venda,South Africa,Schooled,11,None,Unemployed,0,
+327,08-Aug-14,1,19,2,Black,Xhosa,South Africa,Schooled,9,None,Unemployed,0,
+328,11-Aug-14,1,31,2,Black,Zolu,South Africa,Schooled,Matric,Uniciral Healthcare,Unemployed,1,Child Grant - 2 Kids
+329,12-Aug-14,1,26,2,Black,Tshonga,South Africa,Schooled,Matric,None,Employed,0,
+330,14-Aug-14,1,44,1,Black,Xhosa,South Africa,Schooled,Matric,Computor,Unemployed,0,
+331,15-Aug-14,1,22,1,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+332,15-Aug-14,1,33,1,Black,Zolu,South Africa,Schooled,Matric,"Home Basecare 1st Aid Certificate , Male circumsition Course",Employed (part time/piece work),0,
+333,19-Aug-14,1,26,2,Black,Zolu,South Africa,Schooled,Matric,HR,Unemployed,0,
+334,20-Aug-14,1,51,1,Black,Zolu,South Africa,Schooled,10,None,Unemployed,0,
+3345,29-Aug-14,1,23,2,Black,Tswana,South Africa,Schooled,Matric,Degree in business manegment,Employed (part time/piece work),0,
+335,21-Aug-14,1,35,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed (part time/piece work),1,Child Grant - 2 Kids
+336,21-Aug-14,1,24,2,Black,Venda,South Africa,Schooled,Matric,Generic Manegment,Unemployed,1,Child Grant
+337,22-Aug-14,1,72,2,Black,Sotho,South Africa,Schooled,11,Dress Making,Unemployed,1,Pension
+338,22-Aug-14,1,64,2,Black,Zolu,South Africa,Schooled,8,None,Unemployed,1,Pension
+339,25-Aug-14,1,32,2,Black,Zolu,South Africa,Schooled,Matric,"1st Aid certificate, Edu-care_ Still in School",Employed (part time/piece work),1,Child Grant- 2 kids
+340,25-Aug-14,1,49,1,Black,Zolu,South Africa,Schooled,10,None,Unemployed,1,Medical Grant
+341,18-Aug-14,1,40,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+342,18-Aug-14,1,36,2,Black,Xhosa,South Africa,Schooled,Matric,Diploma in Nursing,Employed,0,
+343,27-Aug-14,1,39,1,Black,Venda,South Africa,Schooled,11,Secrurity Course,Employed (part time/piece work),0,
+344,28-Aug-14,1,30,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+345,29-Aug-14,1,23,2,Black,Tswana,South Africa,Schooled,Matric,Degree in Business Manegment,Employed (part time/piece work),0,
+346,02-Sep-14,1,47,1,Black,Sotho,South Africa,Schooled,10,none,Unemployed,0,
+347,02-Sep-14,1,60,1,Black,Zolu,South Africa,Schooled,9,None,Unemployed,0,
+348,04-Sep-14,1,38,1,Black,Sotho,Other,Schooled,Matric,Degree in Economics,Employed,0,
+349,05-Sep-14,1,27,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,1,Child Grant - 2 Kids
+350,05-Sep-14,1,44,1,Black,Zolu,South Africa,Schooled,Matric,None,Self Employed,0,
+351,05-Sep-14,1,31,2,Black,Zolu,South Africa,Schooled,Matric,Computer Course,Unemployed,1,Child Grant
+352,08-Sep-14,1,29,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+353,09-Sep-14,1,24,1,Black,Zolu,South Africa,Schooled,Matric,Retail Course,Employed (part time/piece work),0,
+354,09-Sep-14,1,46,2,Black,Sotho,South Africa,Schooled,10,Cashier and Machendise course,Self Employed,0,
+355,09-Sep-14,1,28,2,Black,Sotho,South Africa,Schooled,Matric,None,Employed,0,
+356,09-Sep-14,1,32,1,Black,Sotho,South Africa,Schooled,matric,None,Employed,0,
+357,12-Sep-14,1,32,1,Black,Zolu,South Africa,Schooled,11,None,Employed,0,
+358,12-Sep-14,1,19,2,Black,Zolu,South Africa,Schooled,Matric,I.T,Employed,0,
+359,15-Sep-14,1,32,2,Black,Zolu,South Africa,Schooled,Matric,Computer Course,Unemployed,1,Child Grant - 2 Kids
+360,15-Sep-14,1,40,1,Black,Tshonga,South Africa,Schooled,Matric,None,Employed,0,
+361,15-Sep-14,1,53,2,Black,Tswana,South Africa,Schooled,8,None,Unemployed,0,
+362,16-Sep-14,1,38,1,Black,Xhosa,South Africa,Schooled,Matric,computer course,Self employed,0,
+363,16-Sep-14,1,38,2,Black,Xhosa,South Africa,Schooled,Matric,Manegementand Computer course,Employed (part time/piece work),0,
+364,17-Sep-14,1,21,2,Black,Zolu,South Africa,Schooled,11,ancillary Health care- still studing,Unemployed,0,
+365,17-Sep-14,1,19,2,Black,Xhosa,South Africa,Schooled,11 Still in School,None,Unemployed,0,
+366,19-Sep-14,1,32,1,Black,Zolu,South Africa,Schooled,10,None,Employed (part time/piece work),0,
+367,19-Sep-14,1,35,1,Black,Zolu,South Africa,Schooled,Matric,Machenicai Engeenering short Course,Unemployed,0,
+368,22-Sep-14,1,46,2,Black,Tshonga,South Africa,Schooled,Matric,Dimploma in Nursing,Employed,0,
+369,22-Sep-14,1,38,2,Black,Venda,South Africa,Schooled,Matric,None,Unemployed,0,
+370,22-Sep-14,1,23,2,Black,Zolu,South Africa,Schooled,Matric,none,Unemployed,0,
+371,23-Sep-14,1,26,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+372,25-Sep-14,1,33,2,Black,Tswana,South Africa,Schooled,Matric,I.T,Employed,0,
+373,25-Sep-14,1,35,2,Black,Xhosa,South Africa,Schooled,11,Life Skills Short Course,Unemployed,1,Child Grant- 3 Kids
+374,26-Sep-14,1,23,2,Black,Zolu,South Africa,Schooled,Matric,Catering Certificate,Unemployed,1,Child Grant
+375,26-Sep-14,1,18,1,Black,Pedi,South Africa,Schooled,Matric,None,Unemployed,0,
+376,29-Sep-14,1,46,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,1,Child Grant
+377,29-Sep-14,1,64,2,Black,Zolu,South Africa,Schooled,11,Dress Making Certificate,Unemployed,1,Pension
+378,30-Sep-14,1,56,1,Black,Tswana,South Africa,No formal schooling,,,Unemployed,1,Disability Grant
+379,30-Sep-14,1,35,2,Black,Tswana,South Africa,Schooled,Matric,Business Manegment,Unemployed,0,
+380,01-Oct-14,1,52,2,Black,Zolu,South Africa,Schooled,5,None,Employed,1,Child grant
+381,02-Oct-14,1,29,2,Black,Venda,South Africa,Schooled,Matric,"Call centre, Admin and computer course",Employed,1,Child grant
+382,02-Oct-14,1,39,1,Black,Sotho,South Africa,Schooled,Matric,None,Employed (part time/piece work),0,
+383,14-Oct-14,1,39,2,Black,Xhosa,South Africa,Schooled,Matric,Cashier Course,Unemployed,1,Child grant - 2 Kids
+384,03-Oct-14,1,42,1,Black,Zolu,South Africa,Schooled,10,Chef,Unemployed,0,
+385,03-Oct-14,1,23,2,Black,Zolu,South Africa,Schooled,Matric,Degree in HR,Employed,0,
+386,07-Oct-14,1,43,1,Black,Zolu,South Africa,Schooled,11,none,Unemployed,0,
+387,07-Oct-14,1,28,1,Black,Zolu,South Africa,Schooled,11,None,Employed (part time/piece work),0,
+388,08-Oct-14,1,35,1,Black,Zolu,South Africa,Schooled,Matric,I.T,Employed,0,
+389,08-Oct-14,1,20,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,1,Child grant
+390,08-Oct-14,1,33,2,Black,Zolu,South Africa,Schooled,Matric,Admnistrator,Employed,0,
+391,09-Oct-14,1,31,2,Black,Sotho,South Africa,Schooled,Matric,Diploma in HR,Employed,0,
+392,09-Oct-14,1,26,2,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+393,09-Oct-14,1,25,2,Black,Other,South Africa,Schooled,11,None,Unemployed,0,
+394,09-Oct-14,1,24,2,Black,Xhosa,South Africa,Schooled,9,None,Unemployed,0,
+395,09-Oct-14,1,21,2,Black,Xhosa,South Africa,Schooled,Matric,Torism Management,Employed (part time/piece work),0,
+396,10-Oct-14,1,23,2,Black,Zolu,South Africa,Schooled,Matric,Inviromental Health,Employed,0,
+397,10-Oct-14,1,58,2,Black,Tswana,South Africa,Schooled,Matric,Diploma in teaching,Employed,0,
+398,14-Oct-14,1,59,2,Black,Venda,South Africa,Schooled,Matric,None,Unemployed,1,Medical grant
+399,14-Oct-14,1,26,2,Black,Tshonga,South Africa,Schooled,Matric,Diploma in Nursing,Employed,0,
+400,15-Oct-14,1,26,1,Black,Zolu,South Africa,Schooled,11,None,Employed,0,
+401,16-Oct-14,1,48,2,Black,Xhosa,South Africa,Schooled,11,None,Unemployed,1,Child grant - 2 kids
+402,16-Oct-14,1,22,2,Black,Xhosa,South Africa,Schooled,11,None,Unemployed,0,
+403,17-Oct-14,1,33,2,Black,Pedi,South Africa,Schooled,Matric,Enrolled nurse,Employed,0,
+404,17-Oct-14,1,26,2,Black,Tshonga,South Africa,Schooled,Matric,Diploma in Occillary Nursing,Unemployed,1,child grant - 2 kids
+405,17-Oct-14,1,30,2,Black,Sotho,South Africa,Schooled,11,Cosmotology,Employed (part time/piece work),0,
+406,17-Oct-14,1,30,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,0,
+407,04-Nov-14,1,38,1,Black,Zolu,South Africa,Schooled,MATRIC,B COM Digree,Unemployed,0,
+408,05-Nov-14,1,31,1,Black,Tshonga,South Africa,Schooled,Matric,None,Unemployed,0,
+409,06-Nov-14,1,51,1,Black,Zolu,South Africa,Schooled,2,Chef certificate,Employed,0,
+410,06-Nov-14,1,16,2,Black,Tswana,South Africa,Schooled,Grade 10 Still in school,,Unemployed,0,
+411,06-Nov-14,1,18,2,Black,Tswana,South Africa,Schooled,10,None,Unemployed,1,Child grant
+412,07-Nov-14,1,56,1,Black,Venda,South Africa,Schooled,8,Secrurity Certificate,Self employed,0,
+413,07-Nov-14,1,24,2,Black,Sotho,South Africa,Schooled,Matric,None,Unemployed,0,
+414,07-Nov-14,1,48,1,Black,Tswana,South Africa,Schooled,Matric,None,Employed,0,
+415,07-Nov-14,1,25,1,Black,Zolu,South Africa,Schooled,Matric,ICT Computor Science,Unemployed,0,
+416,10-Nov-14,1,48,2,Black,Tswana,South Africa,Schooled,11,None,Employed,0,
+417,10-Nov-14,1,49,2,Black,Xhosa,South Africa,Schooled,11,None,Employed,0,
+418,10-Nov-14,1,32,1,Black,Tshonga,South Africa,Schooled,Matric,None,Employed,0,
+419,12-Nov-14,1,54,1,Black,Tswana,South Africa,Schooled,10,None,Unemployed,0,
+420,12-Nov-14,1,25,1,Black,Xhosa,South Africa,Schooled,Matric,None,Unemployed,0,
+421,13-Nov-14,1,58,2,Black,Zolu,South Africa,Schooled,4,None,Unemployed,0,
+422,13-Nov-14,1,36,1,Black,Zolu,South Africa,Schooled,Matric,Business Practise,Unemployed,0,
+423,13-Nov-14,1,46,1,Black,Sotho,South Africa,Schooled,Matric,Diploma in marketing manegement,Unemployed,0,
+424,14-Nov-14,1,32,1,Black,Zolu,South Africa,Schooled,10,None,Unemployed,0,
+425,14-Nov-14,1,24,1,Black,Zolu,South Africa,Schooled,11,None,Employed (part time/piece work),0,
+426,17-Nov-14,1,48,2,Black,Zolu,South Africa,Schooled,Matric,None,Self employed,0,
+427,18-Nov-14,1,40,2,Black,Tswana,South Africa,Schooled,Matric,I.T certificate,Unemployed,1,Child grant
+428,18-Nov-14,1,46,2,Black,Zolu,South Africa,Schooled,11,None,Employed,0,
+429,19-Nov-14,1,37,2,Black,Xhosa,South Africa,Schooled,11,Security,Unemployed,1,Child grant - 2 kids
+430,19-Nov-14,1,44,1,Black,Sotho,South Africa,Schooled,11,None,Unemployed,0,
+431,19-Nov-14,1,47,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,0,
+432,19-Nov-14,1,19,2,Black,Zolu,South Africa,Schooled,11,Still in school,Unemployed,0,
+433,20-Nov-14,1,26,2,Black,Tswana,South Africa,Schooled,Matric,NCV level 4,Unemployed,0,
+434,20-Nov-14,1,27,2,Black,Tswana,South Africa,Schooled,11,Tourism still in school,Unemployed,0,
+435,20-Nov-14,1,53,2,Black,Tswana,South Africa,Schooled,Matric,None,Employed,0,
+436,21-Nov-14,1,30,2,Black,Xhosa,South Africa,Schooled,11,None,Unemployed,0,
+437,25-Nov-14,1,55,1,Black,Zolu,South Africa,Schooled,11,welding Course,Unemployed,0,
+438,25-Nov-14,1,33,2,Black,Zolu,South Africa,Schooled,Matric,Child -Care,Unemployed,0,
+439,25-Nov-14,1,27,2,Black,Zolu,South Africa,Schooled,11,Security and cleaning certificate,Unemployed,1,child grant- 2 kids
+440,11-Nov-14,1,22,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+441,26-Nov-14,1,32,2,Black,Sotho,Other,Schooled,3,None,Employed (part time/piece work),0,
+442,26-Nov-14,1,20,1,Black,Tshonga,South Africa,Schooled,Matric,Studing nursing,Employed,0,
+443,26-Nov-14,1,29,2,Black,Zolu,South Africa,Schooled,10,None,Unemployed,1,Child grant
+444,26-Nov-14,1,31,2,Black,Zolu,South Africa,Schooled,10,Security courses,Unemployed,1,Child grant - 3 kids
+445,26-Nov-14,1,22,2,Black,Tswana,South Africa,Schooled,Matric,Business manegement,Unemployed,0,
+446,27-Nov-14,1,28,2,Black,Sotho,South Africa,Schooled,10,None,Unemployed,1,Maintanence for 3 kids
+447,27-Nov-14,1,25,1,Black,Sotho,Other,Schooled,Matric,None,Employed,0,
+448,28-Nov-14,1,31,1,Black,Venda,South Africa,Schooled,Matric,Diploma in IT,Employed,0,
+449,01-Dec-14,1,47,1,Black,Pedi,South Africa,Schooled,Matric,Computor and security certificate,Employed,0,
+450,01-Dec-14,1,26,2,Black,Sotho,South Africa,Schooled,Matric,Studing Nursing,Employed,0,
+451,01-Dec-14,1,31,2,Black,Zolu,South Africa,Schooled,Matric,STUDING NURSING,Employed,0,
+452,01-Dec-14,1,42,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,1,Child grant- 3 kids
+453,01-Dec-14,1,34,1,Black,Zolu,South Africa,Schooled,Matric,Diploma in Torism,Employed (part time/piece work),0,
+454,02-Dec-14,1,31,1,Black,Tshonga,South Africa,Schooled,Matric,LLS still studing,Employed (part time/piece work),0,
+455,02-Dec-14,1,44,1,Black,Tshonga,South Africa,Schooled,11,None,Self employed,0,
+456,03-Dec-14,1,49,2,Black,Zolu,South Africa,Schooled,8,None,Employed,0,
+457,03-Dec-14,1,72,1,Black,Sotho,South Africa,Schooled,8,None,Unemployed,1,Pension
+458,04-Dec-14,1,52,1,Black,Zolu,South Africa,Schooled,11,Business management,Unemployed,0,
+459,04-Dec-14,1,21,2,Black,Zolu,South Africa,Schooled,Matric,Diploma in Business management,Unemployed,0,
+460,04-Dec-14,1,29,1,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+461,04-Dec-14,1,47,1,Black,Zolu,South Africa,Schooled,11,Four Court Course,Employed,0,
+462,05-Dec-14,1,33,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,0,
+463,05-Dec-14,1,46,2,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,1,Disability grant
+464,05-Dec-14,1,44,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+465,08-Dec-14,1,42,1,Black,Venda,South Africa,Schooled,Matric,None,Employed,0,
+466,08-Dec-14,1,47,2,Black,Sotho,South Africa,Schooled,11,None,Employed,0,
+467,09-Dec-14,1,35,1,Black,Pedi,South Africa,Schooled,Matric,None,Employed (part time/piece work),0,
+468,09-Dec-14,1,28,1,Black,Zolu,South Africa,Schooled,Matric,Diploma in I.T,Employed (part time/piece work),0,
+469,09-Dec-14,1,16,2,Black,Zolu,South Africa,Schooled,9,None,Employed,1,Child grant
+470,10-Dec-14,1,31,2,Black,Sotho,South Africa,Schooled,Matric,Diploma in Hotel Management,Employed,1,Child Grant
+471,12-Dec-14,1,36,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+472,12-Dec-14,1,39,1,Black,Tshonga,South Africa,Schooled,Matric,Diploma in Eletric Engeenering,Employed,0,
+473,12-Dec-14,1,29,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed,1,Child grant
+474,12-Dec-14,1,27,2,Black,Tshonga,South Africa,,Matric,Diploma in Nursing,Employed,0,
+475,13-Jan-15,1,43,1,Black,Zolu,South Africa,Schooled,8,None,Employed,0,
+476,14-Jan-15,1,28,1,Black,Xhosa,South Africa,Schooled,11,welding certificate,Unemployed,0,
+477,14-Jan-15,1,46,2,Black,Sotho,South Africa,Schooled,11,Cashier certificate,Unemployed,0,
+478,15-Jan-15,1,33,1,Black,Zolu,South Africa,Schooled,11,None,Unemployed,0,
+479,15-Jan-15,1,61,1,Black,Tshonga,South Africa,Schooled,2,None,Employed,0,
+480,16-Jan-15,1,19,2,Black,Xhosa,South Africa,Schooled,MATRIC,NONE,Unemployed,0,
+481,19-Jan-15,1,55,2,Black,Zolu,South Africa,Schooled,MATRIC,NONE,Self Employed,0,
+482,21-Jan-15,1,25,1,Black,Zolu,Other,Schooled,11,None,Employed,0,
+483,21-Jan-15,1,32,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,1,Cliid grant - 2 Kids
+484,22-Jan-15,1,24,2,Black,Zolu,South Africa,Schooled,Matric,none,Unemployed,1,Child Support
+485,22-Jan-15,1,45,1,Black,Sotho,South Africa,Schooled,11,None,Unemployed,0,
+486,23-Jan-15,1,48,1,Black,Xhosa,South Africa,Schooled,Matric,Diploma in Motor Engeenering,Self Employed,0,
+487,26-Jan-15,1,23,2,Black,Zolu,South Africa,Schooled,Matric,NQF Level 4,Employed (part time/piece work),0,
+488,26-Jan-15,1,26,2,Black,Tshonga,South Africa,Schooled,Matric,Welding Certificate,Unemployed,0,
+489,26-Jan-14,1,39,1,Black,Sotho,South Africa,Schooled,Matric,Diploma in Labour Law,Employed,0,
+490,27-Jan-15,1,41,2,Black,Zolu,South Africa,Schooled,Matric,Computer and Data Capturing certificates,Unemployed,1,Child grant - 2 Kids
+491,27-Jan-15,1,37,2,Black,Zolu,South Africa,Schooled,11,"Basic ,HIV and Testing, Advance counselling",Unemployed,1,Child grant -2 kids
+492,28-Jan-15,1,41,1,Black,Zolu,South Africa,Schooled,7,None,Unemployed,0,
+493,28-Jan-15,1,65,1,Black,Xhosa,South Africa,Schooled,8,Eletrician,Unemployed,1,Pension
+494,29-Jan-15,1,43,2,Black,Tswana,South Africa,Schooled,11,None,Employed,0,
+495,30-Jan-15,1,17,1,Black,Xhosa,South Africa,Schooled,10,Still in school,Unemployed,0,
+496,30-Jan-15,1,19,1,Black,Xhosa,South Africa,Schooled,Matric,None,Unemployed,0,
+497,02-Feb-15,1,28,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,0,
+498,02-Feb-15,1,29,1,Black,Sotho,South Africa,Schooled,10,"Child Health Care, Security,1st Aids certficate",Employed,0,
+499,03-Feb-15,1`,55,1,Black,Sotho,South Africa,Schooled,11,None,Unemployed,0,
+500,04-Feb-15,1,56,1,Black,Zolu,South Africa,Schooled,Matric,"Diploma in Capetrie, Plambing and Music",Unemployed,0,
+501,04-Feb-14,1,34,1,Black,Zolu,South Africa,Schooled,Matric,Diploma in Business studies,Unemployed,0,
+502,04-Feb-15,1,55,2,Black,Zolu,South Africa,Schooled,8,None,Unemployed,1,Chlid grant
+503,04-Feb-15,1,24,1,Black,Zolu,South Africa,Schooled,Matric,None,Employed,0,
+504,05-Feb-15,1,31,2,Black,Zolu,South Africa,Schooled,Matric,None,Employed (part time/piece work),0,
+505,05-Feb-15,1,27,2,Black,Zolu,South Africa,Schooled,Matirc,Digree in B.E.D,Unemployed,1,Child grant - 2 Kids
+506,06-Feb-15,1,42,1,Black,Tswana,South Africa,Schooled,11,Health safety couse,Employed,0,
+507,06-Feb-15,1,27,2,Black,Pedi,South Africa,Schooled,Matric,Accounting still studing,Unemployed,0,
+508,09-Feb-15,1,43,1,Black,Zolu,South Africa,Schooled,11,B.L.S,Employed,0,
+509,09-Feb-15,1,18,2,Black,Zolu,Other,Schooled,Matric,Still in school,Unemployed,0,
+510,09-Feb-15,1,19,1,Black,Zolu,South Africa,Schooled,Matric,Studing I.T,Unemployed,0,
+511,10-Feb-15,1,43,1,Black,Xhosa,South Africa,Schooled,Matric,"Avocacy,Conficttransfotmation course",Employed,0,
+512,10-Feb-15,1,25,1,Black,Tshonga,South Africa,Schooled,Matric,LLB Kaw still studing,Unemployed,0,
+513,11-Feb-15,1,39,1,Black,Pedi,South Africa,Schooled,Matric,Music Course,Employed (part time/piece work),0,
+514,12-Feb-15,1,28,2,Black,Tshonga,South Africa,Schooled,Matric,None,Unemployed,1,child grant
+515,13-Feb-15,1,52,2,Black,Zolu,South Africa,Schooled,7,None,Employed,0,
+516,13-Feb-15,1,34,2,Black,Tshonga,South Africa,Schooled,Matric,Edu-Care N6 and Advance computor,Unemployed,0,
+517,17-Feb-15,1,35,2,Black,Venda,South Africa,Schooled,11,Security,Employed,1,Child grant - 2 Kids
+518,17-Feb-15,1,38,1,Black,Venda,South Africa,Schooled,11,Security,Employed,0,
+519,17-Feb-15,1,44,2,Black,Pedi,South Africa,Schooled,Matric,None,Self employed,1,child grant
+520,23-Feb-15,1,34,2,Black,Tshonga,Other,Schooled,6,None,Unemployed,0,
+521,23-Feb-15,1,38,1,Black,Tshonga,Other,Schooled,6,None,Self employed,0,
+522,25-Feb-15,1,28,1,Black,Venda,South Africa,Schooled,Matric,Diploma in Psycology,Unemployed,0,
+523,25-Feb-15,1,33,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,1,Child grant
+524,25-Feb-15,1,41,2,Black,Venda,South Africa,Schooled,Matric,None,Employed,0,
+525,08-Apr-15,1,30,2,Black,Zolu,South Africa,Schooled,Matri,BBA Degree,Unemployed,0,
+526,09-Apr-15,1,33,1,Black,Tshonga,South Africa,Schooled,Matric,Occupational hygne,Employed,0,
+527,14-Apr-15,1,33,2,Black,Zolu,South Africa,Schooled,Matric,None,Unemployed,1,Child grant - 3 Kids
+528,14-Apr-15,1,26,2,Black,Zolu,South Africa,Schooled,Matric,1st Aid certificate,Unemployed,0,
+529,15-Apr-14,1,28,2,Black,Zolu,South Africa,Schooled,8,None,Employed (part time/piece work),0,
+530,15-Apr-15,1,32,2,Black,Zolu,South Africa,Schooled,4,None,Unemployed,1,Child grant
+531,15-Apr-15,1,30,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,1,Child grant - 3 Kids
+532,15-Apr-15,1,39,2,Black,Zolu,South Africa,Schooled,11,still studing,Unemployed,0,
+533,16-Apr-15,1,29,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,1,Child grant - 2 kids
+534,20-Apr-15,1,32,2,Black,Zolu,South Africa,Schooled,11,"care giving, catering certificates",Unemployed,0,
+535,21-Apr-15,1,23,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,1,Child grant - 2 kids
+536,21-Apr-15,1,27,1,Black,Tswana,South Africa,Schooled,Matric,None,Unemployed,0,
+537,07-May-15,1,24,2,Black,Zolu,South Africa,Schooled,2,None,Unemployed,0,
+538,07-May-15,1,21,2,Black,Zolu,South Africa,Schooled,11,None,Unemployed,1,Child grant - 2 kids
+539,19-May-15,1,36,2,Black,Xhosa,South Africa,Schooled,Matric,None,Unemployed,1,Child grant - 2 kids
+540,20-May-15,1,23,2,Black,Zolu,South Africa,Schooled,10,None,Unemployed,0,
+541,20-May-15,1,45,2,Black,Sotho,South Africa,Schooled,8,None,Unemployed,1,Child grant - 2 kids
