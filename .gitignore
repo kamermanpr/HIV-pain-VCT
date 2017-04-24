@@ -6,3 +6,4 @@ outputs/*/cache/
 html/
 documentation/
 packrat/lib*/
+.dropbox
