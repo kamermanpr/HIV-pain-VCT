@@ -20,7 +20,7 @@ glimpse(general_info)
 summary(general_info)
 
 # Clean data
-general_info %>%
+gen_info <- general_info %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -55,14 +55,16 @@ general_info %>%
     rename(employment = Employment) %>%
     # Collapse employment factors levels
     mutate(employment =
-               ifelse(employment %in% c('employed (part time/piece work) self employed',
-                                        'employed (part time/piece work)- volunteer'),
+               ifelse(employment %in%
+                          c('employed (part time/piece work) self employed',
+                            'employed (part time/piece work)- volunteer'),
                                yes = 'employed (part time)',
-                               no = ifelse(employment %in% c('employed',
-                                                             'employed- self employed',
-                                                             'employed- volunteer',
-                                                             'self employed',
-                                                             'self empoyed'),
+                               no = ifelse(employment %in%
+                                               c('employed',
+                                                 'employed- self employed',
+                                                 'employed- volunteer',
+                                                 'self employed',
+                                                 'self empoyed'),
                                            yes = 'employed',
                                            no = paste(employment)))) %>%
     # Rename Grant column
@@ -75,12 +77,18 @@ general_info %>%
     rename(grant_type = G_specify) %>%
     # Recode grant_type
     mutate(grant_type = case_when(
-        stringr::str_detect(.$grant_type, 'c...d') ~ paste('child grant'),
-        stringr::str_detect(.$grant_type, 'c..d') ~ paste('child grant'),
-        stringr::str_detect(.$grant_type, 'kids') ~ paste('child grant'),
-        stringr::str_detect(.$grant_type, 'pension') ~ paste('pension'),
-        stringr::str_detect(.$grant_type, 'disability') ~ paste('disability grant'),
-        stringr::str_detect(.$grant_type, 'medical') ~ paste('disability grant'))) %>%
+        stringr::str_detect(.$grant_type, 'c...d') ~
+            paste('child grant'),
+        stringr::str_detect(.$grant_type, 'c..d') ~
+            paste('child grant'),
+        stringr::str_detect(.$grant_type, 'kids') ~
+            paste('child grant'),
+        stringr::str_detect(.$grant_type, 'pension') ~
+            paste('pension'),
+        stringr::str_detect(.$grant_type, 'disability') ~
+            paste('disability grant'),
+        stringr::str_detect(.$grant_type, 'medical') ~
+            paste('disability grant'))) %>%
     # Recode employment based on whether on pension
     mutate(employment = case_when(
         stringr::str_detect(.$grant_type, 'pension') &
@@ -93,7 +101,8 @@ general_info %>%
     # New column for 'in_school'
     mutate(still_in_school =
                ifelse(stringr::str_detect(school_grade, 'still') |
-                          stringr::str_detect(post_school_qualification, 'still'),
+                          stringr::str_detect(
+                              post_school_qualification, 'still'),
                       yes = 'yes',
                       no = ifelse(is.na(school_grade),
                                   yes = NA,
@@ -157,9 +166,51 @@ general_info %>%
     select(PID, date, age, sex, population, language, countryOB,
            formal_schooling, school_grade, still_in_school,
            post_school_qualification, educational_level, employment,
-           grant, grant_type) %>%
-    # Write to file
-    readr::write_csv('./data/general_info.csv')
+           grant, grant_type)
+
+# Write to CSV (flat file for data sharing)
+# readr::write_csv(gen_info, './data/general_info.csv')
+
+# Write to RDS (for data analysis)
+# readr::write_rds(gen_info, './data/general_info.rds')
+
+############################################################
+#                                                          #
+#                       HIV history                        #
+#                                                          #
+############################################################
+# Import data
+hiv_test <- readr::read_csv('./original-data/hiv_test_results.csv')
+
+# Quick look
+head(hiv_test)
+tail(hiv_test)
+glimpse(hiv_test)
+summary(hiv_test)
+
+# Clean data
+hiv_test <- hiv_test %>%
+    # Rename columns
+    rename(test_1_date = test_dt1,
+           test_2_date = Test_dt2,
+           test_result = HIV_result) %>%
+    # Convert to date
+    mutate_at(vars(date, test_1_date, test_2_date), lubridate::dmy) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Remove empty columns
+    select(PID, date, test_1_date, test_2_date, test_result, CD4_count) %>%
+    # Recode test_result
+    mutate(test_result = case_when(
+        .$test_result == 1 & !is.na(.$test_result) ~ 'HIV positive',
+        .$test_result == 2 & !is.na(.$test_result) ~ 'HIV negative'
+    ))
+
+# Write to CSV (flat file for data sharing)
+# readr::write_csv(hiv_test, './data/hiv_test_results.csv')
+
+# Write to RDS (for data analysis)
+# readr::write_rds(hiv_test, './data/hiv_test_results.rds')
 
 ############################################################
 #                                                          #
@@ -176,7 +227,7 @@ glimpse(medical_info)
 summary(medical_info)
 
 # Clean data
-medical_info %>%
+med_info <- medical_info %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -224,9 +275,10 @@ medical_info %>%
                                      yes = 'daily',
                                      no = ifelse(alcohol_freq == 2,
                                                  yes = 'weekly',
-                                                 no = ifelse(is.na(alcohol_freq),
-                                                             yes = NA,
-                                                             no = 'monthly'))),
+                                                 no = ifelse(
+                                                     is.na(alcohol_freq),
+                                                            yes = NA,
+                                                            no = 'monthly'))),
            # Convert to ordered factor
            alcohol_freq = factor(forcats::fct_relevel(alcohol_freq,
                                                       'daily',
@@ -248,15 +300,17 @@ medical_info %>%
                                  yes = '1-2',
                                  no = ifelse(alcohol_per_sitting == 2,
                                              yes = '3-4',
-                                             no = ifelse(is.na(alcohol_per_sitting),
-                                                         yes = NA,
-                                                         no = '>4'))),
+                                             no = ifelse(
+                                                 is.na(alcohol_per_sitting),
+                                                        yes = NA,
+                                                        no = '>4'))),
            # Convert to ordered factor
-           alcohol_per_sitting = factor(forcats::fct_relevel(alcohol_per_sitting,
-                                                             '1-2',
-                                                             '3-4',
-                                                             '>4'),
-                                        ordered = TRUE)) %>%
+           alcohol_per_sitting = factor(
+               forcats::fct_relevel(alcohol_per_sitting,
+                                    '1-2',
+                                    '3-4',
+                                    '>4'),
+               ordered = TRUE)) %>%
     # Rename TB column
     rename(TB_ever = TB) %>%
     # Recode TB_infection column
@@ -280,9 +334,14 @@ medical_info %>%
                                          yes = 'unknown',
                                          no = ifelse(is.na(diabetes),
                                                      yes = NA,
-                                                     no = 'no')))) %>%
-    # Write to file
-    readr::write_csv('./data/medical_info.csv')
+                                                     no = 'no'))))
+
+# Write to CSV (flat file for data sharing)
+# readr::write_csv(med_info, './data/medical_info.csv')
+
+# Write to RDS (for data analysis)
+# readr::write_rds(med_info, './data/medical_info.rds')
+
 
 ############################################################
 #                                                          #
@@ -299,7 +358,7 @@ glimpse(eq5d)
 summary(eq5d)
 
 # Clean data
-eq5d %>%
+eq5d <- eq5d %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -342,47 +401,227 @@ eq5d %>%
                       yes = 'no problems',
                       no = ifelse(usual_activities == 2,
                                   yes = 'some problems',
-                                  no = ifelse(is.na(usual_activities),
-                                              yes = NA,
-                                              no = 'unable to perform usual activities'))),
+                                  no = ifelse(
+                                      is.na(usual_activities),
+                                      yes = NA,
+                                      no = 'unable to perform usual activities'))),
            # Convert to ordered factor
-           usual_activities = factor(forcats::fct_relevel(usual_activities,
-                                                          'no problems',
-                                                          'some problems',
-                                                          'unable to perform usual activities'),
-                                     ordered = TRUE)) %>%
+           usual_activities = factor(
+               forcats::fct_relevel(usual_activities,
+                                    'no problems',
+                                    'some problems',
+                                    'unable to perform usual activities'),
+               ordered = TRUE)) %>%
     # Rename p_discomfort
     rename(pain_discomfort = p_discomfort) %>%
     # Recode pain_discomfort
     mutate(pain_discomfort =
                ifelse(pain_discomfort == 1,
                       yes = 'no pain or discomfort',
-                      no = ifelse(pain_discomfort == 2,
-                                  yes = 'moderate pain or discomfort',
-                                  no = ifelse(is.na(pain_discomfort),
-                                              yes = NA,
-                                              no = 'extreme pain or discomfort'))),
+                      no = ifelse(
+                          pain_discomfort == 2,
+                          yes = 'moderate pain or discomfort',
+                          no = ifelse(
+                              is.na(pain_discomfort),
+                              yes = NA,
+                              no = 'extreme pain or discomfort'))),
            # Convert to ordered factor
-           pain_discomfort = factor(forcats::fct_relevel(pain_discomfort,
-                                                         'no pain or discomfort',
-                                                         'moderate pain or discomfort',
-                                                         'extreme pain or discomfort'),
-                                    ordered = TRUE)) %>%
+           pain_discomfort = factor(
+               forcats::fct_relevel(pain_discomfort,
+                                    'no pain or discomfort',
+                                    'moderate pain or discomfort',
+                                    'extreme pain or discomfort'),
+               ordered = TRUE)) %>%
     # Recode anxiety
     mutate(anxiety =
                ifelse(anxiety == 1,
                       yes = 'no anxiety or depression',
                       no = ifelse(anxiety == 2,
                                   yes = 'moderate anxiety or depression',
-                                  no = ifelse(is.na(anxiety),
-                                              yes = NA,
-                                              no = 'extreme anxiety or depression'))),
+                                  no = ifelse(
+                                      is.na(anxiety),
+                                      yes = NA,
+                                      no = 'extreme anxiety or depression'))),
            # Convert to ordered factor
-           anxiety = factor(forcats::fct_relevel(anxiety,
-                                                 'no anxiety or depression',
-                                                 'moderate anxiety or depression',
-                                                 'extreme anxiety or depression'),
-                                    ordered = TRUE)) %>%
+           anxiety = factor(
+               forcats::fct_relevel(anxiety,
+                                    'no anxiety or depression',
+                                    'moderate anxiety or depression',
+                                    'extreme anxiety or depression'),
+               ordered = TRUE)) %>%
     # Rename health_code
-    rename(qol_vas = health_code) %>%
-    readr::write_csv('./data/eq5d.csv')
+    rename(qol_vas = health_code)
+
+# Write to CSV (flat file for data sharing)
+# readr::write_csv(eq5d, './data/eq5d.csv')
+
+# Write to RDS (for data analysis)
+# readr::write_rds(eq5d, './data/eq5d.rds')
+
+############################################################
+#                                                          #
+#             Pain Catastrophizing Scale (PCS)             #
+#                                                          #
+############################################################
+# Import data
+pcs <- readr::read_csv('./original-data/pcs.csv')
+
+# Quick look
+head(pcs)
+tail(pcs)
+glimpse(pcs)
+summary(pcs)
+
+# Clean data
+pcs <- pcs %>%
+    # Convert to date
+    mutate(date = lubridate::dmy(date)) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Convert from numeric to ordinal factor
+    mutate_if(is.numeric, funs(factor(
+        forcats::fct_relevel(as.character(.),
+                             '1', '2', '3', '4', '5'),
+        ordered = TRUE)))
+
+# Write to CSV (flat file for data sharing)
+readr::write_csv(pcs, './data/pcs.csv')
+
+# Write to RDS (for data analysis)
+readr::write_rds(pcs, './data/pcs.rds')
+
+############################################################
+#                                                          #
+#           Hopkins Symptom Checklist 25 (HSCL)            #
+#                                                          #
+############################################################
+# Import data
+hscl <- readr::read_csv('./original-data/hscl.csv')
+
+# Quick look
+head(hscl)
+tail(hscl)
+glimpse(hscl)
+summary(hscl)
+
+# Clean data
+hscl <- hscl %>%
+    # Convert to date
+    mutate(date = lubridate::dmy(date)) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Convert from numeric to ordinal factor
+    mutate_if(is.numeric, funs(factor(
+        forcats::fct_relevel(as.character(.),
+                             '1', '2', '3', '4'),
+        ordered = TRUE)))
+
+# Write to CSV (flat file for data sharing)
+# readr::write_csv(hscl, './data/hscl.csv')
+
+# Write to RDS (for data analysis)
+# readr::write_rds(hscl, './data/hscl.rds')
+
+############################################################
+#                                                          #
+#                     Neuro exam signs                     #
+#                                                          #
+############################################################
+# Import data
+signs <- readr::read_csv('./original-data/signs_neuro.csv')
+
+# Quick look
+head(signs)
+tail(signs)
+glimpse(signs)
+summary(signs)
+
+# Clean data
+signs2 <- signs %>%
+    # Convert to date
+    mutate(date = lubridate::dmy(date)) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Rename vibrationR?
+    rename(vibration_R_s = vibrationR1,
+           vibration_L_s = vibrationL1) %>%
+    # Remove vibration 'interpretation' columns
+    select(-vibrationR2,
+           -vibrationL2) %>%
+    # Make new vibration 'interpretation' column
+    mutate(reduced_vibration_bilateral = case_when(
+        .$vibration_R_s >= 10 | .$vibration_L_s >= 10 ~ 'no',
+        .$vibration_R_s < 10 & .$vibration_L_s < 10 ~ 'yes'
+    )) %>%
+    # Rename Ankle_refelxesR?
+    rename(ankle_reflex_R = Ankle_reflexesR,
+           ankle_reflex_L = Ankle_reflexesL) %>%
+    # Recode ankle reflex data
+    mutate(ankle_reflex_R =
+               ifelse(ankle_reflex_R == 1,
+                      yes = 'present',
+                      no = ifelse(is.na(ankle_reflex_R),
+                                  yes = NA,
+                                  no = ifelse(ankle_reflex_R == 0,
+                                              yes = 'absent',
+                                              no = 'not done'))),
+           ankle_reflex_L =
+               ifelse(ankle_reflex_L == 1,
+                      yes = 'present',
+                      no = ifelse(is.na(ankle_reflex_L),
+                                  yes = NA,
+                                  no = ifelse(ankle_reflex_L == 0,
+                                              yes = 'absent',
+                                              no = 'not done')))) %>%
+    # Make an ankle_reflex 'interpretation' column
+    mutate(absent_reflexes_bilateral = case_when(
+        .$ankle_reflex_R == 'present' |
+            .$ankle_reflex_L == 'present' ~ 'no',
+        .$ankle_reflex_R == 'absent' &
+            .$ankle_reflex_L == 'absent' ~ 'yes',
+        .$ankle_reflex_R == 'not done' |
+            .$ankle_reflex_L == 'not done' ~ 'not done')) %>%
+    # Pin-prick proximal distribution data has too many holes
+    # and is not required, so only analyse the yes/no coding for
+    # presence vs absence of sensation.
+    # Remove 'extent' columns
+    select(-pinR_princk2,
+           -pinL_princk4) %>%
+    # Rename pin?_princk? columns
+    rename(reduced_pinprick_R = pinR_princk1,
+           reduced_pinprick_L = pinL_princk3) %>%
+    # Recode pin-prick data
+    mutate(reduced_pinprick_R =
+               ifelse(is.na(reduced_pinprick_R),
+                      yes = NA,
+                      no = ifelse(reduced_pinprick_R == 1,
+                                  yes = 'no',
+                                  no = 'yes')),
+           reduced_pinprick_L =
+               ifelse(is.na(reduced_pinprick_L),
+                      yes = NA,
+                      no = ifelse(reduced_pinprick_L == 1,
+                                  yes = 'no',
+                                  no = 'yes'))) %>%
+    # Make a pin-prick 'interpretation' column
+    mutate(reduced_pinprick_bilateral = case_when(
+        .$reduced_pinprick_R == 'no' |
+            .$reduced_pinprick_L == 'no' ~ 'no',
+        .$reduced_pinprick_R == 'yes' &
+            .$reduced_pinprick_L == 'yes' ~ 'yes')) %>%
+    # Make new column indicating whether DSP is present
+    # Only evaluate individuals with 3/3 assessments, others = <NA>
+    mutate(SN_present =
+               ifelse(reduced_vibration_bilateral == 'yes' &
+                      absent_reflexes_bilateral == 'yes' &
+                      reduced_pinprick_bilateral == 'yes',
+                      yes = 'yes',
+                      no = ifelse(c(reduced_vibration_bilateral == 'yes' &
+                                  absent_reflexes_bilateral == 'yes') |
+                                  c(absent_reflexes_bilateral == 'yes' &
+                                  reduced_pinprick_bilateral == 'yes') |
+                                  c(reduced_vibration_bilateral == 'yes' &
+                                  reduced_pinprick_bilateral == 'yes'),
+                                  yes = 'yes',
+                                  no = 'no')))
+
