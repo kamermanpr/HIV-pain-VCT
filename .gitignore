@@ -6,5 +6,6 @@ outputs/*/cache/
 html/
 documentation/
 packrat/lib*/
+original-data/codebook*
 .dropbox
 Icon?
