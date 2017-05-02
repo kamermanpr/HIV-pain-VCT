@@ -20,7 +20,7 @@ glimpse(general_info)
 summary(general_info)
 
 # Clean data
-gen_info <- general_info %>%
+general_info <- general_info %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -227,7 +227,7 @@ glimpse(medical_info)
 summary(medical_info)
 
 # Clean data
-med_info <- medical_info %>%
+medical_info <- medical_info %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -485,10 +485,10 @@ pcs <- pcs %>%
         ordered = TRUE)))
 
 # Write to CSV (flat file for data sharing)
-readr::write_csv(pcs, './data/pcs.csv')
+# readr::write_csv(pcs, './data/pcs.csv')
 
 # Write to RDS (for data analysis)
-readr::write_rds(pcs, './data/pcs.rds')
+# readr::write_rds(pcs, './data/pcs.rds')
 
 ############################################################
 #                                                          #
@@ -537,7 +537,7 @@ glimpse(signs)
 summary(signs)
 
 # Clean data
-signs2 <- signs %>%
+signs <- signs %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -624,4 +624,115 @@ signs2 <- signs %>%
                                   reduced_pinprick_bilateral == 'yes'),
                                   yes = 'yes',
                                   no = 'no')))
+
+############################################################
+#                                                          #
+#                   Neuro exam symptoms                    #
+#                                                          #
+############################################################
+# Import data
+symptoms <- readr::read_csv('./original-data/symptoms_neuro.csv')
+
+# Quick look
+head(symptoms)
+tail(symptoms)
+glimpse(symptoms)
+summary(symptoms)
+
+# Clean data
+symptoms <- symptoms %>%
+    # Convert to date
+    mutate(date = lubridate::dmy(date)) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Remove other unused columns (leftover from EQ-5D)
+    select(-mobility,
+           -self_care,
+           -usual_activ,
+           -anxiety,
+           -p_discomfort,
+           -health_code) %>%
+    # Rename neurological?
+    rename(foot_symptoms_ever = neurologicala,
+           foot_symptoms_current = neurologicalb) %>%
+    # Recode symptoms_?
+    mutate_at(vars(starts_with('foot_symptoms')),
+              funs(ifelse(. == 1,
+                          yes ='yes',
+                          no = 'no'))) %>%
+    # Make new symptom history symmary column
+    mutate(foot_symptoms = case_when(
+        .$foot_symptoms_ever == 'yes' &
+            .$foot_symptoms_current == 'yes' ~ 'current',
+        .$foot_symptoms_ever == 'yes' &
+            .$foot_symptoms_current == 'no' ~ 'past',
+        .$foot_symptoms_ever == 'no' &
+            .$foot_symptoms_current == 'yes' ~ 'unclear',
+        .$foot_symptoms_ever == 'no' &
+            .$foot_symptoms_current == 'no' ~ 'never')) %>%
+    # Rename ?_other
+    rename(hot_burning_intensity = hot_burning_other,
+           cramping_intensity = cramping_other,
+           painful_intensity = p_aching_other,
+           itching_intensity = itching_other,
+           numbness_intensity = numb_lack_other,
+           cold_freezing_intensity = cold_freez_other,
+           pins_needles_intensity = p_needles_other) %>%
+    # Recode and order symptom intensity
+    mutate_at(vars(ends_with('intensity')),
+              funs(ifelse(. == 1,
+                          yes = 'mild',
+                          no = ifelse(. == 2,
+                                      yes = 'moderate',
+                                      no = 'severe')))) %>%
+    mutate_at(vars(ends_with('intensity')),
+              funs(factor(
+                  forcats::fct_relevel(.,
+                                       'mild', 'moderate', 'severe'),
+                  ordered = TRUE))) %>%
+    # Rename symptoms
+    rename(painful = p_aching,
+           numbness = numb_lack,
+           cold_freezing = cold_freez,
+           pins_needles = p_needles) %>%
+    # Recode symptom occurrence
+    mutate_at(vars(c(5, 7, 9, 11, 13, 15, 17)),
+              funs(ifelse(. == 0,
+                          yes = 'no',
+                          no = ifelse(. == 1,
+                                      yes = 'unsure',
+                                      no = 'yes')))) %>%
+    # Reorder columns
+    select(c(1:4, 19, 5:18))
+
+
+############################################################
+#                                                          #
+#                    Combine dataframes                    #
+#                                                          #
+############################################################
+
+clean_data <- general_info %>%
+    left_join(medical_info) %>%
+    left_join(hiv_test) %>%
+    left_join(eq5d) %>%
+    left_join(hscl) %>%
+    left_join(pcs) %>%
+    left_join(signs) %>%
+    left_join(symptoms)
+
+############################################################
+#                                                          #
+#                    Output data to RDS                    #
+#                                                          #
+############################################################
+readr::write_rds(clean_data,
+                 path = './data/clean_data.rds')
+
+############################################################
+#                                                          #
+#                         Clean-up                         #
+#                                                          #
+############################################################
+rm(list = ls())
 
