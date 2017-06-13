@@ -1,8 +1,10 @@
 ############################################################
 #                                                          #
-#                      Load packages                       #
+#            Process the original datasets and             #
+#           generate a single cleaned RDS output           #
 #                                                          #
 ############################################################
+# Load packages
 library(dplyr)
 
 ############################################################
@@ -272,13 +274,13 @@ medical_info <- medical_info %>%
     rename(alcohol_freq = alcohol_often) %>%
     # Recode alcohol_freq column
     mutate(alcohol_freq = ifelse(alcohol_freq == 1,
-                                     yes = 'daily',
-                                     no = ifelse(alcohol_freq == 2,
-                                                 yes = 'weekly',
-                                                 no = ifelse(
-                                                     is.na(alcohol_freq),
-                                                            yes = NA,
-                                                            no = 'monthly'))),
+                                 yes = 'daily',
+                                 no = ifelse(alcohol_freq == 2,
+                                             yes = 'weekly',
+                                             no = ifelse(
+                                                 is.na(alcohol_freq),
+                                                 yes = NA,
+                                                 no = 'monthly'))),
            # Convert to ordered factor
            alcohol_freq = factor(forcats::fct_relevel(alcohol_freq,
                                                       'daily',
@@ -302,8 +304,8 @@ medical_info <- medical_info %>%
                                              yes = '3-4',
                                              no = ifelse(
                                                  is.na(alcohol_per_sitting),
-                                                        yes = NA,
-                                                        no = '>4'))),
+                                                 yes = NA,
+                                                 no = '>4'))),
            # Convert to ordered factor
            alcohol_per_sitting = factor(
                forcats::fct_relevel(alcohol_per_sitting,
@@ -391,7 +393,8 @@ eq5d <- eq5d %>%
            # Convert to ordered factor
            self_care = factor(forcats::fct_relevel(self_care,
                                                   'no problems',
-                                                  'some problems'),
+                                                  'some problems',
+                                                  'unable to wash or dress'),
                              ordered = TRUE)) %>%
     # Rename usual_activ
     rename(usual_activities = usual_activ) %>%
@@ -478,11 +481,20 @@ pcs <- pcs %>%
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
+    # Create total and subscales scores
+    mutate(rumination_score = rowSums(.[c(10, 11, 12, 13)]),
+           magnification_score = rowSums(.[c(8, 9, 15)]),
+           helplessness_score = rowSums(.[c(3, 4, 5, 6, 7, 14)]),
+           total_score = rowSums(.[3:15]),
+           total_score_30 = ifelse(total_score >= 30,
+                                   yes = 'yes',
+                                   no = 'no')) #%>%
     # Convert from numeric to ordinal factor
-    mutate_if(is.numeric, funs(factor(
-        forcats::fct_relevel(as.character(.),
-                             '1', '2', '3', '4', '5'),
-        ordered = TRUE)))
+    #mutate_at(var(starts_with('pcs')),
+     #        funs(factor(
+      #           forcats::fct_relevel(as.character(.),
+       #                               '1', '2', '3', '4', '5'),
+        #         ordered = TRUE)))
 
 # Write to CSV (flat file for data sharing)
 # readr::write_csv(pcs, './data/pcs.csv')
@@ -510,11 +522,21 @@ hscl <- hscl %>%
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
+    # Create total and subscales scores
+    mutate(anxiety_score = rowSums(.[3:12]) / 10,
+           depression_score = rowSums(.[13:27]) / 15,
+           total_score = rowSums(.[3:27]) / 25,
+           total_score_1.55 = ifelse(total_score >= 1.55,
+                                     yes = 'yes',
+                                     no = 'no'),
+           total_score_1.75 = ifelse(total_score >= 1.75,
+                                     yes = 'yes',
+                                     no = 'no')) #%>%
     # Convert from numeric to ordinal factor
-    mutate_if(is.numeric, funs(factor(
-        forcats::fct_relevel(as.character(.),
-                             '1', '2', '3', '4'),
-        ordered = TRUE)))
+    #mutate_if(is.numeric, funs(factor(
+        #forcats::fct_relevel(as.character(.),
+                             #'1', '2', '3', '4'),
+        #ordered = TRUE)))
 
 # Write to CSV (flat file for data sharing)
 # readr::write_csv(hscl, './data/hscl.csv')
@@ -705,6 +727,326 @@ symptoms <- symptoms %>%
     # Reorder columns
     select(c(1:4, 19, 5:18))
 
+############################################################
+#                                                          #
+#                        WBPQ data                         #
+#                                                          #
+############################################################
+# Import data
+wbpq <- readr::read_csv('./original-data/wbpq.csv')
+
+# Quick look
+head(wbpq)
+tail(wbpq)
+glimpse(wbpq)
+summary(wbpq)
+
+# Clean data
+wbpq2 <- wbpq %>%
+    # Convert to date
+    mutate(date = lubridate::dmy(date)) %>%
+    # Remove visit number
+    select(-v_number) %>%
+    # Rename pain presence / sites columns
+    rename(current_pain = paina,
+           pain_in_last_month = painb,
+           pain_reason_for_visit = painc,
+           low_back = low_b,
+           genitals = private_p,
+           site_of_worst_pain = worst_pain) %>%
+    # Recode pain presence / sites columns
+    mutate_at(vars(current_pain, pain_in_last_month, pain_reason_for_visit,
+                   head, shoulders, arms, hands,
+                   chest, abdomen, low_back, genitals,
+                   legs, feet, joints, muscles),
+              factor,
+              levels = c(0, 1),
+              labels = c('no', 'yes')) %>%
+    # Remove superficial/deep pain columns (won't use data)
+    select(-starts_with('inside'),
+           -starts_with('skin')) %>%
+    # Convert text to lower-case for all character columns
+    mutate_if(is.character,
+              tolower) %>%
+    # Rename pain_cause? columns
+    rename(pain_cause_head = pain_cause1,
+           pain_cause_shoulders = pain_cause2,
+           pain_cause_arms = pain_cause3,
+           pain_cause_hands = pain_cause4,
+           pain_cause_chest = pain_cause5,
+           pain_cause_abdomen = pain_cause6,
+           pain_cause_low_back = pain_cause7,
+           pain_cause_genitals = pain_cause8,
+           pain_cause_legs = pain_cause9,
+           pain_cause_feet = pain_cause10,
+           pain_cause_joints = pain_cause11,
+           pain_cause_muscles = pain_cause12) %>%
+    # Simplify pain_cause? (requires manual inspection)
+    ## Head pain
+    mutate(pain_cause_head = ifelse(head == 'no' | is.na(head),
+                                    yes = NA,
+                                    no = pain_cause_head),
+           pain_cause_head = case_when(
+               stringr::str_detect(.$pain_cause_head, '^m.....[se]$') |
+                   stringr::str_detect(.$pain_cause_head, 'unknown') ~ 'unspecified cause',
+               stringr::str_detect(.$pain_cause_head, 'stress') |
+                   stringr::str_detect(.$pain_cause_head, 'thinking')  ~ 'stress-related',
+               TRUE ~ 'other')) %>%
+    ## Shoulder pain
+    mutate(pain_cause_shoulders = case_when(
+        stringr::str_detect(.$pain_cause_shoulders, 'exercis') |
+            stringr::str_detect(.$pain_cause_shoulders, 'sport') |
+            stringr::str_detect(.$pain_cause_shoulders, 'heavy') |
+            stringr::str_detect(.$pain_cause_shoulders, 'muscle') |
+            stringr::str_detect(.$pain_cause_shoulders, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_shoulders, 'stress') |
+            stringr::str_detect(.$pain_cause_shoulders, 'tense') |
+            stringr::str_detect(.$pain_cause_shoulders, 'thinking')  ~ 'stress-related',
+        stringr::str_detect(.$pain_cause_shoulders, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_shoulders = ifelse(shoulders == 'no' | is.na(shoulders),
+                                      yes = NA,
+                                      no = ifelse(is.na(pain_cause_shoulders),
+                                                  yes = 'unspecified cause',
+                                                  no = pain_cause_shoulders))) %>%
+    ## Arm pain
+    mutate(pain_cause_arms = case_when(
+        stringr::str_detect(.$pain_cause_arms, 'blood') |
+            stringr::str_detect(.$pain_cause_arms, 'injection') ~ 'procedural pain',
+        stringr::str_detect(.$pain_cause_arms, 'exercis') |
+            stringr::str_detect(.$pain_cause_arms, 'jogging') |
+            stringr::str_detect(.$pain_cause_arms, 'scratch') |
+            stringr::str_detect(.$pain_cause_arms, 'accident') |
+            stringr::str_detect(.$pain_cause_arms, 'garden') |
+            stringr::str_detect(.$pain_cause_arms, 'wsshing') |
+            stringr::str_detect(.$pain_cause_arms, 'alcohol') |
+            stringr::str_detect(.$pain_cause_arms, 'fell') |
+            stringr::str_detect(.$pain_cause_arms, 'broke') |
+            stringr::str_detect(.$pain_cause_arms, 'sport') |
+            stringr::str_detect(.$pain_cause_arms, 'heavy') |
+            stringr::str_detect(.$pain_cause_arms, 'muscle') |
+            stringr::str_detect(.$pain_cause_arms, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_arms, 'arth') ~ 'arthritis',
+        stringr::str_detect(.$pain_cause_arms, 'stress') ~ 'stress-related',
+        stringr::str_detect(.$pain_cause_arms, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_arms = ifelse(arms == 'no' | is.na(arms),
+                                      yes = NA,
+                                      no = ifelse(is.na(pain_cause_arms),
+                                                  yes = 'unspecified cause',
+                                                  no = pain_cause_arms))) %>%
+    ## Hand pain
+    mutate(pain_cause_hands = case_when(
+        stringr::str_detect(.$pain_cause_hands, 'burn') |
+            stringr::str_detect(.$pain_cause_hands, 'cut') |
+            stringr::str_detect(.$pain_cause_hands, 'washing') |
+            stringr::str_detect(.$pain_cause_hands, 'broke') |
+            stringr::str_detect(.$pain_cause_hands, 'washing') |
+            stringr::str_detect(.$pain_cause_hands, 'accident') |
+            stringr::str_detect(.$pain_cause_hands, 'sport') |
+            stringr::str_detect(.$pain_cause_hands, 'fight') |
+            stringr::str_detect(.$pain_cause_hands, 'washing') |
+            stringr::str_detect(.$pain_cause_hands, 'heavy') |
+            stringr::str_detect(.$pain_cause_hands, 'fell') |
+            stringr::str_detect(.$pain_cause_hands, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_hands, 'arth') ~ 'arthritis',
+        stringr::str_detect(.$pain_cause_hands, 'unknown') ~ 'unspecified cause',
+        stringr::str_detect(.$pain_cause_hands, 'hiv') ~ 'HIV infection',
+        TRUE ~ 'other'),
+        pain_cause_hands = ifelse(hands == 'no' | is.na(hands),
+                                 yes = NA,
+                                 no = ifelse(is.na(pain_cause_hands),
+                                             yes = 'unspecified cause',
+                                             no = pain_cause_hands))) %>%
+    ## Chest pain
+    mutate(pain_cause_chest = case_when(
+        stringr::str_detect(.$pain_cause_chest, 'exercise') |
+            stringr::str_detect(.$pain_cause_chest, 'running') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_chest, 'blocked') |
+            stringr::str_detect(.$pain_cause_chest, 'failer') ~ 'MI or heart failure',
+        stringr::str_detect(.$pain_cause_chest, 'smoking') ~ 'smoking',
+        stringr::str_detect(.$pain_cause_chest, 'cough') |
+            stringr::str_detect(.$pain_cause_chest, 'caughing') |
+            stringr::str_detect(.$pain_cause_chest, 'pneumonia') |
+            stringr::str_detect(.$pain_cause_chest, 'flu') ~ 'cough or infection',
+        stringr::str_detect(.$pain_cause_chest, 'unknown') |
+            stringr::str_detect(.$pain_cause_chest, 'sharp') ~ 'unspecified cause',
+        stringr::str_detect(.$pain_cause_chest, 'acid') |
+            stringr::str_detect(.$pain_cause_chest, 'heartburn') |
+            stringr::str_detect(.$pain_cause_chest, 'heart.burn') |
+            stringr::str_detect(.$pain_cause_chest, 'ulcer') ~ 'ulcer\\heart-burn',
+        TRUE ~ 'other'),
+        pain_cause_chest = ifelse(chest == 'no' | is.na(chest),
+                                  yes = NA,
+                                  no = ifelse(is.na(pain_cause_chest),
+                                              yes = 'unspecified cause',
+                                              no = pain_cause_chest))) %>%
+    ## Abdominal pain
+    mutate(pain_cause_abdomen = case_when(
+        stringr::str_detect(.$pain_cause_abdomen, 'sex') |
+            stringr::str_detect(.$pain_cause_abdomen, 'condom') ~ 'sex-related',
+        stringr::str_detect(.$pain_cause_abdomen, 'ulcer') ~ 'ulcer\\heart-burn',
+        stringr::str_detect(.$pain_cause_abdomen, 'planning') |
+            stringr::str_detect(.$pain_cause_abdomen, 'smear') |
+            stringr::str_detect(.$pain_cause_abdomen, 'apendix') |
+            stringr::str_detect(.$pain_cause_abdomen, 'sterilization') |
+            stringr::str_detect(.$pain_cause_abdomen, 'oparation') |
+            stringr::str_detect(.$pain_cause_abdomen, 'Ceaserian') ~ 'procedural pain',
+        stringr::str_detect(.$pain_cause_abdomen, 'cramp') |
+            stringr::str_detect(.$pain_cause_abdomen, 'crump') ~ 'cramps',
+        stringr::str_detect(.$pain_cause_abdomen, 'constip') |
+            stringr::str_detect(.$pain_cause_abdomen, 'costip') ~ 'constipation',
+        stringr::str_detect(.$pain_cause_abdomen, 'period') |
+            stringr::str_detect(.$pain_cause_abdomen, 'menstr') |
+            stringr::str_detect(.$pain_cause_abdomen, 'mentr') ~ 'menstrual pain',
+        stringr::str_detect(.$pain_cause_abdomen, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_abdomen = ifelse(abdomen == 'no' | is.na(abdomen),
+                                  yes = NA,
+                                  no = ifelse(is.na(pain_cause_abdomen),
+                                              yes = 'unspecified cause',
+                                              no = pain_cause_abdomen))) %>%
+    ## Low-back pain
+    mutate(pain_cause_low_back = case_when(
+        stringr::str_detect(.$pain_cause_low_back, 'ulcer') ~ 'ulcer or heart-burn',
+        stringr::str_detect(.$pain_cause_low_back, 'bending') |
+            stringr::str_detect(.$pain_cause_low_back, 'exercis') |
+            stringr::str_detect(.$pain_cause_low_back, 'running') |
+            stringr::str_detect(.$pain_cause_low_back, 'standing') |
+            stringr::str_detect(.$pain_cause_low_back, 'walk') |
+            stringr::str_detect(.$pain_cause_low_back, 'lifting') |
+            stringr::str_detect(.$pain_cause_low_back, 'accident') |
+            stringr::str_detect(.$pain_cause_low_back, 'injur') |
+            stringr::str_detect(.$pain_cause_low_back, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_low_back, 'period') |
+            stringr::str_detect(.$pain_cause_low_back, 'menstr') |
+            stringr::str_detect(.$pain_cause_low_back, 'mentr') ~ 'menstrual pain',
+        stringr::str_detect(.$pain_cause_low_back, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_low_back = ifelse(low_back == 'no' | is.na(low_back),
+                                    yes = NA,
+                                    no = ifelse(is.na(pain_cause_low_back),
+                                                yes = 'unspecified cause',
+                                                no = pain_cause_low_back))) %>%
+    ## Genital pain
+    mutate(pain_cause_genitals = case_when(
+        stringr::str_detect(.$pain_cause_genitals, 'piles') ~ 'piles',
+        stringr::str_detect(.$pain_cause_genitals, 'sex') |
+            stringr::str_detect(.$pain_cause_genitals, 'rape') ~ 'sex-related',
+        stringr::str_detect(.$pain_cause_genitals, 'sores') |
+            stringr::str_detect(.$pain_cause_genitals, 'rash')|
+            stringr::str_detect(.$pain_cause_genitals, 'rush') |
+            stringr::str_detect(.$pain_cause_genitals, 'piple') ~ 'infection',
+        stringr::str_detect(.$pain_cause_genitals, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_genitals = ifelse(genitals == 'no' | is.na(genitals),
+                                     yes = NA,
+                                     no = ifelse(is.na(pain_cause_genitals),
+                                                 yes = 'unspecified cause',
+                                                 no = pain_cause_genitals))) %>%
+    ## Leg pain
+    mutate(pain_cause_legs = case_when(
+        stringr::str_detect(.$pain_cause_legs, 'exercis') |
+            stringr::str_detect(.$pain_cause_legs, 'running') |
+            stringr::str_detect(.$pain_cause_legs, 'standing') |
+            stringr::str_detect(.$pain_cause_legs, 'playing') |
+            stringr::str_detect(.$pain_cause_legs, 'possition') |
+            stringr::str_detect(.$pain_cause_legs, 'muscle') |
+            stringr::str_detect(.$pain_cause_legs, 'fell') |
+            stringr::str_detect(.$pain_cause_legs, 'walk') |
+            stringr::str_detect(.$pain_cause_legs, 'lifting') |
+            stringr::str_detect(.$pain_cause_legs, 'accident') |
+            stringr::str_detect(.$pain_cause_legs, 'inju') |
+            stringr::str_detect(.$pain_cause_legs, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_legs, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_legs = ifelse(legs == 'no' | is.na(legs),
+                                      yes = NA,
+                                      no = ifelse(is.na(pain_cause_legs),
+                                                  yes = 'unspecified cause',
+                                                  no = pain_cause_legs))) %>%
+    ## Foot pain
+    mutate(pain_cause_feet = case_when(
+        stringr::str_detect(.$pain_cause_feet, 'exercis') |
+            stringr::str_detect(.$pain_cause_feet, 'standing') |
+            stringr::str_detect(.$pain_cause_feet, 'soccer') |
+            stringr::str_detect(.$pain_cause_feet, 'twisted') |
+            stringr::str_detect(.$pain_cause_feet, 'fell') |
+            stringr::str_detect(.$pain_cause_feet, 'walk') |
+            stringr::str_detect(.$pain_cause_feet, 'accident') |
+            stringr::str_detect(.$pain_cause_feet, 'inju') |
+            stringr::str_detect(.$pain_cause_feet, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_feet, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_feet = ifelse(feet == 'no' | is.na(feet),
+                                 yes = NA,
+                                 no = ifelse(is.na(pain_cause_feet),
+                                             yes = 'unspecified cause',
+                                             no = pain_cause_feet))) %>%
+    ## Joint pain
+    mutate(pain_cause_joints = case_when(
+        stringr::str_detect(.$pain_cause_joints, 'not exercising') ~ 'other2',
+        stringr::str_detect(.$pain_cause_joints, 'exercis') |
+            stringr::str_detect(.$pain_cause_joints, 'standing') |
+            stringr::str_detect(.$pain_cause_joints, 'soccer') |
+            stringr::str_detect(.$pain_cause_joints, 'sport') |
+            stringr::str_detect(.$pain_cause_joints, 'twisted') |
+            stringr::str_detect(.$pain_cause_joints, 'fell') |
+            stringr::str_detect(.$pain_cause_joints, 'walk') |
+            stringr::str_detect(.$pain_cause_joints, 'accident') |
+            stringr::str_detect(.$pain_cause_joints, 'inju') |
+            stringr::str_detect(.$pain_cause_joints, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_joints, 'arthritis') |
+            stringr::str_detect(.$pain_cause_joints, 'atratise') ~ 'arthritis',
+        stringr::str_detect(.$pain_cause_joints, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_joints = ifelse(joints == 'no' | is.na(joints),
+                                 yes = NA,
+                                 no = ifelse(is.na(pain_cause_joints),
+                                             yes = 'unspecified cause',
+                                             no = pain_cause_joints))) %>%
+    ## Muscle pain
+    mutate(pain_cause_muscles = case_when(
+        stringr::str_detect(.$pain_cause_muscles, 'exercis') |
+            stringr::str_detect(.$pain_cause_muscles, 'standing') |
+            stringr::str_detect(.$pain_cause_muscles, 'soccer') |
+            stringr::str_detect(.$pain_cause_muscles, 'gym') |
+            stringr::str_detect(.$pain_cause_muscles, 'sport') |
+            stringr::str_detect(.$pain_cause_muscles, 'walk') |
+            stringr::str_detect(.$pain_cause_muscles, 'accident') |
+            stringr::str_detect(.$pain_cause_muscles, 'injur') |
+            stringr::str_detect(.$pain_cause_muscles, 'work') ~ 'physical injury\\strain',
+        stringr::str_detect(.$pain_cause_muscles, 'unknown') ~ 'unspecified cause',
+        TRUE ~ 'other'),
+        pain_cause_muscles = ifelse(muscles == 'no' | is.na(muscles),
+                                   yes = NA,
+                                   no = ifelse(is.na(pain_cause_muscles),
+                                               yes = 'unspecified cause',
+                                               no = pain_cause_muscles))) %>%
+    ## Site of worst pain
+    ### Replace 'private parts' with 'genitals'
+    mutate(site_of_worst_pain =
+               stringr::str_replace_all(site_of_worst_pain,
+                                        pattern = 'private parts',
+                                        replacement = 'genitals')) %>%
+    ### Split columns (one site per column)
+    tidyr::separate(col = site_of_worst_pain,
+                    sep = '/',
+                    into = c('site_of_worst_pain_1',
+                             'site_of_worst_pain_2',
+                             'site_of_worst_pain_3',
+                             'site_of_worst_pain_4',
+                             'site_of_worst_pain_5')) %>%
+    ## Time of worst pain
+    mutate(pain_times =
+               stringr::str_replace_all(pain_times,
+                                        pattern = 'norning',
+                                        replacement = 'morning')) %>%
+    ## Recode pain treatment
+    mutate(pain_treatment = case_when(
+        .$pain_treatment == 1 ~ 'yes',
+        .$pain_treatment == 0 ~ 'no'
+    ))
 
 ############################################################
 #                                                          #
@@ -727,7 +1069,8 @@ clean_data <- general_info %>%
 #                                                          #
 ############################################################
 readr::write_rds(clean_data,
-                 path = './data/clean_data.rds')
+                 path = './data/clean_data.rds',
+                 compress = 'xz')
 
 ############################################################
 #                                                          #
