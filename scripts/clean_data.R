@@ -1046,7 +1046,122 @@ wbpq2 <- wbpq %>%
     mutate(pain_treatment = case_when(
         .$pain_treatment == 1 ~ 'yes',
         .$pain_treatment == 0 ~ 'no'
-    ))
+        )) %>%
+    ## Drug prescriptions
+    ### Rename columns
+    rename(medication_1 = prescribed1,
+           prescribed_1 = prescribed_Dr1,
+           medication_2 = prescribed2,
+           prescribed_2 = prescribed_Dr2,
+           medication_3 = prescribed3,
+           prescribed_3 = prescribed_Dr3,
+           medication_4 = prescribed4,
+           prescribed_4 = prescribed_Dr4) %>%
+    ### Recode drugs in medication_* columns
+    mutate_at(.vars = vars(starts_with('medication_')),
+              .funs = funs(case_when(
+                  stringr::str_detect(., 'grand') |
+                      stringr::str_detect(., 'compral') ~ 'paracetamol + aspirin',
+                  stringr::str_detect(., 'adcod') |
+                      stringr::str_detect(., 'acod') |
+                      stringr::str_detect(., 'alcod') |
+                      stringr::str_detect(., 'alcad') |
+                      stringr::str_detect(., 'cend') |
+                      stringr::str_detect(., 'cind') |
+                      stringr::str_detect(., 'lena') |
+                      stringr::str_detect(., 'sillp') |
+                      stringr::str_detect(., 'silp') |
+                      stringr::str_detect(., 'sinut') |
+                      stringr::str_detect(., 'betap') ~ 'paracetamol + codeine',
+                  stringr::str_detect(., 'anad') |
+                      stringr::str_detect(., 'aspr') |
+                      stringr::str_detect(., 'dispr') ~ 'aspirin',
+                  stringr::str_detect(., 'bruf') |
+                      stringr::str_detect(., 'IB-pro') |
+                      stringr::str_detect(., 'nurof') ~ 'ibuprofen',
+                  stringr::str_detect(., 'diclo') |
+                      stringr::str_detect(., 'declo') |
+                      stringr::str_detect(., 'volta') ~ 'diclofenac',
+                  stringr::str_detect(., 'microd') |
+                      stringr::str_detect(., 'miprod') |
+                      stringr::str_detect(., 'mybu')
+                  ~ 'paracetamol + ibuprofen + codeine',
+                  stringr::str_detect(., 'pain blo') |
+                      stringr::str_detect(., 'painblo') |
+                      stringr::str_detect(., 'pianblo') |
+                      stringr::str_detect(., 'paunblo') |
+                      stringr::str_detect(., 'painam') |
+                      stringr::str_detect(., 'paracet') |
+                      stringr::str_detect(., 'paracent') |
+                      stringr::str_detect(., 'prarcent') |
+                      stringr::str_detect(., 'go pain') |
+                      stringr::str_detect(., 'panado') ~ 'paracetamol',
+                  stringr::str_detect(., 'tramad') ~ 'tramadol',
+                  stringr::str_detect(., 'napro') ~ 'naproxen',
+                  stringr::str_detect(., 'trilp') ~ 'amitriptyline',
+                  stringr::str_detect(., 'killer') ~ 'not specified'
+                  ))) %>%
+    ### Recode prescribed_* columns to 'yes' or 'no'
+    mutate_at(.vars = vars(starts_with('prescribed_')),
+              .funs = funs(ifelse(. == 1,
+                                  yes = 'yes',
+                                  no = 'no'))) %>%
+    ### Clean-up prescribed_* columns to agree with medication_* columns
+    mutate(prescribed_1 = ifelse(is.na(medication_1),
+                                 yes = NA,
+                                 no = prescribed_1),
+           prescribed_2 = ifelse(is.na(medication_2),
+                                 yes = NA,
+                                 no = prescribed_2),
+           prescribed_3 = ifelse(is.na(medication_3),
+                                 yes = NA,
+                                 no = prescribed_3),
+           prescribed_4 = ifelse(is.na(medication_4),
+                                 yes = NA,
+                                 no = prescribed_4)) %>%
+    mutate(prescribed_1 = ifelse(!is.na(medication_1) & is.na(prescribed_1),
+                                 yes = 'not specified',
+                                 no = prescribed_1),
+           prescribed_2 = ifelse(!is.na(medication_2) & is.na(prescribed_2),
+                                 yes = NA,
+                                 no = prescribed_2),
+           prescribed_3 = ifelse(!is.na(medication_3) & is.na(prescribed_3),
+                                 yes = NA,
+                                 no = prescribed_3),
+           prescribed_4 = ifelse(!is.na(medication_4) & is.na(prescribed_4),
+                                 yes = NA,
+                                 no = prescribed_4)) %>%
+    ### Clean-up medication_* to remove duplicates
+    #### medication_2 / prescribed_2
+    mutate(medication_2 = ifelse(prescribed_2 == prescribed_1 &
+                                     medication_2 == medication_1,
+                                 yes = NA,
+                                 no = medication_2),
+           prescribed_2 = ifelse(prescribed_2 == prescribed_1 &
+                                     medication_2 == medication_1,
+                                 yes = NA,
+                                 no = prescribed_2)) %>%
+    #### medication_3 / prescribed_3
+    mutate(medication_3 = ifelse(prescribed_3 == prescribed_1 &
+                                     medication_3 == medication_1,
+                                 yes = NA,
+                                 no = medication_3),
+           prescribed_3 = ifelse(prescribed_3 == prescribed_1 &
+                                     medication_3 == medication_1,
+                                 yes = NA,
+                                 no = prescribed_3)) %>%
+    #### medication_4 / prescribed_4
+    mutate(medication_4 = ifelse(prescribed_4 == prescribed_1 &
+                                     medication_4 == medication_1,
+                                 yes = NA,
+                                 no = medication_4),
+           prescribed_4 = ifelse(prescribed_4 == prescribed_1 &
+                                     medication_4 == medication_1,
+                                 yes = NA,
+                                 no = prescribed_4))
+
+
+
 
 ############################################################
 #                                                          #
