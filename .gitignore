@@ -9,3 +9,4 @@ packrat/lib*/
 original-data/codebook*
 .dropbox
 Icon?
+.DS_Store
