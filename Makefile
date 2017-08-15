@@ -1,23 +1,26 @@
+# Create output and data directories if needed
+$(shell mkdir -p data outputs)
+
 # Set additional directories 'make' must search for dependencies in
 VPATH = data scripts outputs
 
 # Create dummy targets to ensure all intermediate targets are 'made'
 .PHONY: all clean
 
-all: data_cleaning.R \
-	rds_to_csv.R \
-
+all: *.rds *.csv
 
 clean:
-	cd data; rm cleaned_data.*
+	rm -r data
+	rm -r outputs
 
-# Generate cleaned dataset (rds format)
-cleaned_data.rds: data_cleaning.R
+
+# Generate cleaned datasets
+*.rds *.csv: clean_data.R
 	Rscript $<
 
-# Generate cleaned dataset (csv format)
-cleaned_data.csv: rds_to_csv.R
-	Rscript $<
+# Generate the cleaned dataset's codebook
+#clean_data_codebook.csv: clean_data_codebook.R clean_data.rds
+#	Rscript $<
 
 # Demographics
 #demographics.md: demographics.Rmd
