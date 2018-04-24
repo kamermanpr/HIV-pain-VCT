@@ -170,12 +170,6 @@ general_info <- general_info %>%
            post_school_qualification, educational_level, employment,
            grant, grant_type)
 
-# Write to CSV (flat file for data sharing)
-# readr::write_csv(gen_info, './data/general_info.csv')
-
-# Write to RDS (for data analysis)
-# readr::write_rds(gen_info, './data/general_info.rds')
-
 ############################################################
 #                                                          #
 #                       HIV history                        #
@@ -207,12 +201,6 @@ hiv_test <- hiv_test %>%
         .$test_result == 1 & !is.na(.$test_result) ~ 'HIV positive',
         .$test_result == 2 & !is.na(.$test_result) ~ 'HIV negative'
     ))
-
-# Write to CSV (flat file for data sharing)
-# readr::write_csv(hiv_test, './data/hiv_test_results.csv')
-
-# Write to RDS (for data analysis)
-# readr::write_rds(hiv_test, './data/hiv_test_results.rds')
 
 ############################################################
 #                                                          #
@@ -338,13 +326,6 @@ medical_info <- medical_info %>%
                                                      yes = NA,
                                                      no = 'no'))))
 
-# Write to CSV (flat file for data sharing)
-# readr::write_csv(med_info, './data/medical_info.csv')
-
-# Write to RDS (for data analysis)
-# readr::write_rds(med_info, './data/medical_info.rds')
-
-
 ############################################################
 #                                                          #
 #                          EQ-5D 3L                        #
@@ -455,12 +436,6 @@ eq5d <- eq5d %>%
     # Rename health_code
     rename(qol_vas = health_code)
 
-# Write to CSV (flat file for data sharing)
-# readr::write_csv(eq5d, './data/eq5d.csv')
-
-# Write to RDS (for data analysis)
-# readr::write_rds(eq5d, './data/eq5d.rds')
-
 ############################################################
 #                                                          #
 #             Pain Catastrophizing Scale (PCS)             #
@@ -495,12 +470,6 @@ pcs <- pcs %>%
       #           forcats::fct_relevel(as.character(.),
        #                               '1', '2', '3', '4', '5'),
         #         ordered = TRUE)))
-
-# Write to CSV (flat file for data sharing)
-# readr::write_csv(pcs, './data/pcs.csv')
-
-# Write to RDS (for data analysis)
-# readr::write_rds(pcs, './data/pcs.rds')
 
 ############################################################
 #                                                          #
@@ -539,10 +508,10 @@ hscl <- hscl %>%
         #ordered = TRUE)))
 
 # Write to CSV (flat file for data sharing)
-# readr::write_csv(hscl, './data/hscl.csv')
+readr::write_csv(hscl, './data/hscl.csv')
 
 # Write to RDS (for data analysis)
-# readr::write_rds(hscl, './data/hscl.rds')
+readr::write_rds(hscl, './data/hscl.rds')
 
 ############################################################
 #                                                          #
@@ -742,7 +711,7 @@ glimpse(wbpq)
 summary(wbpq)
 
 # Clean data
-wbpq2 <- wbpq %>%
+wbpq <- wbpq %>%
     # Convert to date
     mutate(date = lubridate::dmy(date)) %>%
     # Remove visit number
@@ -762,6 +731,12 @@ wbpq2 <- wbpq %>%
               factor,
               levels = c(0, 1),
               labels = c('no', 'yes')) %>%
+    # Convert all factors to character class
+    mutate_if(is.factor, as.character) %>%
+    # Recode pain_in_last_month so that if current_pain = 'yes', then it is 'yes'
+    mutate(pain_in_last_month = ifelse(current_pain == 'yes',
+                                       yes = 'yes',
+                                       no = pain_in_last_month)) %>%
     # Remove superficial/deep pain columns (won't use data)
     select(-starts_with('inside'),
            -starts_with('skin')) %>%
@@ -791,7 +766,12 @@ wbpq2 <- wbpq %>%
                    stringr::str_detect(.$pain_cause_head, 'unknown') ~ 'unspecified cause',
                stringr::str_detect(.$pain_cause_head, 'stress') |
                    stringr::str_detect(.$pain_cause_head, 'thinking')  ~ 'stress-related',
-               TRUE ~ 'other')) %>%
+               TRUE ~ 'other'),
+           pain_cause_head = ifelse(head == 'no' | is.na(head),
+                                    yes = NA,
+                                    no = ifelse(is.na(pain_cause_head),
+                                                     yes = 'unspecified cause',
+                                                     no = pain_cause_head))) %>%
     ## Shoulder pain
     mutate(pain_cause_shoulders = case_when(
         stringr::str_detect(.$pain_cause_shoulders, 'exercis') |
@@ -1023,13 +1003,13 @@ wbpq2 <- wbpq %>%
                                    no = ifelse(is.na(pain_cause_muscles),
                                                yes = 'unspecified cause',
                                                no = pain_cause_muscles))) %>%
-    ## Site of worst pain
-    ### Replace 'private parts' with 'genitals'
+    # Site of worst pain
+    ## Replace 'private parts' with 'genitals'
     mutate(site_of_worst_pain =
                stringr::str_replace_all(site_of_worst_pain,
                                         pattern = 'private parts',
                                         replacement = 'genitals')) %>%
-    ### Split columns (one site per column)
+    ## Split columns (one site per column)
     tidyr::separate(col = site_of_worst_pain,
                     sep = '/',
                     into = c('site_of_worst_pain_1',
@@ -1037,18 +1017,18 @@ wbpq2 <- wbpq %>%
                              'site_of_worst_pain_3',
                              'site_of_worst_pain_4',
                              'site_of_worst_pain_5')) %>%
-    ## Time of worst pain
+    # Time of worst pain
     mutate(pain_times =
                stringr::str_replace_all(pain_times,
                                         pattern = 'norning',
                                         replacement = 'morning')) %>%
-    ## Recode pain treatment
+    # Recode pain treatment
     mutate(pain_treatment = case_when(
         .$pain_treatment == 1 ~ 'yes',
         .$pain_treatment == 0 ~ 'no'
         )) %>%
-    ## Drug prescriptions
-    ### Rename columns
+    # Drug prescriptions
+    ## Rename columns
     rename(medication_1 = prescribed1,
            prescribed_1 = prescribed_Dr1,
            medication_2 = prescribed2,
@@ -1057,7 +1037,7 @@ wbpq2 <- wbpq %>%
            prescribed_3 = prescribed_Dr3,
            medication_4 = prescribed4,
            prescribed_4 = prescribed_Dr4) %>%
-    ### Recode drugs in medication_* columns
+    ## Recode drugs in medication_* columns
     mutate_at(.vars = vars(starts_with('medication_')),
               .funs = funs(case_when(
                   stringr::str_detect(., 'grand') |
@@ -1101,12 +1081,12 @@ wbpq2 <- wbpq %>%
                   stringr::str_detect(., 'trilp') ~ 'amitriptyline',
                   stringr::str_detect(., 'killer') ~ 'not specified'
                   ))) %>%
-    ### Recode prescribed_* columns to 'yes' or 'no'
+    ## Recode prescribed_* columns to 'yes' or 'no'
     mutate_at(.vars = vars(starts_with('prescribed_')),
               .funs = funs(ifelse(. == 1,
                                   yes = 'yes',
                                   no = 'no'))) %>%
-    ### Clean-up prescribed_* columns to agree with medication_* columns
+    ## Clean-up prescribed_* columns to agree with medication_* columns
     mutate(prescribed_1 = ifelse(is.na(medication_1),
                                  yes = NA,
                                  no = prescribed_1),
@@ -1131,8 +1111,8 @@ wbpq2 <- wbpq %>%
            prescribed_4 = ifelse(!is.na(medication_4) & is.na(prescribed_4),
                                  yes = NA,
                                  no = prescribed_4)) %>%
-    ### Clean-up medication_* to remove duplicates
-    #### medication_2 / prescribed_2
+    ## Clean-up medication_* to remove duplicates
+    ### medication_2 / prescribed_2
     mutate(medication_2 = ifelse(prescribed_2 == prescribed_1 &
                                      medication_2 == medication_1,
                                  yes = NA,
@@ -1141,7 +1121,7 @@ wbpq2 <- wbpq %>%
                                      medication_2 == medication_1,
                                  yes = NA,
                                  no = prescribed_2)) %>%
-    #### medication_3 / prescribed_3
+    ### medication_3 / prescribed_3
     mutate(medication_3 = ifelse(prescribed_3 == prescribed_1 &
                                      medication_3 == medication_1,
                                  yes = NA,
@@ -1150,7 +1130,7 @@ wbpq2 <- wbpq %>%
                                      medication_3 == medication_1,
                                  yes = NA,
                                  no = prescribed_3)) %>%
-    #### medication_4 / prescribed_4
+    ### medication_4 / prescribed_4
     mutate(medication_4 = ifelse(prescribed_4 == prescribed_1 &
                                      medication_4 == medication_1,
                                  yes = NA,
@@ -1158,34 +1138,253 @@ wbpq2 <- wbpq %>%
            prescribed_4 = ifelse(prescribed_4 == prescribed_1 &
                                      medication_4 == medication_1,
                                  yes = NA,
-                                 no = prescribed_4))
-
-
-
-
-############################################################
-#                                                          #
-#                    Combine dataframes                    #
-#                                                          #
-############################################################
-
-clean_data <- general_info %>%
-    left_join(medical_info) %>%
-    left_join(hiv_test) %>%
-    left_join(eq5d) %>%
-    left_join(hscl) %>%
-    left_join(pcs) %>%
-    left_join(signs) %>%
-    left_join(symptoms)
+                                 no = prescribed_4)) %>%
+    ## Clean-up pain_treatment column
+    mutate(pain_treatment = ifelse(!is.na(medication_1),
+                                   yes = 'yes',
+                                   no = 'no')) %>%
+    # Traditional medicines
+    ## Rename traditional medicine columns
+    rename(use_traditional_meds = traditional_meds,
+           traditional_meds = traditional_meds1) %>%
+    ## Remove unused columns
+    ## traditional_meds2 didn't offer anything not achieved
+    ## through traditional_meds
+    select(-traditional_meds2, -traditional_meds3, -traditional_meds4) %>%
+    ## Recode use/non-use in use_traditional_meds
+    mutate(use_traditional_meds = case_when(
+        .$use_traditional_meds == 1 ~ 'yes',
+        .$use_traditional_meds == 0 ~ 'no'
+    )) %>%
+    ## Recode substance names
+    mutate(traditional_meds = case_when(
+        stringr::str_detect(.$traditional_meds, 'herb') |
+            stringr::str_detect(.$traditional_meds, 'phila') |
+            stringr::str_detect(.$traditional_meds, 'mbiza') |
+            stringr::str_detect(.$traditional_meds, 'alovera') |
+            stringr::str_detect(.$traditional_meds, 'aloevera') |
+            stringr::str_detect(.$traditional_meds, 'izifozonke') |
+            stringr::str_detect(.$traditional_meds, 'moringa') |
+            stringr::str_detect(.$traditional_meds, 'mohlonyane') |
+            stringr::str_detect(.$traditional_meds, 'mhlabelo') |
+            stringr::str_detect(.$traditional_meds, 'supreme')  ~ 'herbal tea/drink',
+        stringr::str_detect(.$traditional_meds, 'onion')  ~ 'traditional remedy',
+        stringr::str_detect(.$traditional_meds, 'jinsmang') |
+            stringr::str_detect(.$traditional_meds, 'drank liquid substance') |
+            stringr::str_detect(.$traditional_meds, 'dieketsa') |
+            stringr::str_detect(.$traditional_meds, 'forever living') ~ 'unknown'
+    )) %>%
+    ## Match use_tradiational_meds with traditional_meds
+    mutate(use_traditional_meds = ifelse(!is.na(traditional_meds),
+                                         yes = 'yes',
+                                         no = 'no')) %>%
+    # Other substances for pain
+    ## Rename columns
+    rename(use_other_substances = substances,
+           substance_1 = substances1,
+           substance_2 = substances2) %>%
+    ## Remove unused columns
+    select(-substances3, -substances4) %>%
+    ### Recode use/non-use of other substances
+    mutate(use_other_substances = case_when(
+        .$use_other_substances == 1 ~ 'yes',
+        .$use_other_substances == 0 ~ 'no'
+    )) %>%
+    ## Recode substances
+    mutate(substance_1 = case_when(
+        stringr::str_detect(.$substance_1, 'milk') ~ 'drinks milk',
+        stringr::str_detect(.$substance_1, 'dagga') |
+            stringr::str_detect(.$substance_1, 'marijuana') ~ 'marijuana',
+        stringr::str_detect(.$substance_1, 'alcohol') |
+            stringr::str_detect(.$substance_1, 'beer') ~ 'drinks alcohol',
+        stringr::str_detect(.$substance_1, 'water') ~ 'drinks water',
+        stringr::str_detect(.$substance_1, 'rub') |
+            stringr::str_detect(.$substance_1, 'rud') ~ 'menthol rub',
+        stringr::str_detect(.$substance_1, 'snuf') |
+            stringr::str_detect(.$substance_1, 'ciga') ~ 'tobacco product'),
+        substance_2 = case_when(
+            stringr::str_detect(.$substance_2, 'dagga') ~ 'marijuana')) %>%
+    ## Match use_other_subatances with substance_1
+    mutate(use_other_substances = ifelse(!is.na(substance_1),
+                                         yes = 'yes',
+                                         no = 'no')) %>%
+    # Pain relief
+    ## Add column indicating whether any of prescription/traditional/other used
+    mutate(used_pain_relievers = case_when(
+        stringr::str_detect(pain_treatment, 'yes') |
+            stringr::str_detect(use_traditional_meds, 'yes') |
+            stringr::str_detect(use_other_substances, 'yes') ~ 'yes',
+        TRUE ~ 'no'
+    )) %>%
+    ## Add a column indicating which pain relievers were used
+    mutate(pain_relievers_used = case_when(
+        stringr::str_detect(pain_treatment, 'yes') &
+            stringr::str_detect(use_traditional_meds, 'yes') &
+            stringr::str_detect(use_other_substances, 'yes') ~
+            'pharmacotherapy + traditional meds + other substances',
+        stringr::str_detect(pain_treatment, 'yes') &
+            stringr::str_detect(use_traditional_meds, 'yes') &
+            stringr::str_detect(use_other_substances, 'no') ~
+            'pharmacotherapy + traditional meds',
+        stringr::str_detect(pain_treatment, 'no') &
+            stringr::str_detect(use_traditional_meds, 'no') &
+            stringr::str_detect(use_other_substances, 'yes') ~
+            'other substances',
+        stringr::str_detect(pain_treatment, 'yes') &
+            stringr::str_detect(use_traditional_meds, 'no') &
+            stringr::str_detect(use_other_substances, 'no') ~
+            'pharmacotherapy',
+        stringr::str_detect(pain_treatment, 'yes') &
+            stringr::str_detect(use_traditional_meds, 'no') &
+            stringr::str_detect(use_other_substances, 'yes') ~
+            'pharmacotherapy + other substances',
+        stringr::str_detect(pain_treatment, 'no') &
+            stringr::str_detect(use_traditional_meds, 'yes') &
+            stringr::str_detect(use_other_substances, 'no') ~
+            'traditional meds',
+        stringr::str_detect(pain_treatment, 'no') &
+            stringr::str_detect(use_traditional_meds, 'yes') &
+            stringr::str_detect(use_other_substances, 'yes') ~
+            'traditional meds + other substances',
+        stringr::str_detect(pain_treatment, 'no') &
+            stringr::str_detect(use_traditional_meds, 'no') &
+            stringr::str_detect(use_other_substances, 'yes') ~
+            'other substances'
+    )) %>%
+    ## Rename pain_relief column
+    rename(overall_pain_relief = pain_relief) %>%
+    ## Process overall_pain_relief text
+    mutate(overall_pain_relief = stringr::str_replace(overall_pain_relief,
+                                                      pattern = '%',
+                                                      replacement = ''),
+           overall_pain_relief = as.numeric(overall_pain_relief),
+           overall_pain_relief = ifelse(used_pain_relievers == 'yes',
+                                        yes = overall_pain_relief,
+                                        no = NA)) %>%
+    ## Rename best_Prelief column
+    rename(best_pain_relief = best_Prelief) %>%
+    ## Process best_pain_relief text
+    mutate(best_pain_relief = ifelse(best_pain_relief == 1,
+                                     yes = 'pharmacotherapy',
+                                     no = ifelse(
+                                         best_pain_relief == 2,
+                                         yes = 'traditional medicine',
+                                         no = ifelse(
+                                                     best_pain_relief == 3,
+                                                     yes = 'other substances',
+                                                     no = NA))),
+           best_pain_relief = ifelse(overall_pain_relief == 0,
+                                     yes = 'Nothing',
+                                     no = best_pain_relief)) %>%
+    # Other modailities used to relieve pain
+    ## Rename 'pain_relieves' columns
+    select(-pain_relievesn4) %>%
+    rename(use_other_modalities = pain_relieves,
+           other_modality_1 = pain_relievesn1,
+           other_modality_2 = pain_relievesn2,
+           other_modality_3 = pain_relievesn3) %>%
+    ## Recode use_other_modalities and associated columns
+    mutate(use_other_modalities = ifelse(use_other_modalities == 1,
+                                         yes = 'yes',
+                                         no = 'no')) %>%
+    mutate_at(vars(starts_with('other_modality')),
+              funs(case_when(
+                  stringr::str_detect(., 'sleep') ~
+                      'sleep',
+                  stringr::str_detect(., 'exer') |
+                      stringr::str_detect(., 'exei') |
+                      stringr::str_detect(., 'walk') |
+                      stringr::str_detect(., 'xerc') |
+                      stringr::str_detect(., 'gym') |
+                      stringr::str_detect(., 'jog') ~
+                      'exercise',
+                  stringr::str_detect(., 'mass') |
+                      stringr::str_detect(., 'rub') |
+                      stringr::str_detect(., 'physio') ~
+                      'massage',
+                  stringr::str_detect(., 'relax') |
+                      stringr::str_detect(., 'rest') |
+                      stringr::str_detect(., 'rsest') |
+                      stringr::str_detect(., 'read') |
+                      stringr::str_detect(., 'bath') ~
+                      'rest / relax',
+                  stringr::str_detect(., 'not think') |
+                      stringr::str_detect(., 'music') |
+                      stringr::str_detect(., 'cleaning') |
+                      stringr::str_detect(., 'movies') |
+                      stringr::str_detect(., 'play') ~
+                      'distraction',
+                  stringr::str_detect(., 'stretch') |
+                      stringr::str_detect(., 'strech') ~
+                      'stretching',
+                  stringr::str_detect(., 'smok') ~
+                      'smoking',
+                  stringr::str_detect(., 'position') |
+                      stringr::str_detect(., 'water') |
+                      stringr::str_detect(., 'green tea') |
+                      stringr::str_detect(., 'hicking') |
+                      stringr::str_detect(., 'water') |
+                      stringr::str_detect(., 'water') |
+                      stringr::str_detect(., 'soak') |
+                      stringr::str_detect(., 'icebag') |
+                      stringr::str_detect(., 'companion') |
+                      stringr::str_detect(., 'lay flat') |
+                      stringr::str_detect(., 'elevat') ~
+                      'other'
+              ))) %>%
+    ## Fix minor issues
+    ### Empty other_modality_1 column, filled other_modality_2 column
+    mutate(other_modality_1 = ifelse(is.na(other_modality_1) &
+                                         !is.na(other_modality_2),
+                                     yes = other_modality_2,
+                                     no = other_modality_1)) %>%
+    ### Duplicates in other_modality_X columns
+    mutate(other_modality_2 = ifelse(other_modality_2 == other_modality_1,
+                                     yes = NA,
+                                     no = other_modality_2),
+           other_modality_3 = ifelse(other_modality_3 == other_modality_1 |
+                                         other_modality_3 == other_modality_2,
+                                     yes = NA,
+                                     no = other_modality_3)) %>%
+    # Causes of pain
+    ## Remove pain_causeoX because it largely repeats the data from earlier
+    select(-starts_with('pain_causeo')) %>%
+    # Pain interference
+    ## Rename columns
+    rename(relationship_with_others = relationship,
+           walking_ability = w_ability,
+           normal_work = n_work,
+           enjoyment_of_life = enjoyment) %>%
+    ## Calculate overall interference index
+    mutate(interference_index = round(rowMeans(.[59:64],
+                                         na.rm = TRUE)),
+           interference_index = ifelse(is.nan(interference_index),
+                                       yes = NA,
+                                       no = interference_index))
 
 ############################################################
 #                                                          #
 #                    Output data to RDS                    #
 #                                                          #
 ############################################################
-readr::write_rds(clean_data,
-                 path = './data/clean_data.rds',
-                 compress = 'xz')
+# Get a list of data.frame objects
+df_names <- ls()
+
+# Place data.frames into a list using 'df_names'
+df_list <- lapply(df_names, get)
+
+# Loop over df_list and write to RDS
+purrr::map2(.x = df_list,
+            .y = df_names,
+            .f = ~ readr::write_rds(x = .x,
+                                    path = paste0('./data/', .y, '.rds'),
+                                    compress = 'xz'))
+
+# Loop over df_list and write to csv
+purrr::map2(.x = df_list,
+            .y = df_names,
+            .f = ~ readr::write_csv(x = .x,
+                                    path = paste0('./data/', .y, '.csv')))
 
 ############################################################
 #                                                          #
