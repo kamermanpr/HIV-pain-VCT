@@ -4,16 +4,20 @@
 #           generate a single cleaned RDS output           #
 #                                                          #
 ############################################################
+
 # Load packages
-library(dplyr)
+library(magrittr)
+library(tidyverse)
+library(lubridate)
 
 ############################################################
 #                                                          #
 #                   General information                    #
 #                                                          #
 ############################################################
+
 # Import data
-general_info <- readr::read_csv('./original-data/general_info.csv')
+general_info <- read_csv('./original-data/general_info.csv')
 
 # Quick look
 head(general_info)
@@ -22,13 +26,13 @@ glimpse(general_info)
 summary(general_info)
 
 # Clean data
-general_info <- general_info %>%
+general_info %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Convert all character columns to lower case
-    mutate_if(is.character, stringr::str_to_lower) %>%
+    mutate_if(is.character, str_to_lower) %>%
     # Recode sex
     mutate(sex = ifelse(sex == 1,
                         yes = 'male',
@@ -79,31 +83,31 @@ general_info <- general_info %>%
     rename(grant_type = G_specify) %>%
     # Recode grant_type
     mutate(grant_type = case_when(
-        stringr::str_detect(.$grant_type, 'c...d') ~
+        str_detect(.$grant_type, 'c...d') ~
             paste('child grant'),
-        stringr::str_detect(.$grant_type, 'c..d') ~
+        str_detect(.$grant_type, 'c..d') ~
             paste('child grant'),
-        stringr::str_detect(.$grant_type, 'kids') ~
+        str_detect(.$grant_type, 'kids') ~
             paste('child grant'),
-        stringr::str_detect(.$grant_type, 'pension') ~
+        str_detect(.$grant_type, 'pension') ~
             paste('pension'),
-        stringr::str_detect(.$grant_type, 'disability') ~
+        str_detect(.$grant_type, 'disability') ~
             paste('disability grant'),
-        stringr::str_detect(.$grant_type, 'medical') ~
+        str_detect(.$grant_type, 'medical') ~
             paste('disability grant'))) %>%
     # Recode employment based on whether on pension
     mutate(employment = case_when(
-        stringr::str_detect(.$grant_type, 'pension') &
+        str_detect(.$grant_type, 'pension') &
             !is.na(.$grant_type) ~ paste('on pension'),
-        stringr::str_detect(.$grant_type, 'disability') &
+        str_detect(.$grant_type, 'disability') &
             !is.na(.$grant_type) ~ paste('on disability'))) %>%
     # Rename Schooled_other1/2
     rename(school_grade = Schooled_other1,
            post_school_qualification = Schooled_other2) %>%
     # New column for 'in_school'
     mutate(still_in_school =
-               ifelse(stringr::str_detect(school_grade, 'still') |
-                          stringr::str_detect(
+               ifelse(str_detect(school_grade, 'still') |
+                          str_detect(
                               post_school_qualification, 'still'),
                       yes = 'yes',
                       no = ifelse(is.na(school_grade),
@@ -112,45 +116,45 @@ general_info <- general_info %>%
     # Recode school_grade
     mutate(school_grade = as.numeric(
         case_when(
-        stringr::str_detect(.$school_grade, 'm....') &
+        str_detect(.$school_grade, 'm....') &
             !is.na(.$school_grade) ~ paste('12'),
-        stringr::str_detect(.$school_grade, 'grade 12') &
+        str_detect(.$school_grade, 'grade 12') &
             !is.na(.$school_grade) ~ paste('12'),
-        stringr::str_detect(.$school_grade, 'grade 11') &
+        str_detect(.$school_grade, 'grade 11') &
             !is.na(.$school_grade) ~ paste('11'),
-        stringr::str_detect(.$school_grade, 'still') &
+        str_detect(.$school_grade, 'still') &
             !is.na(.$school_grade) ~ paste('11'),
-        stringr::str_detect(.$school_grade, 'grade 10') &
+        str_detect(.$school_grade, 'grade 10') &
             !is.na(.$school_grade) ~ paste('10'),
-        stringr::str_detect(.$school_grade, 'grade 9') &
+        str_detect(.$school_grade, 'grade 9') &
             !is.na(.$school_grade) ~ paste('9'),
-        stringr::str_detect(.$school_grade, 'grade 8') &
+        str_detect(.$school_grade, 'grade 8') &
             !is.na(.$school_grade) ~ paste('8'),
-        stringr::str_detect(.$school_grade, 'grade 7') &
+        str_detect(.$school_grade, 'grade 7') &
             !is.na(.$school_grade) ~ paste('7'),
-        stringr::str_detect(.$school_grade, 'grade 6') &
+        str_detect(.$school_grade, 'grade 6') &
             !is.na(.$school_grade) ~ paste('6'),
-        stringr::str_detect(.$school_grade, 'grade 5') &
+        str_detect(.$school_grade, 'grade 5') &
             !is.na(.$school_grade) ~ paste('5'),
-        stringr::str_detect(.$school_grade, 'grade 4') &
+        str_detect(.$school_grade, 'grade 4') &
             !is.na(.$school_grade) ~ paste('4'),
-        stringr::str_detect(.$school_grade, 'grade 3') &
+        str_detect(.$school_grade, 'grade 3') &
             !is.na(.$school_grade) ~ paste('3'),
-        stringr::str_detect(.$school_grade, 'grade 2') &
+        str_detect(.$school_grade, 'grade 2') &
             !is.na(.$school_grade) ~ paste('2'),
-        stringr::str_detect(.$school_grade, 'grade 1') &
+        str_detect(.$school_grade, 'grade 1') &
             !is.na(.$school_grade) ~ paste('1'),
-        stringr::str_detect(.$school_grade, 'form') &
+        str_detect(.$school_grade, 'form') &
             !is.na(.$school_grade) ~ paste('3'),
-        stringr::str_detect(.$school_grade, 'grade11') &
+        str_detect(.$school_grade, 'grade11') &
             !is.na(.$school_grade) ~ paste('11'),
-        stringr::str_detect(.$school_grade, 'tertiary') &
+        str_detect(.$school_grade, 'tertiary') &
             !is.na(.$school_grade) ~ paste('12'),
         TRUE ~ as.character(.$school_grade)))) %>%
     # Recode post_school_qualification
     mutate(post_school_qualification =
-               ifelse(stringr::str_detect(post_school_qualification, 'n.ne') |
-                          stringr::str_detect(post_school_qualification, 'no'),
+               ifelse(str_detect(post_school_qualification, 'n.ne') |
+                          str_detect(post_school_qualification, 'no'),
                       yes = 'no',
                       no = ifelse(is.na(post_school_qualification),
                                   yes = NA,
@@ -176,7 +180,7 @@ general_info <- general_info %>%
 #                                                          #
 ############################################################
 # Import data
-hiv_test <- readr::read_csv('./original-data/hiv_test_results.csv')
+hiv_test <- read_csv('./original-data/hiv_test_results.csv')
 
 # Quick look
 head(hiv_test)
@@ -185,13 +189,13 @@ glimpse(hiv_test)
 summary(hiv_test)
 
 # Clean data
-hiv_test <- hiv_test %>%
+hiv_test %<>%
     # Rename columns
     rename(test_1_date = test_dt1,
            test_2_date = Test_dt2,
            test_result = HIV_result) %>%
     # Convert to date
-    mutate_at(vars(date, test_1_date, test_2_date), lubridate::dmy) %>%
+    mutate_at(vars(date, test_1_date, test_2_date), dmy) %>%
     # Remove visit number
     select(-v_number) %>%
     # Remove empty columns
@@ -208,7 +212,7 @@ hiv_test <- hiv_test %>%
 #                                                          #
 ############################################################
 # Import data
-medical_info <- readr::read_csv('./original-data/medical_info.csv')
+medical_info <- read_csv('./original-data/medical_info.csv')
 
 # Quick look
 head(medical_info)
@@ -217,22 +221,22 @@ glimpse(medical_info)
 summary(medical_info)
 
 # Clean data
-medical_info <- medical_info %>%
+medical_info %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Convert all character columns to lower case
-    mutate_if(is.character, stringr::str_to_lower) %>%
+    mutate_if(is.character, str_to_lower) %>%
     # Rename mass column
     rename(mass_kg = mass) %>%
     # Fix mass column formatting
-    mutate(mass_kg = stringr::str_replace_all(mass_kg,
-                                              pattern = 'no \\s?scale',
-                                              replacement = 'NA'),
-           mass_kg = stringr::str_replace_all(mass_kg,
-                                              pattern = ',',
-                                              replacement = '.'),
+    mutate(mass_kg = str_replace_all(mass_kg,
+                                     pattern = 'no \\s?scale',
+                                     replacement = 'NA'),
+           mass_kg = str_replace_all(mass_kg,
+                                     pattern = ',',
+                                     replacement = '.'),
            mass_kg = ifelse(mass_kg == 'NA',
                          yes = NA,
                          no = paste(mass_kg)),
@@ -240,12 +244,12 @@ medical_info <- medical_info %>%
     # Rename height column
     rename(height_cm = height) %>%
     # Fix height column formatting
-    mutate(height_cm = stringr::str_replace_all(height_cm,
-                                                pattern = 'no \\s?scale',
-                                                replacement = 'NA'),
-           height_cm = stringr::str_replace_all(height_cm,
-                                                pattern = ',,?',
-                                                replacement = '.'),
+    mutate(height_cm = str_replace_all(height_cm,
+                                       pattern = 'no \\s?scale',
+                                       replacement = 'NA'),
+           height_cm = str_replace_all(height_cm,
+                                       pattern = ',,?',
+                                       replacement = '.'),
            height_cm = ifelse(height_cm == 'NA',
                            yes = NA,
                            no = paste(height_cm)),
@@ -270,10 +274,10 @@ medical_info <- medical_info %>%
                                                  yes = NA,
                                                  no = 'monthly'))),
            # Convert to ordered factor
-           alcohol_freq = factor(forcats::fct_relevel(alcohol_freq,
-                                                      'daily',
-                                                      'weekly',
-                                                      'monthly'),
+           alcohol_freq = factor(fct_relevel(alcohol_freq,
+                                             'daily',
+                                             'weekly',
+                                             'monthly'),
                                  ordered = TRUE)) %>%
     # Recode alcohol_type column
     mutate(alcohol_type = ifelse(alcohol_type == 1,
@@ -295,12 +299,11 @@ medical_info <- medical_info %>%
                                                  yes = NA,
                                                  no = '>4'))),
            # Convert to ordered factor
-           alcohol_per_sitting = factor(
-               forcats::fct_relevel(alcohol_per_sitting,
-                                    '1-2',
-                                    '3-4',
-                                    '>4'),
-               ordered = TRUE)) %>%
+           alcohol_per_sitting = factor(fct_relevel(alcohol_per_sitting,
+                                                    '1-2',
+                                                    '3-4',
+                                                    '>4'),
+                                        ordered = TRUE)) %>%
     # Rename TB column
     rename(TB_ever = TB) %>%
     # Recode TB_infection column
@@ -332,7 +335,7 @@ medical_info <- medical_info %>%
 #                                                          #
 ############################################################
 # Import data
-eq5d <- readr::read_csv('./original-data/eq5d.csv')
+eq5d <- read_csv('./original-data/eq5d.csv')
 
 # Quick look
 head(eq5d)
@@ -341,13 +344,13 @@ glimpse(eq5d)
 summary(eq5d)
 
 # Clean data
-eq5d <- eq5d %>%
+eq5d %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Convert all character columns to lower case
-    mutate_if(is.character, stringr::str_to_lower) %>%
+    mutate_if(is.character, str_to_lower) %>%
     # Recode mobility
     mutate(mobility = ifelse(mobility == 1,
                              yes = 'no problems',
@@ -357,10 +360,10 @@ eq5d <- eq5d %>%
                                                      yes = NA,
                                                      no = 'confined to bed'))),
            # Convert to ordered factor
-           mobility = factor(forcats::fct_relevel(mobility,
-                                                  'no problems',
-                                                  'some problems',
-                                                  'confined to bed'),
+           mobility = factor(fct_relevel(mobility,
+                                         'no problems',
+                                         'some problems',
+                                         'confined to bed'),
                              ordered = TRUE)) %>%
     # Recode self_care
     mutate(self_care =
@@ -372,11 +375,11 @@ eq5d <- eq5d %>%
                                               yes = NA,
                                               no = 'unable to wash or dress'))),
            # Convert to ordered factor
-           self_care = factor(forcats::fct_relevel(self_care,
-                                                  'no problems',
-                                                  'some problems',
-                                                  'unable to wash or dress'),
-                             ordered = TRUE)) %>%
+           self_care = factor(fct_relevel(self_care,
+                                          'no problems',
+                                          'some problems',
+                                          'unable to wash or dress'),
+                              ordered = TRUE)) %>%
     # Rename usual_activ
     rename(usual_activities = usual_activ) %>%
     # Recode usual_activities
@@ -390,12 +393,11 @@ eq5d <- eq5d %>%
                                       yes = NA,
                                       no = 'unable to perform usual activities'))),
            # Convert to ordered factor
-           usual_activities = factor(
-               forcats::fct_relevel(usual_activities,
-                                    'no problems',
-                                    'some problems',
-                                    'unable to perform usual activities'),
-               ordered = TRUE)) %>%
+           usual_activities = factor(fct_relevel(usual_activities,
+                                                 'no problems',
+                                                 'some problems',
+                                                 'unable to perform usual activities'),
+                                     ordered = TRUE)) %>%
     # Rename p_discomfort
     rename(pain_discomfort = p_discomfort) %>%
     # Recode pain_discomfort
@@ -410,12 +412,11 @@ eq5d <- eq5d %>%
                               yes = NA,
                               no = 'extreme pain or discomfort'))),
            # Convert to ordered factor
-           pain_discomfort = factor(
-               forcats::fct_relevel(pain_discomfort,
-                                    'no pain or discomfort',
-                                    'moderate pain or discomfort',
-                                    'extreme pain or discomfort'),
-               ordered = TRUE)) %>%
+           pain_discomfort = factor(fct_relevel(pain_discomfort,
+                                                'no pain or discomfort',
+                                                'moderate pain or discomfort',
+                                                'extreme pain or discomfort'),
+                                    ordered = TRUE)) %>%
     # Recode anxiety
     mutate(anxiety =
                ifelse(anxiety == 1,
@@ -427,12 +428,11 @@ eq5d <- eq5d %>%
                                       yes = NA,
                                       no = 'extreme anxiety or depression'))),
            # Convert to ordered factor
-           anxiety = factor(
-               forcats::fct_relevel(anxiety,
-                                    'no anxiety or depression',
-                                    'moderate anxiety or depression',
-                                    'extreme anxiety or depression'),
-               ordered = TRUE)) %>%
+           anxiety = factor(fct_relevel(anxiety,
+                                        'no anxiety or depression',
+                                        'moderate anxiety or depression',
+                                        'extreme anxiety or depression'),
+                            ordered = TRUE)) %>%
     # Rename health_code
     rename(qol_vas = health_code)
 
@@ -442,7 +442,7 @@ eq5d <- eq5d %>%
 #                                                          #
 ############################################################
 # Import data
-pcs <- readr::read_csv('./original-data/pcs.csv')
+pcs <- read_csv('./original-data/pcs.csv')
 
 # Quick look
 head(pcs)
@@ -451,9 +451,9 @@ glimpse(pcs)
 summary(pcs)
 
 # Clean data
-pcs <- pcs %>%
+pcs %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Create total and subscales scores
@@ -477,7 +477,7 @@ pcs <- pcs %>%
 #                                                          #
 ############################################################
 # Import data
-hscl <- readr::read_csv('./original-data/hscl.csv')
+hscl <- read_csv('./original-data/hscl.csv')
 
 # Quick look
 head(hscl)
@@ -486,9 +486,9 @@ glimpse(hscl)
 summary(hscl)
 
 # Clean data
-hscl <- hscl %>%
+hscl %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Create total and subscales scores
@@ -507,19 +507,13 @@ hscl <- hscl %>%
                              #'1', '2', '3', '4'),
         #ordered = TRUE)))
 
-# Write to CSV (flat file for data sharing)
-readr::write_csv(hscl, './data/hscl.csv')
-
-# Write to RDS (for data analysis)
-readr::write_rds(hscl, './data/hscl.rds')
-
 ############################################################
 #                                                          #
 #                     Neuro exam signs                     #
 #                                                          #
 ############################################################
 # Import data
-signs <- readr::read_csv('./original-data/signs_neuro.csv')
+signs <- read_csv('./original-data/signs_neuro.csv')
 
 # Quick look
 head(signs)
@@ -528,9 +522,9 @@ glimpse(signs)
 summary(signs)
 
 # Clean data
-signs <- signs %>%
+signs %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Rename vibrationR?
@@ -622,7 +616,7 @@ signs <- signs %>%
 #                                                          #
 ############################################################
 # Import data
-symptoms <- readr::read_csv('./original-data/symptoms_neuro.csv')
+symptoms <- read_csv('./original-data/symptoms_neuro.csv')
 
 # Quick look
 head(symptoms)
@@ -631,9 +625,9 @@ glimpse(symptoms)
 summary(symptoms)
 
 # Clean data
-symptoms <- symptoms %>%
+symptoms %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Remove other unused columns (leftover from EQ-5D)
@@ -649,7 +643,7 @@ symptoms <- symptoms %>%
     # Recode symptoms_?
     mutate_at(vars(starts_with('foot_symptoms')),
               funs(ifelse(. == 1,
-                          yes ='yes',
+                          yes = 'yes',
                           no = 'no'))) %>%
     # Make new symptom history symmary column
     mutate(foot_symptoms = case_when(
@@ -677,10 +671,11 @@ symptoms <- symptoms %>%
                                       yes = 'moderate',
                                       no = 'severe')))) %>%
     mutate_at(vars(ends_with('intensity')),
-              funs(factor(
-                  forcats::fct_relevel(.,
-                                       'mild', 'moderate', 'severe'),
-                  ordered = TRUE))) %>%
+              funs(factor(fct_relevel(.,
+                                      'mild',
+                                      'moderate',
+                                      'severe'),
+                          ordered = TRUE))) %>%
     # Rename symptoms
     rename(painful = p_aching,
            numbness = numb_lack,
@@ -702,7 +697,7 @@ symptoms <- symptoms %>%
 #                                                          #
 ############################################################
 # Import data
-wbpq <- readr::read_csv('./original-data/wbpq.csv')
+wbpq <- read_csv('./original-data/wbpq.csv')
 
 # Quick look
 head(wbpq)
@@ -711,9 +706,9 @@ glimpse(wbpq)
 summary(wbpq)
 
 # Clean data
-wbpq <- wbpq %>%
+wbpq %<>%
     # Convert to date
-    mutate(date = lubridate::dmy(date)) %>%
+    mutate(date = dmy(date)) %>%
     # Remove visit number
     select(-v_number) %>%
     # Rename pain presence / sites columns
@@ -762,10 +757,10 @@ wbpq <- wbpq %>%
                                     yes = NA,
                                     no = pain_cause_head),
            pain_cause_head = case_when(
-               stringr::str_detect(.$pain_cause_head, '^m.....[se]$') |
-                   stringr::str_detect(.$pain_cause_head, 'unknown') ~ 'unspecified cause',
-               stringr::str_detect(.$pain_cause_head, 'stress') |
-                   stringr::str_detect(.$pain_cause_head, 'thinking')  ~ 'stress-related',
+               str_detect(.$pain_cause_head, '^m.....[se]$') |
+                   str_detect(.$pain_cause_head, 'unknown') ~ 'unspecified cause',
+               str_detect(.$pain_cause_head, 'stress') |
+                   str_detect(.$pain_cause_head, 'thinking')  ~ 'stress-related',
                TRUE ~ 'other'),
            pain_cause_head = ifelse(head == 'no' | is.na(head),
                                     yes = NA,
@@ -774,15 +769,15 @@ wbpq <- wbpq %>%
                                                      no = pain_cause_head))) %>%
     ## Shoulder pain
     mutate(pain_cause_shoulders = case_when(
-        stringr::str_detect(.$pain_cause_shoulders, 'exercis') |
-            stringr::str_detect(.$pain_cause_shoulders, 'sport') |
-            stringr::str_detect(.$pain_cause_shoulders, 'heavy') |
-            stringr::str_detect(.$pain_cause_shoulders, 'muscle') |
-            stringr::str_detect(.$pain_cause_shoulders, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_shoulders, 'stress') |
-            stringr::str_detect(.$pain_cause_shoulders, 'tense') |
-            stringr::str_detect(.$pain_cause_shoulders, 'thinking')  ~ 'stress-related',
-        stringr::str_detect(.$pain_cause_shoulders, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_shoulders, 'exercis') |
+            str_detect(.$pain_cause_shoulders, 'sport') |
+            str_detect(.$pain_cause_shoulders, 'heavy') |
+            str_detect(.$pain_cause_shoulders, 'muscle') |
+            str_detect(.$pain_cause_shoulders, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_shoulders, 'stress') |
+            str_detect(.$pain_cause_shoulders, 'tense') |
+            str_detect(.$pain_cause_shoulders, 'thinking')  ~ 'stress-related',
+        str_detect(.$pain_cause_shoulders, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_shoulders = ifelse(shoulders == 'no' | is.na(shoulders),
                                       yes = NA,
@@ -791,24 +786,24 @@ wbpq <- wbpq %>%
                                                   no = pain_cause_shoulders))) %>%
     ## Arm pain
     mutate(pain_cause_arms = case_when(
-        stringr::str_detect(.$pain_cause_arms, 'blood') |
-            stringr::str_detect(.$pain_cause_arms, 'injection') ~ 'procedural pain',
-        stringr::str_detect(.$pain_cause_arms, 'exercis') |
-            stringr::str_detect(.$pain_cause_arms, 'jogging') |
-            stringr::str_detect(.$pain_cause_arms, 'scratch') |
-            stringr::str_detect(.$pain_cause_arms, 'accident') |
-            stringr::str_detect(.$pain_cause_arms, 'garden') |
-            stringr::str_detect(.$pain_cause_arms, 'wsshing') |
-            stringr::str_detect(.$pain_cause_arms, 'alcohol') |
-            stringr::str_detect(.$pain_cause_arms, 'fell') |
-            stringr::str_detect(.$pain_cause_arms, 'broke') |
-            stringr::str_detect(.$pain_cause_arms, 'sport') |
-            stringr::str_detect(.$pain_cause_arms, 'heavy') |
-            stringr::str_detect(.$pain_cause_arms, 'muscle') |
-            stringr::str_detect(.$pain_cause_arms, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_arms, 'arth') ~ 'arthritis',
-        stringr::str_detect(.$pain_cause_arms, 'stress') ~ 'stress-related',
-        stringr::str_detect(.$pain_cause_arms, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_arms, 'blood') |
+            str_detect(.$pain_cause_arms, 'injection') ~ 'procedural pain',
+        str_detect(.$pain_cause_arms, 'exercis') |
+            str_detect(.$pain_cause_arms, 'jogging') |
+            str_detect(.$pain_cause_arms, 'scratch') |
+            str_detect(.$pain_cause_arms, 'accident') |
+            str_detect(.$pain_cause_arms, 'garden') |
+            str_detect(.$pain_cause_arms, 'wsshing') |
+            str_detect(.$pain_cause_arms, 'alcohol') |
+            str_detect(.$pain_cause_arms, 'fell') |
+            str_detect(.$pain_cause_arms, 'broke') |
+            str_detect(.$pain_cause_arms, 'sport') |
+            str_detect(.$pain_cause_arms, 'heavy') |
+            str_detect(.$pain_cause_arms, 'muscle') |
+            str_detect(.$pain_cause_arms, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_arms, 'arth') ~ 'arthritis',
+        str_detect(.$pain_cause_arms, 'stress') ~ 'stress-related',
+        str_detect(.$pain_cause_arms, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_arms = ifelse(arms == 'no' | is.na(arms),
                                       yes = NA,
@@ -817,21 +812,21 @@ wbpq <- wbpq %>%
                                                   no = pain_cause_arms))) %>%
     ## Hand pain
     mutate(pain_cause_hands = case_when(
-        stringr::str_detect(.$pain_cause_hands, 'burn') |
-            stringr::str_detect(.$pain_cause_hands, 'cut') |
-            stringr::str_detect(.$pain_cause_hands, 'washing') |
-            stringr::str_detect(.$pain_cause_hands, 'broke') |
-            stringr::str_detect(.$pain_cause_hands, 'washing') |
-            stringr::str_detect(.$pain_cause_hands, 'accident') |
-            stringr::str_detect(.$pain_cause_hands, 'sport') |
-            stringr::str_detect(.$pain_cause_hands, 'fight') |
-            stringr::str_detect(.$pain_cause_hands, 'washing') |
-            stringr::str_detect(.$pain_cause_hands, 'heavy') |
-            stringr::str_detect(.$pain_cause_hands, 'fell') |
-            stringr::str_detect(.$pain_cause_hands, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_hands, 'arth') ~ 'arthritis',
-        stringr::str_detect(.$pain_cause_hands, 'unknown') ~ 'unspecified cause',
-        stringr::str_detect(.$pain_cause_hands, 'hiv') ~ 'HIV infection',
+        str_detect(.$pain_cause_hands, 'burn') |
+            str_detect(.$pain_cause_hands, 'cut') |
+            str_detect(.$pain_cause_hands, 'washing') |
+            str_detect(.$pain_cause_hands, 'broke') |
+            str_detect(.$pain_cause_hands, 'washing') |
+            str_detect(.$pain_cause_hands, 'accident') |
+            str_detect(.$pain_cause_hands, 'sport') |
+            str_detect(.$pain_cause_hands, 'fight') |
+            str_detect(.$pain_cause_hands, 'washing') |
+            str_detect(.$pain_cause_hands, 'heavy') |
+            str_detect(.$pain_cause_hands, 'fell') |
+            str_detect(.$pain_cause_hands, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_hands, 'arth') ~ 'arthritis',
+        str_detect(.$pain_cause_hands, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_hands, 'hiv') ~ 'HIV infection',
         TRUE ~ 'other'),
         pain_cause_hands = ifelse(hands == 'no' | is.na(hands),
                                  yes = NA,
@@ -840,21 +835,21 @@ wbpq <- wbpq %>%
                                              no = pain_cause_hands))) %>%
     ## Chest pain
     mutate(pain_cause_chest = case_when(
-        stringr::str_detect(.$pain_cause_chest, 'exercise') |
-            stringr::str_detect(.$pain_cause_chest, 'running') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_chest, 'blocked') |
-            stringr::str_detect(.$pain_cause_chest, 'failer') ~ 'MI or heart failure',
-        stringr::str_detect(.$pain_cause_chest, 'smoking') ~ 'smoking',
-        stringr::str_detect(.$pain_cause_chest, 'cough') |
-            stringr::str_detect(.$pain_cause_chest, 'caughing') |
-            stringr::str_detect(.$pain_cause_chest, 'pneumonia') |
-            stringr::str_detect(.$pain_cause_chest, 'flu') ~ 'cough or infection',
-        stringr::str_detect(.$pain_cause_chest, 'unknown') |
-            stringr::str_detect(.$pain_cause_chest, 'sharp') ~ 'unspecified cause',
-        stringr::str_detect(.$pain_cause_chest, 'acid') |
-            stringr::str_detect(.$pain_cause_chest, 'heartburn') |
-            stringr::str_detect(.$pain_cause_chest, 'heart.burn') |
-            stringr::str_detect(.$pain_cause_chest, 'ulcer') ~ 'ulcer\\heart-burn',
+        str_detect(.$pain_cause_chest, 'exercise') |
+            str_detect(.$pain_cause_chest, 'running') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_chest, 'blocked') |
+            str_detect(.$pain_cause_chest, 'failer') ~ 'MI or heart failure',
+        str_detect(.$pain_cause_chest, 'smoking') ~ 'smoking',
+        str_detect(.$pain_cause_chest, 'cough') |
+            str_detect(.$pain_cause_chest, 'caughing') |
+            str_detect(.$pain_cause_chest, 'pneumonia') |
+            str_detect(.$pain_cause_chest, 'flu') ~ 'cough or infection',
+        str_detect(.$pain_cause_chest, 'unknown') |
+            str_detect(.$pain_cause_chest, 'sharp') ~ 'unspecified cause',
+        str_detect(.$pain_cause_chest, 'acid') |
+            str_detect(.$pain_cause_chest, 'heartburn') |
+            str_detect(.$pain_cause_chest, 'heart.burn') |
+            str_detect(.$pain_cause_chest, 'ulcer') ~ 'ulcer\\heart-burn',
         TRUE ~ 'other'),
         pain_cause_chest = ifelse(chest == 'no' | is.na(chest),
                                   yes = NA,
@@ -863,23 +858,23 @@ wbpq <- wbpq %>%
                                               no = pain_cause_chest))) %>%
     ## Abdominal pain
     mutate(pain_cause_abdomen = case_when(
-        stringr::str_detect(.$pain_cause_abdomen, 'sex') |
-            stringr::str_detect(.$pain_cause_abdomen, 'condom') ~ 'sex-related',
-        stringr::str_detect(.$pain_cause_abdomen, 'ulcer') ~ 'ulcer\\heart-burn',
-        stringr::str_detect(.$pain_cause_abdomen, 'planning') |
-            stringr::str_detect(.$pain_cause_abdomen, 'smear') |
-            stringr::str_detect(.$pain_cause_abdomen, 'apendix') |
-            stringr::str_detect(.$pain_cause_abdomen, 'sterilization') |
-            stringr::str_detect(.$pain_cause_abdomen, 'oparation') |
-            stringr::str_detect(.$pain_cause_abdomen, 'Ceaserian') ~ 'procedural pain',
-        stringr::str_detect(.$pain_cause_abdomen, 'cramp') |
-            stringr::str_detect(.$pain_cause_abdomen, 'crump') ~ 'cramps',
-        stringr::str_detect(.$pain_cause_abdomen, 'constip') |
-            stringr::str_detect(.$pain_cause_abdomen, 'costip') ~ 'constipation',
-        stringr::str_detect(.$pain_cause_abdomen, 'period') |
-            stringr::str_detect(.$pain_cause_abdomen, 'menstr') |
-            stringr::str_detect(.$pain_cause_abdomen, 'mentr') ~ 'menstrual pain',
-        stringr::str_detect(.$pain_cause_abdomen, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_abdomen, 'sex') |
+            str_detect(.$pain_cause_abdomen, 'condom') ~ 'sex-related',
+        str_detect(.$pain_cause_abdomen, 'ulcer') ~ 'ulcer\\heart-burn',
+        str_detect(.$pain_cause_abdomen, 'planning') |
+            str_detect(.$pain_cause_abdomen, 'smear') |
+            str_detect(.$pain_cause_abdomen, 'apendix') |
+            str_detect(.$pain_cause_abdomen, 'sterilization') |
+            str_detect(.$pain_cause_abdomen, 'oparation') |
+            str_detect(.$pain_cause_abdomen, 'Ceaserian') ~ 'procedural pain',
+        str_detect(.$pain_cause_abdomen, 'cramp') |
+            str_detect(.$pain_cause_abdomen, 'crump') ~ 'cramps',
+        str_detect(.$pain_cause_abdomen, 'constip') |
+            str_detect(.$pain_cause_abdomen, 'costip') ~ 'constipation',
+        str_detect(.$pain_cause_abdomen, 'period') |
+            str_detect(.$pain_cause_abdomen, 'menstr') |
+            str_detect(.$pain_cause_abdomen, 'mentr') ~ 'menstrual pain',
+        str_detect(.$pain_cause_abdomen, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_abdomen = ifelse(abdomen == 'no' | is.na(abdomen),
                                   yes = NA,
@@ -888,20 +883,20 @@ wbpq <- wbpq %>%
                                               no = pain_cause_abdomen))) %>%
     ## Low-back pain
     mutate(pain_cause_low_back = case_when(
-        stringr::str_detect(.$pain_cause_low_back, 'ulcer') ~ 'ulcer or heart-burn',
-        stringr::str_detect(.$pain_cause_low_back, 'bending') |
-            stringr::str_detect(.$pain_cause_low_back, 'exercis') |
-            stringr::str_detect(.$pain_cause_low_back, 'running') |
-            stringr::str_detect(.$pain_cause_low_back, 'standing') |
-            stringr::str_detect(.$pain_cause_low_back, 'walk') |
-            stringr::str_detect(.$pain_cause_low_back, 'lifting') |
-            stringr::str_detect(.$pain_cause_low_back, 'accident') |
-            stringr::str_detect(.$pain_cause_low_back, 'injur') |
-            stringr::str_detect(.$pain_cause_low_back, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_low_back, 'period') |
-            stringr::str_detect(.$pain_cause_low_back, 'menstr') |
-            stringr::str_detect(.$pain_cause_low_back, 'mentr') ~ 'menstrual pain',
-        stringr::str_detect(.$pain_cause_low_back, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_low_back, 'ulcer') ~ 'ulcer or heart-burn',
+        str_detect(.$pain_cause_low_back, 'bending') |
+            str_detect(.$pain_cause_low_back, 'exercis') |
+            str_detect(.$pain_cause_low_back, 'running') |
+            str_detect(.$pain_cause_low_back, 'standing') |
+            str_detect(.$pain_cause_low_back, 'walk') |
+            str_detect(.$pain_cause_low_back, 'lifting') |
+            str_detect(.$pain_cause_low_back, 'accident') |
+            str_detect(.$pain_cause_low_back, 'injur') |
+            str_detect(.$pain_cause_low_back, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_low_back, 'period') |
+            str_detect(.$pain_cause_low_back, 'menstr') |
+            str_detect(.$pain_cause_low_back, 'mentr') ~ 'menstrual pain',
+        str_detect(.$pain_cause_low_back, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_low_back = ifelse(low_back == 'no' | is.na(low_back),
                                     yes = NA,
@@ -910,14 +905,14 @@ wbpq <- wbpq %>%
                                                 no = pain_cause_low_back))) %>%
     ## Genital pain
     mutate(pain_cause_genitals = case_when(
-        stringr::str_detect(.$pain_cause_genitals, 'piles') ~ 'piles',
-        stringr::str_detect(.$pain_cause_genitals, 'sex') |
-            stringr::str_detect(.$pain_cause_genitals, 'rape') ~ 'sex-related',
-        stringr::str_detect(.$pain_cause_genitals, 'sores') |
-            stringr::str_detect(.$pain_cause_genitals, 'rash')|
-            stringr::str_detect(.$pain_cause_genitals, 'rush') |
-            stringr::str_detect(.$pain_cause_genitals, 'piple') ~ 'infection',
-        stringr::str_detect(.$pain_cause_genitals, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_genitals, 'piles') ~ 'piles',
+        str_detect(.$pain_cause_genitals, 'sex') |
+            str_detect(.$pain_cause_genitals, 'rape') ~ 'sex-related',
+        str_detect(.$pain_cause_genitals, 'sores') |
+            str_detect(.$pain_cause_genitals, 'rash')|
+            str_detect(.$pain_cause_genitals, 'rush') |
+            str_detect(.$pain_cause_genitals, 'piple') ~ 'infection',
+        str_detect(.$pain_cause_genitals, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_genitals = ifelse(genitals == 'no' | is.na(genitals),
                                      yes = NA,
@@ -926,19 +921,19 @@ wbpq <- wbpq %>%
                                                  no = pain_cause_genitals))) %>%
     ## Leg pain
     mutate(pain_cause_legs = case_when(
-        stringr::str_detect(.$pain_cause_legs, 'exercis') |
-            stringr::str_detect(.$pain_cause_legs, 'running') |
-            stringr::str_detect(.$pain_cause_legs, 'standing') |
-            stringr::str_detect(.$pain_cause_legs, 'playing') |
-            stringr::str_detect(.$pain_cause_legs, 'possition') |
-            stringr::str_detect(.$pain_cause_legs, 'muscle') |
-            stringr::str_detect(.$pain_cause_legs, 'fell') |
-            stringr::str_detect(.$pain_cause_legs, 'walk') |
-            stringr::str_detect(.$pain_cause_legs, 'lifting') |
-            stringr::str_detect(.$pain_cause_legs, 'accident') |
-            stringr::str_detect(.$pain_cause_legs, 'inju') |
-            stringr::str_detect(.$pain_cause_legs, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_legs, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_legs, 'exercis') |
+            str_detect(.$pain_cause_legs, 'running') |
+            str_detect(.$pain_cause_legs, 'standing') |
+            str_detect(.$pain_cause_legs, 'playing') |
+            str_detect(.$pain_cause_legs, 'possition') |
+            str_detect(.$pain_cause_legs, 'muscle') |
+            str_detect(.$pain_cause_legs, 'fell') |
+            str_detect(.$pain_cause_legs, 'walk') |
+            str_detect(.$pain_cause_legs, 'lifting') |
+            str_detect(.$pain_cause_legs, 'accident') |
+            str_detect(.$pain_cause_legs, 'inju') |
+            str_detect(.$pain_cause_legs, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_legs, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_legs = ifelse(legs == 'no' | is.na(legs),
                                       yes = NA,
@@ -947,16 +942,16 @@ wbpq <- wbpq %>%
                                                   no = pain_cause_legs))) %>%
     ## Foot pain
     mutate(pain_cause_feet = case_when(
-        stringr::str_detect(.$pain_cause_feet, 'exercis') |
-            stringr::str_detect(.$pain_cause_feet, 'standing') |
-            stringr::str_detect(.$pain_cause_feet, 'soccer') |
-            stringr::str_detect(.$pain_cause_feet, 'twisted') |
-            stringr::str_detect(.$pain_cause_feet, 'fell') |
-            stringr::str_detect(.$pain_cause_feet, 'walk') |
-            stringr::str_detect(.$pain_cause_feet, 'accident') |
-            stringr::str_detect(.$pain_cause_feet, 'inju') |
-            stringr::str_detect(.$pain_cause_feet, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_feet, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_feet, 'exercis') |
+            str_detect(.$pain_cause_feet, 'standing') |
+            str_detect(.$pain_cause_feet, 'soccer') |
+            str_detect(.$pain_cause_feet, 'twisted') |
+            str_detect(.$pain_cause_feet, 'fell') |
+            str_detect(.$pain_cause_feet, 'walk') |
+            str_detect(.$pain_cause_feet, 'accident') |
+            str_detect(.$pain_cause_feet, 'inju') |
+            str_detect(.$pain_cause_feet, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_feet, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_feet = ifelse(feet == 'no' | is.na(feet),
                                  yes = NA,
@@ -965,20 +960,20 @@ wbpq <- wbpq %>%
                                              no = pain_cause_feet))) %>%
     ## Joint pain
     mutate(pain_cause_joints = case_when(
-        stringr::str_detect(.$pain_cause_joints, 'not exercising') ~ 'other2',
-        stringr::str_detect(.$pain_cause_joints, 'exercis') |
-            stringr::str_detect(.$pain_cause_joints, 'standing') |
-            stringr::str_detect(.$pain_cause_joints, 'soccer') |
-            stringr::str_detect(.$pain_cause_joints, 'sport') |
-            stringr::str_detect(.$pain_cause_joints, 'twisted') |
-            stringr::str_detect(.$pain_cause_joints, 'fell') |
-            stringr::str_detect(.$pain_cause_joints, 'walk') |
-            stringr::str_detect(.$pain_cause_joints, 'accident') |
-            stringr::str_detect(.$pain_cause_joints, 'inju') |
-            stringr::str_detect(.$pain_cause_joints, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_joints, 'arthritis') |
-            stringr::str_detect(.$pain_cause_joints, 'atratise') ~ 'arthritis',
-        stringr::str_detect(.$pain_cause_joints, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_joints, 'not exercising') ~ 'other2',
+        str_detect(.$pain_cause_joints, 'exercis') |
+            str_detect(.$pain_cause_joints, 'standing') |
+            str_detect(.$pain_cause_joints, 'soccer') |
+            str_detect(.$pain_cause_joints, 'sport') |
+            str_detect(.$pain_cause_joints, 'twisted') |
+            str_detect(.$pain_cause_joints, 'fell') |
+            str_detect(.$pain_cause_joints, 'walk') |
+            str_detect(.$pain_cause_joints, 'accident') |
+            str_detect(.$pain_cause_joints, 'inju') |
+            str_detect(.$pain_cause_joints, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_joints, 'arthritis') |
+            str_detect(.$pain_cause_joints, 'atratise') ~ 'arthritis',
+        str_detect(.$pain_cause_joints, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_joints = ifelse(joints == 'no' | is.na(joints),
                                  yes = NA,
@@ -987,16 +982,16 @@ wbpq <- wbpq %>%
                                              no = pain_cause_joints))) %>%
     ## Muscle pain
     mutate(pain_cause_muscles = case_when(
-        stringr::str_detect(.$pain_cause_muscles, 'exercis') |
-            stringr::str_detect(.$pain_cause_muscles, 'standing') |
-            stringr::str_detect(.$pain_cause_muscles, 'soccer') |
-            stringr::str_detect(.$pain_cause_muscles, 'gym') |
-            stringr::str_detect(.$pain_cause_muscles, 'sport') |
-            stringr::str_detect(.$pain_cause_muscles, 'walk') |
-            stringr::str_detect(.$pain_cause_muscles, 'accident') |
-            stringr::str_detect(.$pain_cause_muscles, 'injur') |
-            stringr::str_detect(.$pain_cause_muscles, 'work') ~ 'physical injury\\strain',
-        stringr::str_detect(.$pain_cause_muscles, 'unknown') ~ 'unspecified cause',
+        str_detect(.$pain_cause_muscles, 'exercis') |
+            str_detect(.$pain_cause_muscles, 'standing') |
+            str_detect(.$pain_cause_muscles, 'soccer') |
+            str_detect(.$pain_cause_muscles, 'gym') |
+            str_detect(.$pain_cause_muscles, 'sport') |
+            str_detect(.$pain_cause_muscles, 'walk') |
+            str_detect(.$pain_cause_muscles, 'accident') |
+            str_detect(.$pain_cause_muscles, 'injur') |
+            str_detect(.$pain_cause_muscles, 'work') ~ 'physical injury\\strain',
+        str_detect(.$pain_cause_muscles, 'unknown') ~ 'unspecified cause',
         TRUE ~ 'other'),
         pain_cause_muscles = ifelse(muscles == 'no' | is.na(muscles),
                                    yes = NA,
@@ -1006,7 +1001,7 @@ wbpq <- wbpq %>%
     # Site of worst pain
     ## Replace 'private parts' with 'genitals'
     mutate(site_of_worst_pain =
-               stringr::str_replace_all(site_of_worst_pain,
+               str_replace_all(site_of_worst_pain,
                                         pattern = 'private parts',
                                         replacement = 'genitals')) %>%
     ## Split columns (one site per column)
@@ -1019,7 +1014,7 @@ wbpq <- wbpq %>%
                              'site_of_worst_pain_5')) %>%
     # Time of worst pain
     mutate(pain_times =
-               stringr::str_replace_all(pain_times,
+               str_replace_all(pain_times,
                                         pattern = 'norning',
                                         replacement = 'morning')) %>%
     # Recode pain treatment
@@ -1040,46 +1035,46 @@ wbpq <- wbpq %>%
     ## Recode drugs in medication_* columns
     mutate_at(.vars = vars(starts_with('medication_')),
               .funs = funs(case_when(
-                  stringr::str_detect(., 'grand') |
-                      stringr::str_detect(., 'compral') ~ 'paracetamol + aspirin',
-                  stringr::str_detect(., 'adcod') |
-                      stringr::str_detect(., 'acod') |
-                      stringr::str_detect(., 'alcod') |
-                      stringr::str_detect(., 'alcad') |
-                      stringr::str_detect(., 'cend') |
-                      stringr::str_detect(., 'cind') |
-                      stringr::str_detect(., 'lena') |
-                      stringr::str_detect(., 'sillp') |
-                      stringr::str_detect(., 'silp') |
-                      stringr::str_detect(., 'sinut') |
-                      stringr::str_detect(., 'betap') ~ 'paracetamol + codeine',
-                  stringr::str_detect(., 'anad') |
-                      stringr::str_detect(., 'aspr') |
-                      stringr::str_detect(., 'dispr') ~ 'aspirin',
-                  stringr::str_detect(., 'bruf') |
-                      stringr::str_detect(., 'IB-pro') |
-                      stringr::str_detect(., 'nurof') ~ 'ibuprofen',
-                  stringr::str_detect(., 'diclo') |
-                      stringr::str_detect(., 'declo') |
-                      stringr::str_detect(., 'volta') ~ 'diclofenac',
-                  stringr::str_detect(., 'microd') |
-                      stringr::str_detect(., 'miprod') |
-                      stringr::str_detect(., 'mybu')
+                  str_detect(., 'grand') |
+                      str_detect(., 'compral') ~ 'paracetamol + aspirin',
+                  str_detect(., 'adcod') |
+                      str_detect(., 'acod') |
+                      str_detect(., 'alcod') |
+                      str_detect(., 'alcad') |
+                      str_detect(., 'cend') |
+                      str_detect(., 'cind') |
+                      str_detect(., 'lena') |
+                      str_detect(., 'sillp') |
+                      str_detect(., 'silp') |
+                      str_detect(., 'sinut') |
+                      str_detect(., 'betap') ~ 'paracetamol + codeine',
+                  str_detect(., 'anad') |
+                      str_detect(., 'aspr') |
+                      str_detect(., 'dispr') ~ 'aspirin',
+                  str_detect(., 'bruf') |
+                      str_detect(., 'IB-pro') |
+                      str_detect(., 'nurof') ~ 'ibuprofen',
+                  str_detect(., 'diclo') |
+                      str_detect(., 'declo') |
+                      str_detect(., 'volta') ~ 'diclofenac',
+                  str_detect(., 'microd') |
+                      str_detect(., 'miprod') |
+                      str_detect(., 'mybu')
                   ~ 'paracetamol + ibuprofen + codeine',
-                  stringr::str_detect(., 'pain blo') |
-                      stringr::str_detect(., 'painblo') |
-                      stringr::str_detect(., 'pianblo') |
-                      stringr::str_detect(., 'paunblo') |
-                      stringr::str_detect(., 'painam') |
-                      stringr::str_detect(., 'paracet') |
-                      stringr::str_detect(., 'paracent') |
-                      stringr::str_detect(., 'prarcent') |
-                      stringr::str_detect(., 'go pain') |
-                      stringr::str_detect(., 'panado') ~ 'paracetamol',
-                  stringr::str_detect(., 'tramad') ~ 'tramadol',
-                  stringr::str_detect(., 'napro') ~ 'naproxen',
-                  stringr::str_detect(., 'trilp') ~ 'amitriptyline',
-                  stringr::str_detect(., 'killer') ~ 'not specified'
+                  str_detect(., 'pain blo') |
+                      str_detect(., 'painblo') |
+                      str_detect(., 'pianblo') |
+                      str_detect(., 'paunblo') |
+                      str_detect(., 'painam') |
+                      str_detect(., 'paracet') |
+                      str_detect(., 'paracent') |
+                      str_detect(., 'prarcent') |
+                      str_detect(., 'go pain') |
+                      str_detect(., 'panado') ~ 'paracetamol',
+                  str_detect(., 'tramad') ~ 'tramadol',
+                  str_detect(., 'napro') ~ 'naproxen',
+                  str_detect(., 'trilp') ~ 'amitriptyline',
+                  str_detect(., 'killer') ~ 'not specified'
                   ))) %>%
     ## Recode prescribed_* columns to 'yes' or 'no'
     mutate_at(.vars = vars(starts_with('prescribed_')),
@@ -1158,21 +1153,21 @@ wbpq <- wbpq %>%
     )) %>%
     ## Recode substance names
     mutate(traditional_meds = case_when(
-        stringr::str_detect(.$traditional_meds, 'herb') |
-            stringr::str_detect(.$traditional_meds, 'phila') |
-            stringr::str_detect(.$traditional_meds, 'mbiza') |
-            stringr::str_detect(.$traditional_meds, 'alovera') |
-            stringr::str_detect(.$traditional_meds, 'aloevera') |
-            stringr::str_detect(.$traditional_meds, 'izifozonke') |
-            stringr::str_detect(.$traditional_meds, 'moringa') |
-            stringr::str_detect(.$traditional_meds, 'mohlonyane') |
-            stringr::str_detect(.$traditional_meds, 'mhlabelo') |
-            stringr::str_detect(.$traditional_meds, 'supreme')  ~ 'herbal tea/drink',
-        stringr::str_detect(.$traditional_meds, 'onion')  ~ 'traditional remedy',
-        stringr::str_detect(.$traditional_meds, 'jinsmang') |
-            stringr::str_detect(.$traditional_meds, 'drank liquid substance') |
-            stringr::str_detect(.$traditional_meds, 'dieketsa') |
-            stringr::str_detect(.$traditional_meds, 'forever living') ~ 'unknown'
+        str_detect(.$traditional_meds, 'herb') |
+            str_detect(.$traditional_meds, 'phila') |
+            str_detect(.$traditional_meds, 'mbiza') |
+            str_detect(.$traditional_meds, 'alovera') |
+            str_detect(.$traditional_meds, 'aloevera') |
+            str_detect(.$traditional_meds, 'izifozonke') |
+            str_detect(.$traditional_meds, 'moringa') |
+            str_detect(.$traditional_meds, 'mohlonyane') |
+            str_detect(.$traditional_meds, 'mhlabelo') |
+            str_detect(.$traditional_meds, 'supreme')  ~ 'herbal tea/drink',
+        str_detect(.$traditional_meds, 'onion')  ~ 'traditional remedy',
+        str_detect(.$traditional_meds, 'jinsmang') |
+            str_detect(.$traditional_meds, 'drank liquid substance') |
+            str_detect(.$traditional_meds, 'dieketsa') |
+            str_detect(.$traditional_meds, 'forever living') ~ 'unknown'
     )) %>%
     ## Match use_tradiational_meds with traditional_meds
     mutate(use_traditional_meds = ifelse(!is.na(traditional_meds),
@@ -1192,18 +1187,18 @@ wbpq <- wbpq %>%
     )) %>%
     ## Recode substances
     mutate(substance_1 = case_when(
-        stringr::str_detect(.$substance_1, 'milk') ~ 'drinks milk',
-        stringr::str_detect(.$substance_1, 'dagga') |
-            stringr::str_detect(.$substance_1, 'marijuana') ~ 'marijuana',
-        stringr::str_detect(.$substance_1, 'alcohol') |
-            stringr::str_detect(.$substance_1, 'beer') ~ 'drinks alcohol',
-        stringr::str_detect(.$substance_1, 'water') ~ 'drinks water',
-        stringr::str_detect(.$substance_1, 'rub') |
-            stringr::str_detect(.$substance_1, 'rud') ~ 'menthol rub',
-        stringr::str_detect(.$substance_1, 'snuf') |
-            stringr::str_detect(.$substance_1, 'ciga') ~ 'tobacco product'),
+        str_detect(.$substance_1, 'milk') ~ 'drinks milk',
+        str_detect(.$substance_1, 'dagga') |
+            str_detect(.$substance_1, 'marijuana') ~ 'marijuana',
+        str_detect(.$substance_1, 'alcohol') |
+            str_detect(.$substance_1, 'beer') ~ 'drinks alcohol',
+        str_detect(.$substance_1, 'water') ~ 'drinks water',
+        str_detect(.$substance_1, 'rub') |
+            str_detect(.$substance_1, 'rud') ~ 'menthol rub',
+        str_detect(.$substance_1, 'snuf') |
+            str_detect(.$substance_1, 'ciga') ~ 'tobacco product'),
         substance_2 = case_when(
-            stringr::str_detect(.$substance_2, 'dagga') ~ 'marijuana')) %>%
+            str_detect(.$substance_2, 'dagga') ~ 'marijuana')) %>%
     ## Match use_other_subatances with substance_1
     mutate(use_other_substances = ifelse(!is.na(substance_1),
                                          yes = 'yes',
@@ -1211,50 +1206,50 @@ wbpq <- wbpq %>%
     # Pain relief
     ## Add column indicating whether any of prescription/traditional/other used
     mutate(used_pain_relievers = case_when(
-        stringr::str_detect(pain_treatment, 'yes') |
-            stringr::str_detect(use_traditional_meds, 'yes') |
-            stringr::str_detect(use_other_substances, 'yes') ~ 'yes',
+        str_detect(pain_treatment, 'yes') |
+            str_detect(use_traditional_meds, 'yes') |
+            str_detect(use_other_substances, 'yes') ~ 'yes',
         TRUE ~ 'no'
     )) %>%
     ## Add a column indicating which pain relievers were used
     mutate(pain_relievers_used = case_when(
-        stringr::str_detect(pain_treatment, 'yes') &
-            stringr::str_detect(use_traditional_meds, 'yes') &
-            stringr::str_detect(use_other_substances, 'yes') ~
+        str_detect(pain_treatment, 'yes') &
+            str_detect(use_traditional_meds, 'yes') &
+            str_detect(use_other_substances, 'yes') ~
             'pharmacotherapy + traditional meds + other substances',
-        stringr::str_detect(pain_treatment, 'yes') &
-            stringr::str_detect(use_traditional_meds, 'yes') &
-            stringr::str_detect(use_other_substances, 'no') ~
+        str_detect(pain_treatment, 'yes') &
+            str_detect(use_traditional_meds, 'yes') &
+            str_detect(use_other_substances, 'no') ~
             'pharmacotherapy + traditional meds',
-        stringr::str_detect(pain_treatment, 'no') &
-            stringr::str_detect(use_traditional_meds, 'no') &
-            stringr::str_detect(use_other_substances, 'yes') ~
+        str_detect(pain_treatment, 'no') &
+            str_detect(use_traditional_meds, 'no') &
+            str_detect(use_other_substances, 'yes') ~
             'other substances',
-        stringr::str_detect(pain_treatment, 'yes') &
-            stringr::str_detect(use_traditional_meds, 'no') &
-            stringr::str_detect(use_other_substances, 'no') ~
+        str_detect(pain_treatment, 'yes') &
+            str_detect(use_traditional_meds, 'no') &
+            str_detect(use_other_substances, 'no') ~
             'pharmacotherapy',
-        stringr::str_detect(pain_treatment, 'yes') &
-            stringr::str_detect(use_traditional_meds, 'no') &
-            stringr::str_detect(use_other_substances, 'yes') ~
+        str_detect(pain_treatment, 'yes') &
+            str_detect(use_traditional_meds, 'no') &
+            str_detect(use_other_substances, 'yes') ~
             'pharmacotherapy + other substances',
-        stringr::str_detect(pain_treatment, 'no') &
-            stringr::str_detect(use_traditional_meds, 'yes') &
-            stringr::str_detect(use_other_substances, 'no') ~
+        str_detect(pain_treatment, 'no') &
+            str_detect(use_traditional_meds, 'yes') &
+            str_detect(use_other_substances, 'no') ~
             'traditional meds',
-        stringr::str_detect(pain_treatment, 'no') &
-            stringr::str_detect(use_traditional_meds, 'yes') &
-            stringr::str_detect(use_other_substances, 'yes') ~
+        str_detect(pain_treatment, 'no') &
+            str_detect(use_traditional_meds, 'yes') &
+            str_detect(use_other_substances, 'yes') ~
             'traditional meds + other substances',
-        stringr::str_detect(pain_treatment, 'no') &
-            stringr::str_detect(use_traditional_meds, 'no') &
-            stringr::str_detect(use_other_substances, 'yes') ~
+        str_detect(pain_treatment, 'no') &
+            str_detect(use_traditional_meds, 'no') &
+            str_detect(use_other_substances, 'yes') ~
             'other substances'
     )) %>%
     ## Rename pain_relief column
     rename(overall_pain_relief = pain_relief) %>%
     ## Process overall_pain_relief text
-    mutate(overall_pain_relief = stringr::str_replace(overall_pain_relief,
+    mutate(overall_pain_relief = str_replace(overall_pain_relief,
                                                       pattern = '%',
                                                       replacement = ''),
            overall_pain_relief = as.numeric(overall_pain_relief),
@@ -1289,47 +1284,47 @@ wbpq <- wbpq %>%
                                          no = 'no')) %>%
     mutate_at(vars(starts_with('other_modality')),
               funs(case_when(
-                  stringr::str_detect(., 'sleep') ~
+                  str_detect(., 'sleep') ~
                       'sleep',
-                  stringr::str_detect(., 'exer') |
-                      stringr::str_detect(., 'exei') |
-                      stringr::str_detect(., 'walk') |
-                      stringr::str_detect(., 'xerc') |
-                      stringr::str_detect(., 'gym') |
-                      stringr::str_detect(., 'jog') ~
+                  str_detect(., 'exer') |
+                      str_detect(., 'exei') |
+                      str_detect(., 'walk') |
+                      str_detect(., 'xerc') |
+                      str_detect(., 'gym') |
+                      str_detect(., 'jog') ~
                       'exercise',
-                  stringr::str_detect(., 'mass') |
-                      stringr::str_detect(., 'rub') |
-                      stringr::str_detect(., 'physio') ~
+                  str_detect(., 'mass') |
+                      str_detect(., 'rub') |
+                      str_detect(., 'physio') ~
                       'massage',
-                  stringr::str_detect(., 'relax') |
-                      stringr::str_detect(., 'rest') |
-                      stringr::str_detect(., 'rsest') |
-                      stringr::str_detect(., 'read') |
-                      stringr::str_detect(., 'bath') ~
+                  str_detect(., 'relax') |
+                      str_detect(., 'rest') |
+                      str_detect(., 'rsest') |
+                      str_detect(., 'read') |
+                      str_detect(., 'bath') ~
                       'rest / relax',
-                  stringr::str_detect(., 'not think') |
-                      stringr::str_detect(., 'music') |
-                      stringr::str_detect(., 'cleaning') |
-                      stringr::str_detect(., 'movies') |
-                      stringr::str_detect(., 'play') ~
+                  str_detect(., 'not think') |
+                      str_detect(., 'music') |
+                      str_detect(., 'cleaning') |
+                      str_detect(., 'movies') |
+                      str_detect(., 'play') ~
                       'distraction',
-                  stringr::str_detect(., 'stretch') |
-                      stringr::str_detect(., 'strech') ~
+                  str_detect(., 'stretch') |
+                      str_detect(., 'strech') ~
                       'stretching',
-                  stringr::str_detect(., 'smok') ~
+                  str_detect(., 'smok') ~
                       'smoking',
-                  stringr::str_detect(., 'position') |
-                      stringr::str_detect(., 'water') |
-                      stringr::str_detect(., 'green tea') |
-                      stringr::str_detect(., 'hicking') |
-                      stringr::str_detect(., 'water') |
-                      stringr::str_detect(., 'water') |
-                      stringr::str_detect(., 'soak') |
-                      stringr::str_detect(., 'icebag') |
-                      stringr::str_detect(., 'companion') |
-                      stringr::str_detect(., 'lay flat') |
-                      stringr::str_detect(., 'elevat') ~
+                  str_detect(., 'position') |
+                      str_detect(., 'water') |
+                      str_detect(., 'green tea') |
+                      str_detect(., 'hicking') |
+                      str_detect(., 'water') |
+                      str_detect(., 'water') |
+                      str_detect(., 'soak') |
+                      str_detect(., 'icebag') |
+                      str_detect(., 'companion') |
+                      str_detect(., 'lay flat') |
+                      str_detect(., 'elevat') ~
                       'other'
               ))) %>%
     ## Fix minor issues
@@ -1371,20 +1366,21 @@ wbpq <- wbpq %>%
 df_names <- ls()
 
 # Place data.frames into a list using 'df_names'
-df_list <- lapply(df_names, get)
+df_list <- map(.x = df_names,
+               ~ get(.x))
 
 # Loop over df_list and write to RDS
-purrr::map2(.x = df_list,
-            .y = df_names,
-            .f = ~ readr::write_rds(x = .x,
-                                    path = paste0('./data/', .y, '.rds'),
-                                    compress = 'xz'))
+walk2(.x = df_list,
+      .y = df_names,
+      .f = ~ write_rds(x = .x,
+                       path = paste0('./data/', .y, '.rds'),
+                       compress = 'xz'))
 
 # Loop over df_list and write to csv
-purrr::map2(.x = df_list,
-            .y = df_names,
-            .f = ~ readr::write_csv(x = .x,
-                                    path = paste0('./data/', .y, '.csv')))
+walk2(.x = df_list,
+      .y = df_names,
+      .f = ~ readr::write_csv(x = .x,
+                              path = paste0('./data/', .y, '.csv')))
 
 ############################################################
 #                                                          #
