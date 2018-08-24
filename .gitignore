@@ -2,11 +2,12 @@
 .Rapp.history
 .Rproj.user
 .Rproj
-outputs/*/cache/
-html/
+*_cache/
 documentation/
-packrat/lib*/
-original-data/codebook*
-.dropbox
+original-data/
+*.html
+*.csv
+*.rds
 Icon?
+.dropbox
 .DS_Store
