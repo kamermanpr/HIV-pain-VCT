@@ -1,0 +1,1183 @@
+---
+title: "Supplement 1"
+subtitle: "Demographic characteristics"
+author: "Peter Kamerman"
+date: "Last knitted: `r format(Sys.Date(), '%d %B %Y')`"
+---
+
+```{r setup, include = FALSE}
+# Load packages
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(kableExtra)
+library(DataExplorer)
+library(rcompanion)
+library(boot)
+
+# Define greyscale palette function (white to black)
+grey_pal <- colorRampPalette(colors = c('#CCCCCC', '#000000'),
+                             interpolate = 'linear')
+
+pal <- grey_pal(3)
+
+# Set ggplot theme
+theme_set(new = theme_bw(base_size = 16))
+
+# Knitr options
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.path = './figures/analysis-3/')
+```
+
+----
+
+This script generates summaries of key demographic information for the full cohort, with and without conditioning on HIV status. 
+
+We present the data in tabular and graphical format, and calculate the precision of the estimates using bootstrap 95% confidence intervals. 
+
+To describe any differences between the HIV+ and HIV- groups, we have calculated 95% confidence intervals of the difference in mean/proportion. 
+
+----
+
+# Import data
+
+```{r import_data}
+# Import data
+general <- read_rds('data-cleaned/general_info.rds') %>% 
+    select(PID, age, sex, educational_level, employment)
+
+mental_health <- read_rds('data-cleaned/hscl.rds') %>% 
+    select(PID, anxiety_score, depression_score, total_score)
+
+# Join to core_info
+data <- read_rds('data-cleaned/hiv_test.rds') %>%
+    select(PID, test_result, CD4_count) %>% 
+    left_join(general) %>% 
+    left_join(mental_health) 
+```
+
+# Quick look
+
+```{r quick_look}
+# Dataframe dimensions
+dim(data)
+# Column names
+names(data)
+# Glimpse data
+glimpse(data)
+```
+
+----
+
+# Check missingness
+
+## Full cohort
+```{r missingness}
+data %>% 
+    profile_missing() %>% 
+    mutate(pct_missing = round(100 * pct_missing)) %>% 
+    arrange(pct_missing)
+
+# Remove rows with missing HIV test results (n = 4)
+data %<>%
+    filter(!is.na(test_result))
+```
+
+## HIV-
+```{r missingness2}
+data %>% 
+    select(-CD4_count) %>% 
+    filter(test_result == 'HIV negative') %>% 
+    profile_missing() %>% 
+    mutate(pct_missing = round(100 * pct_missing)) %>% 
+    arrange(pct_missing)
+```
+
+## HIV+
+```{r missingness3}
+data %>% 
+    filter(test_result == 'HIV positive') %>% 
+    profile_missing() %>% 
+    mutate(pct_missing = round(100 * pct_missing)) %>% 
+    arrange(pct_missing)
+```
+
+----
+
+# Numeric data
+
+## Age
+
+### Point estimates
+
+#### Full cohort
+
+```{r age}
+# Tabular summary
+data %>% 
+    select(age) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'Age (full cohort)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+# Graphical summary
+ggplot(data = data) +
+    aes(x = 'Full cohort',
+        y = age) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'Age for the full cohort',
+         y = 'Age (years)') +
+    theme(axis.title.x = element_blank())
+```
+
+#### By HIV status
+
+```{r age2}
+# Tabular summary
+data %>% 
+    select(test_result, age) %>% 
+    group_by(test_result) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'Age (by HIV status)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+# Graphical summary
+ggplot(data = data) +
+    aes(x = test_result,
+        y = age) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'Age by HIV status',
+         y = 'Age (years)') +
+    theme(axis.title.x = element_blank(),
+          legend.position = 'none')
+```
+
+### 95% CI of the point estimates
+
+#### Whole cohort
+
+```{r age3}
+groupwiseMean(age ~ 1,
+              data = data,
+              percent = TRUE) %>% 
+    select(-.id, -starts_with('Trad'))
+```
+
+#### By HIV status
+
+```{r age4}
+groupwiseMean(age ~ test_result,
+              data = data,
+              percent = TRUE) %>% 
+    select(-starts_with('Trad'))
+```
+
+#### 95% CI of the difference in mean
+
+```{r age5}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    mean_yes <- mean(data_hiv$age, na.rm = TRUE)
+    mean_no <- mean(data_nohiv$age, na.rm = TRUE)
+    mean_yes - mean_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- boot(data = data,
+                 statistic = func_tmp,
+                 R = 999,
+                 stype = 'i')
+
+bootci_tmp <- boot.ci(boot_tmp,
+                      type = 'perc')
+
+tibble_tmp <- tibble(`difference in mean` = round(boot_tmp$t0, 2),
+                     `lower 95% CI` = round(bootci_tmp$percent[[4]], 2),
+                     `upper 95% CI` = round(bootci_tmp$percent[[5]], 2))
+
+tibble_tmp %>% 
+    kable(caption = 'Age (years) - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = 'ID',
+        y = `difference in mean`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Age (years)',
+         subtitle = '95% CI of the difference in age (HIV+ minus HIV-)',
+         y = 'Difference in mean') +
+    theme(axis.title.x = element_blank())
+```
+
+## CD4 T-cell count
+
+Only for participants that tested positive for HIV.
+
+### Point estimates
+
+```{r cd}
+# Tabular summary
+data %>% 
+    filter(test_result != 'HIV negative') %>% 
+    select(CD4_count) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'Age (full cohort)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+# Graphical summary
+data %>% 
+    filter(test_result != 'HIV negative') %>% 
+    ggplot(data = .) +
+    aes(x = 'HIV+ cohort',
+        y = CD4_count) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'CD4 count for the HIV positive cohort',
+         y = 'CD4 count (cells/ml)') +
+    theme(axis.title.x = element_blank())
+```
+
+### 95% CI of the point estimates
+
+```{r cd2}
+cd4 <- data %>% 
+    filter(test_result != 'HIV negative') %>% 
+    filter(!is.na(CD4_count))
+
+groupwiseMedian(CD4_count ~ 1,
+                data = cd4,
+                bca = FALSE,
+                percent = TRUE) %>% 
+    select(-.id, -starts_with('Trad'))
+```
+
+# Hopkins Symptom Checklist 25
+
+Check whether anxiety and depression subscales are correlated with each other and with the total score.
+
+## Depression vs anxiety
+
+```{r DvsA}
+# Scatterplot
+ggplot(data = data) +
+    aes(x = depression_score,
+        y = anxiety_score) +
+    geom_point(aes(fill = test_result),
+               shape = 21, 
+               size = 2) +
+    labs(title = 'HSCL depression score vs anxiety score',
+         x = 'Depression score',
+         y = 'Anxiety score') +
+    scale_fill_manual(values = pal,
+                      name = 'HIV status')
+
+# Correlation
+with(data, cor.test(depression_score, anxiety_score))
+```
+
+## Total vs depression
+
+```{r DvsA2}
+# Scatterplot
+ggplot(data = data) +
+    aes(x = depression_score,
+        y = total_score) +
+    geom_point(aes(fill = test_result),
+               shape = 21, 
+               size = 2) +
+    labs(title = 'HSCL total score vs depression score',
+         x = 'Depression score',
+         y = 'Total score') +
+    scale_fill_manual(values = pal,
+                      name = 'HIV status')
+
+# Correlation
+with(data, cor.test(total_score, depression_score))
+```
+
+## Total vs anxiety
+
+```{r DvsA3}
+# Scatterplot
+ggplot(data = data) +
+    aes(x = anxiety_score,
+        y = total_score) +
+    geom_point(aes(fill = test_result),
+               shape = 21, 
+               size = 2) +
+    labs(title = 'HSCL anxiety score vs total score',
+         x = 'Anxiety score',
+         y = 'Total score') +
+    scale_fill_manual(values = pal,
+                      name = 'HIV status')
+
+# Correlation
+with(data, cor.test(total_score, anxiety_score))
+```
+
+Summary: Use the total HSCL score.
+
+### Point estimates
+
+#### Full cohort
+
+```{r hscl}
+# Tabular summary
+data %>% 
+    select(total_score) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'HSCL total score (full cohort)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+# Graphical summary
+ggplot(data = data) +
+    aes(x = 'Full cohort',
+        y = total_score) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'HSCL total score for the full cohort',
+         y = 'HSCL total score') +
+    theme(axis.title.x = element_blank())
+```
+
+#### By HIV status
+
+```{r hscl2}
+# Tabular summary
+data %>% 
+    select(test_result, total_score) %>% 
+    group_by(test_result) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'HSCL total score (by HIV status)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+
+# Graphical summary
+ggplot(data = data) +
+    aes(x = test_result,
+        y = total_score) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'HSCL total score by HIV status',
+         y = 'HSCL total score') +
+    theme(axis.title.x = element_blank(),
+          legend.position = 'none')
+```
+
+### 95% CI of the point estimates
+
+#### Whole cohort
+
+```{r hscl3}
+groupwiseMean(total_score ~ 1,
+              data = data[!is.na(data$total_score), ],
+              percent = TRUE) %>% 
+    select(-.id, -starts_with('Trad'))
+```
+
+#### By HIV status
+
+```{r hscl4}
+groupwiseMean(total_score ~ test_result,
+              data = data[!is.na(data$total_score), ],
+              percent = TRUE) %>% 
+    select(-starts_with('Trad'))
+```
+
+#### 95% CI of the difference in mean
+
+```{r hscl5}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data[!is.na(data$total_score), ]
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    mean_yes <- mean(data_hiv$total_score, na.rm = TRUE)
+    mean_no <- mean(data_nohiv$total_score, na.rm = TRUE)
+    mean_yes - mean_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- boot(data = data,
+                 statistic = func_tmp,
+                 R = 999,
+                 stype = 'i')
+
+bootci_tmp <- boot.ci(boot_tmp,
+                      type = 'perc') # BCa gave extreme order statistics
+
+tibble_tmp <- tibble(`difference in mean` = round(boot_tmp$t0, 2),
+                     `lower 95% CI` = round(bootci_tmp$percent[[4]], 2),
+                     `upper 95% CI` = round(bootci_tmp$percent[[5]], 2))
+
+tibble_tmp %>% 
+    kable(caption = 'HSCL total score - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = 'ID',
+        y = `difference in mean`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'HSCL total score',
+         subtitle = '95% CI of the difference in HSCL total score (HIV+ minus HIV-)',
+         y = 'Difference in mean') +
+    theme(axis.title.x = element_blank())
+```
+
+----
+
+# Categorical data
+
+## Sex (self-identified)
+
+### Point estimates
+
+#### Full cohort
+
+```{r sex}
+# Total cohort
+data %>% 
+    filter(!is.na(sex)) %>% 
+    group_by(sex) %>% 
+    summarise(count = n()) %>% 
+    ungroup() %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Sex - total cohort (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(sex)) %>% 
+    ggplot(data = .) +
+    aes(x = 'ID',
+        fill = sex) +
+    geom_bar(position = position_fill()) +
+    scale_fill_manual(values = pal, 
+                      na.value = '#000000') +
+    labs(title = 'Sex',
+         subtitle = 'Whole cohort',
+         y = 'Proportion') +
+    theme(legend.title = element_blank(),
+          axis.title.x = element_blank())
+```
+
+#### By HIV status
+
+```{r sex2}
+# Count and proportion by HIV status
+data %>% 
+    filter(!is.na(sex)) %>% 
+    filter(!is.na(test_result)) %>% 
+    group_by(test_result, sex) %>% 
+    summarise(count = n()) %>% 
+    group_by(test_result) %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Sex - by HIV status (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(sex)) %>% 
+    filter(!is.na(test_result)) %>% 
+    ggplot(data = .) +
+    aes(x = test_result,
+        fill = sex) +
+    geom_bar(position = position_fill()) +
+    scale_fill_manual(values = pal, 
+                      na.value = '#000000') +
+    labs(title = 'Sex',
+         subtitle = 'By HIV status',
+         y = 'Proportion',
+         x = 'Status') +
+    theme(legend.title = element_blank())
+```
+
+### 95% confidence intervals for the point estimates
+
+#### Full cohort
+
+```{r sex3}
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(sex))
+    prop <- mean(data$sex == 'female')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- boot(data = data, 
+                 statistic = func_tmp, 
+                 R = 999, 
+                 stype = 'i')
+
+bootci_tmp <- boot.ci(boot_tmp, 
+                      type = 'perc')
+
+tibble(sex = 'female',
+       proportion = round(boot_tmp$t0, 2),
+       `lower 95% CI` = round(bootci_tmp$percent[[4]], 2),
+       `upper 95% CI` = round(bootci_tmp$percent[[5]], 2)) %>% 
+    kable(caption = 'Sex - total cohort (95% CI)')
+```
+
+#### By HIV status
+
+```{r sex4}
+# By HIV status (HIV- reported first)
+set.seed(2019)
+boot_tmp <- data %>% 
+    filter(!is.na(sex)) %>% 
+    filter(!is.na(test_result)) %>% 
+    group_by(test_result) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x,
+                             statistic = func_tmp,
+                             R = 999,
+                             stype = 'i'))) %>%
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x,
+                                   type = 'perc')))
+
+tibble(`status` = c('HIV negative', 'HIV positive'),
+       sex = c('female', 'female'),
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]],2 ), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Sex - by HIV status (95% CI)')
+```
+
+#### 95% CI of the difference in proportions
+
+```{r sex5}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(sex)) %>% 
+        filter(!is.na(test_result))
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    prop_yes <- mean(data_hiv$sex == 'female')
+    prop_no <- mean(data_nohiv$sex == 'female')
+    prop_yes - prop_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- boot(data = data,
+                 statistic = func_tmp,
+                 R = 999,
+                 stype = 'i')
+
+bootci_tmp <- boot.ci(boot_tmp,
+                      type = 'perc')
+
+tibble_tmp <- tibble(`difference in proportion` = round(boot_tmp$t0, 2),
+                     `lower 95% CI` = round(bootci_tmp$percent[[4]], 2),
+                     `upper 95% CI` = round(bootci_tmp$percent[[5]], 2))
+
+tibble_tmp %>% 
+    kable(caption = 'Sex - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = 'ID',
+        y = `difference in proportion`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Sex',
+         subtitle = '95% CI of the difference in proportion (HIV+ minus HIV-)',
+         y = 'Difference in proportion') +
+    theme(axis.title.x = element_blank())
+```
+
+## School grade
+
+### Point estimates
+
+#### Full cohort
+
+```{r school}
+# Total cohort
+data %>% 
+    filter(!is.na(educational_level)) %>% 
+    group_by(educational_level) %>% 
+    summarise(count = n()) %>% 
+    ungroup() %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Schooling - total cohort (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(educational_level)) %>% 
+    ggplot(data = .) +
+    aes(x = 'ID',
+        fill = educational_level) +
+    geom_bar(position = position_fill()) +
+    scale_fill_grey(name = 'Grades',
+                    labels = c('0-7', '8-12', '>12')) +
+    labs(title = 'Schooling',
+         subtitle = 'Whole cohort',
+         y = 'Proportion') +
+    theme(axis.title.x = element_blank())
+```
+
+#### By HIV status
+
+```{r school2}
+# Count and proportion by HIV status
+data %>% 
+    filter(!is.na(educational_level)) %>% 
+    filter(!is.na(test_result)) %>% 
+    group_by(test_result, educational_level) %>% 
+    summarise(count = n()) %>% 
+    group_by(test_result) %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Schooling - by HIV status (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(educational_level)) %>% 
+    filter(!is.na(test_result)) %>% 
+    ggplot(data = .) +
+    aes(x = test_result,
+        fill = educational_level) +
+    geom_bar(position = position_fill()) +
+    scale_fill_grey(name = 'Grades',
+                    labels = c('0-7', '8-12', '>12')) +
+    labs(title = 'Schooling',
+         subtitle = 'By HIV status',
+         y = 'Proportion',
+         x = 'Status') 
+```
+
+### 95% confidence intervals for the point estimates
+
+#### Full cohort
+
+```{r school3}
+school_tmp <- data %>% 
+    select(-CD4_count, -age, -sex, -employment, 
+           -anxiety_score, -depression_score, -total_score) %>% 
+    filter(!is.na(educational_level)) %>% 
+    mutate(dummy = row_number()) %>% 
+    spread(key = educational_level,
+           value = dummy) %>% 
+    mutate_if(is.integer, ~ ifelse(!is.na(.),
+                                   yes = 'yes',
+                                   no = 'no')) %>% 
+    gather(key = grade, 
+           value = value,
+           -PID, -test_result)
+
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value))
+    prop <- mean(data$value == 'yes')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- school_tmp %>% 
+    group_by(grade) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(grade = boot_tmp$grade,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Schooling - whole cohort (95% CI)')
+```
+
+#### By HIV status 
+
+```{r school4}
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value))
+    prop <- mean(data$value == 'yes')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- school_tmp %>% 
+    group_by(test_result, grade) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(test_result = boot_tmp$test_result, 
+       grade = boot_tmp$grade,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2),
+                      round(boot_tmp$boot[[4]]$t0, 2), 
+                      round(boot_tmp$boot[[5]]$t0, 2),
+                      round(boot_tmp$boot[[6]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[4]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[5]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[6]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[4]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[5]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[6]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Schooling - by HIV status (95% CI)')
+```
+
+## 95% confidence interval of the difference in proportions
+
+```{r school5}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value)) %>% 
+        filter(!is.na(test_result))
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    prop_yes <- mean(data_hiv$value == 'yes')
+    prop_no <- mean(data_nohiv$value == 'yes')
+    prop_yes - prop_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- school_tmp %>% 
+    group_by(grade) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x,
+                             statistic = func_tmp,
+                             R = 999,
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x,
+                                   type = 'perc')))
+
+tibble_tmp <- tibble(grade = boot_tmp$grade,
+                     `difference in proportion` = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                                                    round(boot_tmp$boot[[2]]$t0, 2),
+                                                    round(boot_tmp$boot[[3]]$t0, 2)),
+                     `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                                        round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                                        round(boot_tmp$boot_ci[[3]]$percent[[4]], 2)),
+                     `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                                        round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                                        round(boot_tmp$boot_ci[[3]]$percent[[5]], 2))) %>% 
+    mutate(grade = factor(grade,
+                          levels = c('no/primary school', 
+                                     'secondary school',
+                                     'post-school qualification'),
+                          labels = c('0-7', '8-12', '>12'),
+                          ordered = TRUE))
+
+tibble_tmp %>% 
+    kable(caption = 'Schooling - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = grade,
+        y = `difference in proportion`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Schooling',
+         subtitle = '95% CI of the difference in proportion (HIV+ minus HIV-)',
+         y = 'Difference in proportion',
+         x = 'Grade') 
+```
+
+## Employment
+
+### Point estimates
+
+#### Full cohort
+
+```{r employment}
+# Total cohort
+data %>% 
+    filter(!is.na(employment)) %>% 
+    group_by(employment) %>% 
+    summarise(count = n()) %>% 
+    ungroup() %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Employment - total cohort (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(employment)) %>% 
+    ggplot(data = .) +
+    aes(x = 'ID',
+        fill = employment) +
+    geom_bar(position = position_fill()) +
+    scale_fill_grey() +
+    labs(title = 'Employment',
+         subtitle = 'Whole cohort',
+         y = 'Proportion') +
+    theme(axis.title.x = element_blank())
+
+# Collapse the grants into one another and 
+# the same goes for the part-time/full-time employed categories
+data %<>%
+    mutate(employment = factor(employment),
+           employment = fct_collapse(employment,
+                                     employed = c('employed', 'employed (part time)'),
+                                     grant = c('pension grant', 'disability grant')))
+
+# Repeat analysis
+# Total cohort
+data %>% 
+    filter(!is.na(employment)) %>% 
+    group_by(employment) %>% 
+    summarise(count = n()) %>% 
+    ungroup() %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Employment (collapsed groups) - total cohort (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(employment)) %>% 
+    ggplot(data = .) +
+    aes(x = 'ID',
+        fill = employment) +
+    geom_bar(position = position_fill()) +
+    scale_fill_grey() +
+    labs(title = 'Employment (collapsed groups)',
+         subtitle = 'Whole cohort',
+         y = 'Proportion') +
+    theme(axis.title.x = element_blank(),
+          legend.title = element_blank())
+```
+
+#### By HIV status
+
+```{r employment2}
+# Count and proportion by HIV status
+data %>% 
+    filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
+    group_by(test_result, employment) %>% 
+    summarise(count = n()) %>% 
+    group_by(test_result) %>% 
+    mutate(total = sum(count)) %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    kable(caption = 'Employment - by HIV status (point estimates)')
+
+## Plot
+data %>% 
+    filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
+    ggplot(data = .) +
+    aes(x = test_result,
+        fill = employment) +
+    geom_bar(position = position_fill()) +
+    scale_fill_grey() +
+    labs(title = 'Employment',
+         subtitle = 'By HIV status',
+         y = 'Proportion',
+         x = 'Status') +
+    theme(legend.title = element_blank())
+```
+
+### 95% confidence intervals for the point estimates
+
+#### Full cohort
+
+```{r employment3}
+employment_tmp <- data %>% 
+    select(-CD4_count, -age, -sex, -educational_level, 
+           -anxiety_score, -depression_score, -total_score) %>% 
+    filter(!is.na(employment)) %>% 
+    mutate(dummy = row_number()) %>% 
+    spread(key = employment,
+           value = dummy) %>% 
+    mutate_if(is.integer, ~ ifelse(!is.na(.),
+                                   yes = 'yes',
+                                   no = 'no')) %>% 
+    gather(key = employment, 
+           value = value,
+           -PID, -test_result)
+
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value))
+    prop <- mean(data$value == 'yes')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- employment_tmp %>% 
+    group_by(employment) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(employment = boot_tmp$employment,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Employment - whole cohort (95% CI)')
+```
+
+#### By HIV status 
+
+```{r employment4}
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value))
+    prop <- mean(data$value == 'yes')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- employment_tmp %>% 
+    group_by(test_result, employment) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(test_result = boot_tmp$test_result, 
+       grade = boot_tmp$employment,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2),
+                      round(boot_tmp$boot[[4]]$t0, 2), 
+                      round(boot_tmp$boot[[5]]$t0, 2),
+                      round(boot_tmp$boot[[6]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[4]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[5]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[6]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[4]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[5]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[6]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Employment - by HIV status (95% CI)')
+```
+
+## 95% confidence interval of the difference in proportions
+
+```{r employment5}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(value)) %>% 
+        filter(!is.na(test_result))
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    prop_yes <- mean(data_hiv$value == 'yes')
+    prop_no <- mean(data_nohiv$value == 'yes')
+    prop_yes - prop_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- employment_tmp %>% 
+    group_by(employment) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x,
+                             statistic = func_tmp,
+                             R = 999,
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 7))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x,
+                                   type = 'perc')))
+
+tibble_tmp <- tibble(employment = boot_tmp$employment,
+                     `difference in proportion` = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                                                    round(boot_tmp$boot[[2]]$t0, 2),
+                                                    round(boot_tmp$boot[[3]]$t0, 2)),
+                     `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                                        round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                                        round(boot_tmp$boot_ci[[3]]$percent[[4]], 2)),
+                     `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                                        round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                                        round(boot_tmp$boot_ci[[3]]$percent[[5]], 2))) 
+
+tibble_tmp %>% 
+    kable(caption = 'Employment - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = employment,
+        y = `difference in proportion`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Employment',
+         subtitle = '95% CI of the difference in proportion (HIV+ minus HIV-)',
+         y = 'Difference in proportion',
+         x = 'Grade') 
+```
+
+----
+
+# Session information
+
+```{session_info}
+sessionInfo()
+```

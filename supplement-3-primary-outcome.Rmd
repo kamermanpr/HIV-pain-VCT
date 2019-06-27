@@ -1,0 +1,396 @@
+---
+title: "Supplement 3"
+subtitle: "Primary analysis: frequency of pain"
+author: "Peter Kamerman"
+date: "Last knitted: `r format(Sys.Date(), '%d %B %Y')`"
+---
+
+```{r setup, include = FALSE}
+# Load packages
+library(magrittr)
+library(tidyverse)
+library(skimr)
+library(boot)
+library(DataExplorer)
+library(sjPlot)
+library(car)
+
+# skimr options
+skim_with(numeric = list(hist = NULL),
+          factor = list(ordered = NULL))
+
+# ggplot theme
+theme_set(new = theme_bw(base_size = 16))
+
+# Palette
+pal <- c('#0072B2', '#D55E00')
+
+# Knitr options
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 7,
+                      fig.width = 8,
+                      fig.path = './figures/analysis-1/')
+```
+
+----
+
+This script addresses the primary analysis of the study, namely, what is the frequency of pain in the last week in individuals attending an urban HIV voluntary counselling and testing centre, and does the frequency of pain differ between individuals infected by HIV and those who are not. 
+
+----
+
+# Inspect data
+
+```{r import_data, include = FALSE}
+# Import test result data and select columns
+test <- read_rds('data-cleaned/hiv_test.rds') %>% 
+    select(PID,
+           test_result) %>% 
+    rename(HIV_positive = test_result) %>% 
+    mutate(HIV_positive = ifelse(HIV_positive == 'HIV positive',
+                                 yes = 'yes',
+                                 no = 'no'))
+    
+# Import pain data and select columns
+pain <- read_rds('data-cleaned/wbpq.rds') %>% 
+    select(PID,
+           pain_in_last_month,
+           pain_worst) %>% 
+    mutate(pain = ifelse(pain_in_last_month == 'yes' & pain_worst > 0,
+                         yes = 'yes',
+                         no = 'no')) %>% 
+    select(PID, pain)
+
+# Join datasets 
+data <- pain %>% 
+    left_join(test)
+```
+
+## Data structure
+
+```{r inspect_structure}
+dim(data)
+head(data)
+tail(data)
+glimpse(data)
+
+# HIV status data
+dim(data[data$HIV_positive == 'yes' & !is.na(data$HIV_positive), ])
+dim(data[data$HIV_positive == 'no' & !is.na(data$HIV_positive), ])
+dim(data[is.na(data$HIV_positive), ])
+dim(data[!is.na(data$HIV_positive), ])
+
+# Remove rows with missing HIV test results (n = 5)
+data %<>%
+    filter(!is.na(HIV_positive))
+
+# By pain status
+dim(data[data$pain == 'yes' & !is.na(data$pain), ])
+dim(data[data$pain == 'no' & !is.na(data$pain), ])
+dim(data[is.na(data$pain), ])
+dim(data[!is.na(data$pain), ])
+```
+
+## Data summaries
+
+```{r inspect_summaries}
+# Convert character to factor
+data_fct <- data %>% 
+    mutate(HIV_positive = factor(HIV_positive),
+           pain = factor(pain)) %>% 
+    select(-PID)
+
+# Full cohort
+data_fct %>%
+    skim() %>% 
+    kable(caption = 'Full cohort')
+
+# By HIV status
+data_fct %>% 
+    group_by(pain) %>% 
+    skim() %>% 
+    kable(caption = 'By HIV status')
+```
+
+----
+
+# Primary questions
+
+## Frequency of pain
+
+### Exploratory plots
+
+```{r plot_total}
+# Prepare data 
+plot_total <- data %>% 
+    group_by(pain) %>% 
+    summarise(count = n()) %>% 
+    mutate(prop = round(count/sum(count) * 100, 1)) %>% 
+    ungroup()
+
+# Count plot
+ggplot(data = plot_total) +
+    aes(x = 'All participants',
+        y = count,
+        fill = pain,
+        colour = pain) +
+    geom_col() +
+    geom_label(aes(label = paste0('n = ', count)), 
+               position = position_stack(vjust = 0.5), 
+               colour = 'white', 
+               show.legend = FALSE) +
+    labs(title = 'Pain prevalence: counts',
+         y = 'Count') + 
+    scale_fill_manual(name = 'Pain in the\nlast week',
+                      values = pal) +
+    scale_colour_manual(name = 'Pain in the\nlast week',
+                        values = pal) +
+    theme(axis.title.x = element_blank())
+
+# Proportion plot
+ggplot(data = plot_total) +
+    aes(x = 'All participants',
+        y = prop,
+        fill = pain,
+        colour = pain) +
+    geom_col(position = position_fill()) +
+    geom_label(aes(label = paste0(prop, '%')),
+               position = position_fill(vjust = 0.5),
+               colour = 'white', 
+               show.legend = FALSE) +
+    labs(title = 'Pain prevalence: proportions',
+         y = 'Proportion') + 
+    scale_fill_manual(name = 'Pain in the\nlast week',
+                      values = pal) +
+    scale_colour_manual(name = 'Pain in the\nlast week',
+                        values = pal) +
+    theme(axis.title.x = element_blank())
+```
+
+### 95% CI of pain frequency
+
+```{r ci_total}
+# Define boot function
+freq <- function(d, i){
+    data <- d[i, ]
+    mean(data$pain == 'yes')
+}
+
+# Generate bootstraps
+set.seed(2019)
+(boot_all <- boot(data = data, 
+                  statistic = freq, 
+                  R = 999, 
+                  stype = 'i'))
+
+# Plot the distribution
+plot(boot_all)
+
+# Generate bias accelerated interval
+(ci_all <- boot.ci(boot_all, 
+                   type = 'bca'))
+```
+
+## Frequency of pain by HIV status
+
+### Exploratory plot
+
+```{r plots_pain}
+# Prepare data 
+plot_data <- data %>% 
+    group_by(HIV_positive, pain) %>% 
+    summarise(count = n()) %>% 
+    mutate(prop = round(count/sum(count) * 100, 1)) %>% 
+    ungroup()
+
+# Count plot
+ggplot(data = plot_data) +
+    aes(x = HIV_positive,
+        y = count,
+        fill = pain,
+        colour = pain) +
+    geom_col() +
+    geom_label(aes(label = paste0('n = ', count)), 
+               position = position_stack(vjust = 0.5), 
+               colour = 'white', 
+               show.legend = FALSE) +
+    labs(title = 'Pain prevalence: counts',
+         y = 'Count',
+         x = 'HIV positive') + 
+    scale_fill_manual(name = 'Pain in the\nlast week',
+                      values = pal) +
+    scale_colour_manual(name = 'Pain in the\nlast week',
+                        values = pal)
+
+# Proportion plot
+ggplot(data = plot_data) +
+    aes(x = HIV_positive,
+        y = prop,
+        fill = pain,
+        colour = pain) +
+    geom_col(position = position_fill()) +
+    geom_label(aes(label = paste0(prop, '%')),
+               position = position_fill(vjust = 0.5),
+               colour = 'white', 
+               show.legend = FALSE) +
+    labs(title = 'Pain prevalence: proportions',
+         y = 'Proportion',
+         x = 'HIV positive') + 
+    scale_fill_manual(name = 'Pain in the\nlast week',
+                      values = pal) +
+    scale_colour_manual(name = 'Pain in the\nlast week',
+                        values = pal)
+```
+
+### 95% CI of pain frequency
+
+```{r ci_pain}
+# Define boot function
+## HIV+
+freq_hiv <- function(d, i){
+    data <- d[i, ]
+    hiv <- data[data$HIV_positive == 'yes', ]
+    pain <- mean(hiv$pain == 'yes')
+    pain
+}
+## HIV-
+freq_nohiv <- function(d, i){
+    data <- d[i, ]
+    hiv <- data[data$HIV_positive == 'no', ]
+    pain <- mean(hiv$pain == 'yes')
+    pain
+}
+
+# Generate bootstraps
+## HIV+
+set.seed(2019)
+(boot_hiv <- boot(data = data, 
+                  statistic = freq_hiv, 
+                  R = 999, 
+                  stype = 'i'))
+## HIV-
+set.seed(2019)
+(boot_nohiv <- boot(data = data, 
+                    statistic = freq_nohiv, 
+                    R = 999, 
+                    stype = 'i'))
+
+# Plot the distribution
+## HIV+
+plot(boot_hiv)
+## HIV-
+plot(boot_nohiv)
+
+# Generate bias accelerated interval
+## HIV+
+(ci_hiv <- boot.ci(boot_hiv, 
+                   type = 'bca'))
+## HIV-
+(ci_nohiv <- boot.ci(boot_nohiv, 
+                     type = 'bca'))
+
+# Generate df for plotting
+df_hiv <- tibble(group = c('HIV-negative',
+                           'HIV-positive'),
+                 t = c(100 * ci_nohiv$t0, 
+                       100* ci_hiv$t0),
+                 lower_ci = c(100 * ci_nohiv$bca[[4]], 
+                              100 * ci_hiv$bca[[4]]),
+                 upper_ci = c(100 * ci_nohiv$bca[[5]], 
+                              100* ci_hiv$bca[[5]]))
+
+# Plot
+ggplot(data = df_hiv) +
+    aes(x = group,
+        y = t) +
+    geom_errorbar(aes(ymin = lower_ci,
+                      ymax = upper_ci),
+                  width = 0.3,
+                  size = 1) +
+    geom_point(size = 8) +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(title = '95% CI for the frequency of pain',
+         y = 'Proportion with pain') +
+    theme(axis.title.x = element_blank())
+
+# Publication plot
+pp <- ggplot(data = df_hiv) +
+    aes(x = group,
+        y = t) +
+    geom_errorbar(aes(ymin = lower_ci,
+                      ymax = upper_ci),
+                  width = 0.3,
+                  size = 1) +
+    geom_point(size = 8) +
+    scale_y_continuous(limits = c(0, 100)) +
+    scale_x_discrete(labels = c('Negative', 'Positive')) +
+    labs(y = 'Frequency of pain (%)',
+         x = 'HIV test result') +
+    theme_bw(base_size = 20) +
+    theme(panel.grid = element_blank(),
+          axis.text = element_text(colour = '#000000'))
+
+ggsave(filename = 'figures/figure1.png',
+       plot = pp,
+       width = 7,
+       height = 6)
+```
+
+### 95% CI for the confidence interval of the difference in proportion with pain
+
+```{r ci_pain2}
+# Define boot function
+freq_delta <- function(d, i){
+    data <- d[i, ]
+    
+    hiv <- data[data$HIV_positive == 'yes', ]
+    hivpain <- mean(hiv$pain == 'yes')
+    
+    nohiv <- data[data$HIV_positive == 'no', ]
+    nohivpain <- mean(nohiv$pain == 'yes')
+    
+    nohivpain - hivpain
+}
+
+# Generate bootstraps
+set.seed(2019)
+(boot_delta <- boot(data = data, 
+                    statistic = freq_delta, 
+                    R = 999, 
+                    stype = 'i'))
+
+# Plot the distribution
+plot(boot_delta)
+
+# Generate bias accelerated interval
+(ci_delta <- boot.ci(boot_delta, 
+                     type = 'bca'))
+
+# Generate df for plotting
+df_delta <- tibble(t = ci_delta$t0,
+                   lower_ci = ci_delta$bca[[4]],
+                   upper_ci = ci_delta$bca[[5]])
+
+# Plot
+ggplot(data = df_delta) +
+    aes(x = '.') +
+    geom_errorbar(aes(ymin = lower_ci,
+                      ymax = upper_ci),
+                  width = 0.3,
+                  size = 1) +
+    geom_point(aes(y = t),
+               size = 8) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = '95% CI for the difference in proportion with pain',
+         subtitle = 'HIV-negative minus HIV-positive',
+         y = 'Difference in proportion with pain') 
+```
+
+----
+
+# Session information
+```{r sessionInfo}
+sessionInfo()
+```
