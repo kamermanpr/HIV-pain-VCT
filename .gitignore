@@ -6,6 +6,7 @@
 documentation/
 data-original/
 data-cleaned/
+bootstrap_functions.R
 *.html
 *.csv
 *.rds
