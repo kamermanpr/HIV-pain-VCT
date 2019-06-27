@@ -4,7 +4,8 @@
 .Rproj
 *_cache/
 documentation/
-original-data/
+data-original/
+data-cleaned/
 *.html
 *.csv
 *.rds
