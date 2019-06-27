@@ -17,13 +17,16 @@ library(lubridate)
 ############################################################
 
 # Import data
-general_info <- read_csv('./original-data/general_info.csv')
+general_info <- read_csv('data-original/general_info.csv')
 
 # Quick look
 head(general_info)
 tail(general_info)
 glimpse(general_info)
 summary(general_info)
+
+# Fix impossible age value (max age = 234 years)
+general_info$age[general_info$age == 234] <- NA
 
 # Clean data
 general_info %<>%
@@ -41,7 +44,7 @@ general_info %<>%
     rename(population = P_group) %>%
     # Recode population
     mutate(population = ifelse(population == 'black',
-                               yes = 'african',
+                               yes = 'black african',
                                no = 'mixed race')) %>%
     # Rename laguage column
     rename(language = laguage) %>%
@@ -49,30 +52,25 @@ general_info %<>%
     mutate(language = ifelse(language == 'zolu',
                              yes = 'zulu',
                              no = paste(language))) %>%
-    # Rename Education column
-    rename(formal_schooling = Education) %>%
-    # Recode formal schooling
-    mutate(formal_schooling = ifelse(formal_schooling == 'schooled',
-                                     yes = 'yes',
-                                     no = ifelse(is.na(formal_schooling),
-                                                 yes = NA,
-                                                 no = 'no'))) %>%
     # Rename Employment column
     rename(employment = Employment) %>%
     # Collapse employment factors levels
     mutate(employment =
                ifelse(employment %in%
-                          c('employed (part time/piece work) self employed',
-                            'employed (part time/piece work)- volunteer'),
+                          c('employed (part time/piece work) Self employed',
+                            'employed (part time/piece work) self employed',
+                            'employed (part time/piece work)- volunteer',
+                            'employed (part time/piece work)'),
                                yes = 'employed (part time)',
                                no = ifelse(employment %in%
                                                c('employed',
                                                  'employed- self employed',
                                                  'employed- volunteer',
                                                  'self employed',
-                                                 'self empoyed'),
+                                                 'self empoyed',
+                                                 'SELF EMPLOYED'),
                                            yes = 'employed',
-                                           no = paste(employment)))) %>%
+                                           no = employment))) %>%
     # Rename Grant column
     rename(grant = Grants) %>%
     # Recode grant
@@ -83,74 +81,65 @@ general_info %<>%
     rename(grant_type = G_specify) %>%
     # Recode grant_type
     mutate(grant_type = case_when(
-        str_detect(.$grant_type, 'c...d') ~
-            paste('child grant'),
-        str_detect(.$grant_type, 'c..d') ~
+        str_detect(.$grant_type, 'c.+d$') ~
             paste('child grant'),
         str_detect(.$grant_type, 'kids') ~
             paste('child grant'),
-        str_detect(.$grant_type, 'pension') ~
-            paste('pension'),
+        str_detect(.$grant_type, 'support') ~
+            paste('child grant'),
+        str_detect(.$grant_type, 'children') ~
+            paste('child grant'),
         str_detect(.$grant_type, 'disability') ~
             paste('disability grant'),
         str_detect(.$grant_type, 'medical') ~
-            paste('disability grant'))) %>%
-    # Recode employment based on whether on pension
+            paste('disability grant'),
+        str_detect(.$grant_type, 'pension') ~
+            paste('pension'),
+        TRUE ~ .$grant_type)) %>%
+    # Recode employment based on whether on pension / disability
     mutate(employment = case_when(
         str_detect(.$grant_type, 'pension') &
-            !is.na(.$grant_type) ~ paste('on pension'),
+            str_detect(.$employment, 'ployed') ~ paste('pension grant'),
+        str_detect(.$grant_type, 'pension') &
+            str_detect(.$employment, 'pensioner') ~ paste('pension grant'),
         str_detect(.$grant_type, 'disability') &
-            !is.na(.$grant_type) ~ paste('on disability'))) %>%
+            str_detect(.$employment, 'ployed') ~ paste('disability grant'),
+        TRUE ~ .$employment
+        )) %>%
+    # Remove Education column
+    rename(formal_schooling = Education) %>%
+    # Recode formal schooling
+    mutate(formal_schooling = ifelse(formal_schooling == 'schooled',
+                                     yes = 'yes',
+                                     no = ifelse(is.na(formal_schooling),
+                                                 yes = NA,
+                                                 no = 'no'))) %>%
     # Rename Schooled_other1/2
     rename(school_grade = Schooled_other1,
            post_school_qualification = Schooled_other2) %>%
-    # New column for 'in_school'
-    mutate(still_in_school =
-               ifelse(str_detect(school_grade, 'still') |
-                          str_detect(
-                              post_school_qualification, 'still'),
-                      yes = 'yes',
-                      no = ifelse(is.na(school_grade),
-                                  yes = NA,
-                                  no = 'no'))) %>%
     # Recode school_grade
     mutate(school_grade = as.numeric(
         case_when(
-        str_detect(.$school_grade, 'm....') &
-            !is.na(.$school_grade) ~ paste('12'),
-        str_detect(.$school_grade, 'grade 12') &
-            !is.na(.$school_grade) ~ paste('12'),
-        str_detect(.$school_grade, 'grade 11') &
-            !is.na(.$school_grade) ~ paste('11'),
-        str_detect(.$school_grade, 'still') &
-            !is.na(.$school_grade) ~ paste('11'),
-        str_detect(.$school_grade, 'grade 10') &
-            !is.na(.$school_grade) ~ paste('10'),
-        str_detect(.$school_grade, 'grade 9') &
-            !is.na(.$school_grade) ~ paste('9'),
-        str_detect(.$school_grade, 'grade 8') &
-            !is.na(.$school_grade) ~ paste('8'),
-        str_detect(.$school_grade, 'grade 7') &
-            !is.na(.$school_grade) ~ paste('7'),
-        str_detect(.$school_grade, 'grade 6') &
-            !is.na(.$school_grade) ~ paste('6'),
-        str_detect(.$school_grade, 'grade 5') &
-            !is.na(.$school_grade) ~ paste('5'),
-        str_detect(.$school_grade, 'grade 4') &
-            !is.na(.$school_grade) ~ paste('4'),
-        str_detect(.$school_grade, 'grade 3') &
-            !is.na(.$school_grade) ~ paste('3'),
-        str_detect(.$school_grade, 'grade 2') &
-            !is.na(.$school_grade) ~ paste('2'),
-        str_detect(.$school_grade, 'grade 1') &
-            !is.na(.$school_grade) ~ paste('1'),
-        str_detect(.$school_grade, 'form') &
-            !is.na(.$school_grade) ~ paste('3'),
-        str_detect(.$school_grade, 'grade11') &
-            !is.na(.$school_grade) ~ paste('11'),
-        str_detect(.$school_grade, 'tertiary') &
-            !is.na(.$school_grade) ~ paste('12'),
-        TRUE ~ as.character(.$school_grade)))) %>%
+        str_detect(.$school_grade, '^[m|M]at') ~ paste('12'),
+        str_detect(.$school_grade, 'grade 12') ~ paste('12'),
+        str_detect(.$school_grade, 'NCS') ~ paste('12'),
+        str_detect(.$school_grade, 'grade 11') ~ paste('11'),
+        str_detect(.$school_grade, 'still') ~ paste('11'),
+        str_detect(.$school_grade, '10') ~ paste('10'),
+        str_detect(.$school_grade, '9') ~ paste('9'),
+        str_detect(.$school_grade, '8') ~ paste('8'),
+        str_detect(.$school_grade, '7') ~ paste('7'),
+        str_detect(.$school_grade, '6')~ paste('6'),
+        str_detect(.$school_grade, '5') ~ paste('5'),
+        str_detect(.$school_grade, '4') ~ paste('4'),
+        str_detect(.$school_grade, '3') ~ paste('3'),
+        str_detect(.$school_grade, 'grade 2') ~ paste('2'),
+        str_detect(.$school_grade, 'grade 1') ~ paste('1'),
+        str_detect(.$school_grade, 'tertiary') ~ '',
+        TRUE ~ .$school_grade))) %>%
+    mutate(school_grade = ifelse(formal_schooling == 'no',
+                                 yes = 0,
+                                 no = school_grade)) %>%
     # Recode post_school_qualification
     mutate(post_school_qualification =
                ifelse(str_detect(post_school_qualification, 'n.ne') |
@@ -159,20 +148,40 @@ general_info %<>%
                       no = ifelse(is.na(post_school_qualification),
                                   yes = NA,
                                   no = 'yes'))) %>%
+    mutate(school_grade = as.character(school_grade),
+           school_grade = ifelse(school_grade == 12 &
+                                     post_school_qualification == 'yes',
+                                 yes = '+13',
+                                 no = school_grade)) %>%
+    mutate(school_grade = factor(school_grade,
+                                 levels = c(as.character(0:12), '+13'),
+                                 ordered = TRUE)) %>%
     # Make schooling categories
     mutate(educational_level = case_when(
-        .$school_grade > 0 & .$school_grade < 8 ~
-            paste('primary school'),
-        .$school_grade > 7 & .$post_school_qualification == 'no' ~
-            paste('secondary school'),
-        .$post_school_qualification == 'yes' ~
-            paste('tertiary')
-    )) %>%
+        .$school_grade == '+13' ~ 'post-school qualification',
+        str_detect(.$school_grade, '^1.') |
+            str_detect(.$school_grade, '^9') |
+            str_detect(.$school_grade, '^8') ~ 'secondary school',
+        str_detect(.$school_grade, '^7') |
+            str_detect(.$school_grade, '^6') |
+            str_detect(.$school_grade, '^5') |
+            str_detect(.$school_grade, '^4') |
+            str_detect(.$school_grade, '^3') |
+            str_detect(.$school_grade, '^2') |
+            str_detect(.$school_grade, '^1') |
+            str_detect(.$school_grade, '^0') ~ 'no/primary school',
+        ),
+        educational_level = factor(educational_level,
+                                   levels = c('no/primary school',
+                                              'secondary school',
+                                              'post-school qualification'),
+                                   ordered = TRUE)) %>%
     # Reorder columns
     select(PID, date, age, sex, population, language, countryOB,
-           formal_schooling, school_grade, still_in_school,
-           post_school_qualification, educational_level, employment,
+           school_grade, educational_level, employment,
            grant, grant_type)
+
+levels(factor(general_info$employment))
 
 ############################################################
 #                                                          #
@@ -180,9 +189,10 @@ general_info %<>%
 #                                                          #
 ############################################################
 # Import data
-hiv_test <- read_csv('./original-data/hiv_test_results.csv')
+hiv_test <- read_csv('data-original/hiv_test_results.csv')
 
 # Quick look
+dim(hiv_test)
 head(hiv_test)
 tail(hiv_test)
 glimpse(hiv_test)
@@ -212,9 +222,10 @@ hiv_test %<>%
 #                                                          #
 ############################################################
 # Import data
-medical_info <- read_csv('./original-data/medical_info.csv')
+medical_info <- read_csv('data-original/medical_info.csv')
 
 # Quick look
+dim(medical_info)
 head(medical_info)
 tail(medical_info)
 glimpse(medical_info)
@@ -277,8 +288,7 @@ medical_info %<>%
            alcohol_freq = factor(fct_relevel(alcohol_freq,
                                              'daily',
                                              'weekly',
-                                             'monthly'),
-                                 ordered = TRUE)) %>%
+                                             'monthly'))) %>%
     # Recode alcohol_type column
     mutate(alcohol_type = ifelse(alcohol_type == 1,
                                  yes = 'beer',
@@ -302,8 +312,7 @@ medical_info %<>%
            alcohol_per_sitting = factor(fct_relevel(alcohol_per_sitting,
                                                     '1-2',
                                                     '3-4',
-                                                    '>4'),
-                                        ordered = TRUE)) %>%
+                                                    '>4'))) %>%
     # Rename TB column
     rename(TB_ever = TB) %>%
     # Recode TB_infection column
@@ -335,9 +344,10 @@ medical_info %<>%
 #                                                          #
 ############################################################
 # Import data
-eq5d <- read_csv('./original-data/eq5d.csv')
+eq5d <- read_csv('data-original/eq5d.csv')
 
 # Quick look
+dim(eq5d)
 head(eq5d)
 tail(eq5d)
 glimpse(eq5d)
@@ -363,8 +373,7 @@ eq5d %<>%
            mobility = factor(fct_relevel(mobility,
                                          'no problems',
                                          'some problems',
-                                         'confined to bed'),
-                             ordered = TRUE)) %>%
+                                         'confined to bed'))) %>%
     # Recode self_care
     mutate(self_care =
                ifelse(self_care == 1,
@@ -375,11 +384,12 @@ eq5d %<>%
                                               yes = NA,
                                               no = 'unable to wash or dress'))),
            # Convert to ordered factor
-           self_care = factor(fct_relevel(self_care,
-                                          'no problems',
-                                          'some problems',
-                                          'unable to wash or dress'),
-                              ordered = TRUE)) %>%
+           self_care = factor(self_care,
+                              levels = c()),
+           self_care = fct_relevel(self_care,
+                                   'no problems',
+                                   'some problems',
+                                   'unable to wash or dress')) %>%
     # Rename usual_activ
     rename(usual_activities = usual_activ) %>%
     # Recode usual_activities
@@ -396,8 +406,7 @@ eq5d %<>%
            usual_activities = factor(fct_relevel(usual_activities,
                                                  'no problems',
                                                  'some problems',
-                                                 'unable to perform usual activities'),
-                                     ordered = TRUE)) %>%
+                                                 'unable to perform usual activities'))) %>%
     # Rename p_discomfort
     rename(pain_discomfort = p_discomfort) %>%
     # Recode pain_discomfort
@@ -415,8 +424,7 @@ eq5d %<>%
            pain_discomfort = factor(fct_relevel(pain_discomfort,
                                                 'no pain or discomfort',
                                                 'moderate pain or discomfort',
-                                                'extreme pain or discomfort'),
-                                    ordered = TRUE)) %>%
+                                                'extreme pain or discomfort'))) %>%
     # Recode anxiety
     mutate(anxiety =
                ifelse(anxiety == 1,
@@ -431,8 +439,7 @@ eq5d %<>%
            anxiety = factor(fct_relevel(anxiety,
                                         'no anxiety or depression',
                                         'moderate anxiety or depression',
-                                        'extreme anxiety or depression'),
-                            ordered = TRUE)) %>%
+                                        'extreme anxiety or depression'))) %>%
     # Rename health_code
     rename(qol_vas = health_code)
 
@@ -442,9 +449,10 @@ eq5d %<>%
 #                                                          #
 ############################################################
 # Import data
-pcs <- read_csv('./original-data/pcs.csv')
+pcs <- read_csv('data-original/pcs.csv')
 
 # Quick look
+dim(pcs)
 head(pcs)
 tail(pcs)
 glimpse(pcs)
@@ -463,13 +471,7 @@ pcs %<>%
            total_score = rowSums(.[3:15]),
            total_score_30 = ifelse(total_score >= 30,
                                    yes = 'yes',
-                                   no = 'no')) #%>%
-    # Convert from numeric to ordinal factor
-    #mutate_at(var(starts_with('pcs')),
-     #        funs(factor(
-      #           forcats::fct_relevel(as.character(.),
-       #                               '1', '2', '3', '4', '5'),
-        #         ordered = TRUE)))
+                                   no = 'no'))
 
 ############################################################
 #                                                          #
@@ -477,9 +479,10 @@ pcs %<>%
 #                                                          #
 ############################################################
 # Import data
-hscl <- read_csv('./original-data/hscl.csv')
+hscl <- read_csv('data-original/hscl.csv')
 
 # Quick look
+dim(hscl)
 head(hscl)
 tail(hscl)
 glimpse(hscl)
@@ -500,12 +503,7 @@ hscl %<>%
                                      no = 'no'),
            total_score_1.75 = ifelse(total_score >= 1.75,
                                      yes = 'yes',
-                                     no = 'no')) #%>%
-    # Convert from numeric to ordinal factor
-    #mutate_if(is.numeric, funs(factor(
-        #forcats::fct_relevel(as.character(.),
-                             #'1', '2', '3', '4'),
-        #ordered = TRUE)))
+                                     no = 'no'))
 
 ############################################################
 #                                                          #
@@ -513,9 +511,10 @@ hscl %<>%
 #                                                          #
 ############################################################
 # Import data
-signs <- read_csv('./original-data/signs_neuro.csv')
+signs <- read_csv('data-original/signs_neuro.csv')
 
 # Quick look
+dim(signs)
 head(signs)
 tail(signs)
 glimpse(signs)
@@ -616,7 +615,7 @@ signs %<>%
 #                                                          #
 ############################################################
 # Import data
-symptoms <- read_csv('./original-data/symptoms_neuro.csv')
+symptoms <- read_csv('data-original/symptoms_neuro.csv')
 
 # Quick look
 head(symptoms)
@@ -674,8 +673,7 @@ symptoms %<>%
               funs(factor(fct_relevel(.,
                                       'mild',
                                       'moderate',
-                                      'severe'),
-                          ordered = TRUE))) %>%
+                                      'severe')))) %>%
     # Rename symptoms
     rename(painful = p_aching,
            numbness = numb_lack,
@@ -683,11 +681,11 @@ symptoms %<>%
            pins_needles = p_needles) %>%
     # Recode symptom occurrence
     mutate_at(vars(c(5, 7, 9, 11, 13, 15, 17)),
-              funs(ifelse(. == 0,
-                          yes = 'no',
-                          no = ifelse(. == 1,
-                                      yes = 'unsure',
-                                      no = 'yes')))) %>%
+              list(~ ifelse(. == 0,
+                            yes = 'no',
+                            no = ifelse(. == 1,
+                                        yes = 'unsure',
+                                        no = 'yes')))) %>%
     # Reorder columns
     select(c(1:4, 19, 5:18))
 
@@ -697,7 +695,7 @@ symptoms %<>%
 #                                                          #
 ############################################################
 # Import data
-wbpq <- read_csv('./original-data/wbpq.csv')
+wbpq <- read_csv('data-original/wbpq.csv')
 
 # Quick look
 head(wbpq)
@@ -998,6 +996,18 @@ wbpq %<>%
                                    no = ifelse(is.na(pain_cause_muscles),
                                                yes = 'unspecified cause',
                                                no = pain_cause_muscles))) %>%
+    # Pain at its worst
+    mutate(pain_worst = ifelse(pain_in_last_month == 'no',
+                               yes = 0,
+                               no = pain_worst)) %>%
+    # Pain at its least
+    mutate(pain_least = ifelse(pain_in_last_month == 'no',
+                               yes = 0,
+                               no = pain_least)) %>%
+    # Pain now
+    mutate(pain_now = ifelse(current_pain == 'no',
+                             yes = 0,
+                             no = pain_now)) %>%
     # Site of worst pain
     ## Replace 'private parts' with 'genitals'
     mutate(site_of_worst_pain =
@@ -1362,6 +1372,9 @@ wbpq %<>%
 #                    Output data to RDS                    #
 #                                                          #
 ############################################################
+# Make directory
+dir.create(path = 'data-cleaned')
+
 # Get a list of data.frame objects
 df_names <- ls()
 
@@ -1373,14 +1386,14 @@ df_list <- map(.x = df_names,
 walk2(.x = df_list,
       .y = df_names,
       .f = ~ write_rds(x = .x,
-                       path = paste0('./data/', .y, '.rds'),
+                       path = paste0('./data-cleaned/', .y, '.rds'),
                        compress = 'xz'))
 
 # Loop over df_list and write to csv
 walk2(.x = df_list,
       .y = df_names,
       .f = ~ readr::write_csv(x = .x,
-                              path = paste0('./data/', .y, '.csv')))
+                              path = paste0('./data-cleaned/', .y, '.csv')))
 
 ############################################################
 #                                                          #
