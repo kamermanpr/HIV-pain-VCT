@@ -2,7 +2,7 @@
 title: "Supplement 3"
 subtitle: "Primary analysis: frequency of pain"
 author: "Peter Kamerman"
-date: "Last knitted: `r format(Sys.Date(), '%d %B %Y')`"
+date: "Last updated: `r format(Sys.Date(), '%d %B %Y')`"
 ---
 
 ```{r setup, include = FALSE}
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
                       fig.height = 7,
                       fig.width = 8,
-                      fig.path = './figures/analysis-1/')
+                      fig.path = './figures/supplement-3/')
 ```
 
 ----

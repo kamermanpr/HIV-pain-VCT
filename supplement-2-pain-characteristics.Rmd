@@ -2,7 +2,7 @@
 title: "Supplement 2"
 subtitle: "Pain characteristics"
 author: "Peter Kamerman"
-date: "Last knitted: `r format(Sys.Date(), '%d %B %Y')`"
+date: "Last updated: `r format(Sys.Date(), '%d %B %Y')`"
 ---
 
 ```{r setup, include = FALSE}
@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
                       fig.height = 7,
                       fig.width = 8,
-                      fig.path = './figures/analysis-2/')
+                      fig.path = './figures/supplement-2/')
 ```
 
 ----
@@ -49,7 +49,9 @@ To describe any differences between the HIV+ and HIV- groups, we have calculated
 
 ----
 
-# Import data
+# Preliminaries
+
+## Import data
 
 ```{r import_data}
 # Import test result data and select columns
@@ -75,20 +77,21 @@ data <- pain %>%
 
 ----
 
-# Check for missingness
+## Check for missingness
 
 ```{r missingness}
 # Extract columns used in this series of analyses
 tmp <- data %>% 
     select(HIV_positive, pain_in_last_month, pain_reason_for_visit, pain_worst, pain_treatment,
            head, shoulders, arms, hands, chest, abdomen, low_back, genitals,
-           legs, feet, joints, muscles)
+           legs, feet, joints, muscles, starts_with('medication'), starts_with('substance'))
 
 ## Whole cohort
 tmp %>% 
     profile_missing() %>% 
     mutate(pct_missing = round(100 * pct_missing)) %>% 
-    arrange(pct_missing)
+    arrange(pct_missing) %>% 
+    kable(., caption = 'Missingness (whole cohort)')
 
 ## By HIV status
 ### HIV-
@@ -96,14 +99,16 @@ tmp %>%
     filter(HIV_positive == 'no') %>% 
     profile_missing() %>% 
     mutate(pct_missing = round(100 * pct_missing)) %>% 
-    arrange(pct_missing)
+    arrange(pct_missing) %>% 
+    kable(., caption = 'Missingness (HIV-negative)')
 
 ### HIV+
 tmp %>% 
     filter(HIV_positive == 'yes') %>% 
     profile_missing() %>% 
     mutate(pct_missing = round(100 * pct_missing)) %>% 
-    arrange(pct_missing)
+    arrange(pct_missing) %>% 
+    kable(., caption = 'Missingness (HIV-positive)')
 
 # Remove rows with missing HIV test results (n = 4)
 data %<>%
@@ -112,9 +117,11 @@ data %<>%
 
 ----
 
-# Pain as the reason for coming for testing
+# Analyses
 
-## Point estimates
+## Pain as the reason for coming for testing
+
+### Point estimates
 
 ```{r reason_for_pain}
 # Total cohort
@@ -143,7 +150,6 @@ ggplot(data = data) +
 # Count and proportion by HIV status
 data %>% 
     filter(!is.na(pain_reason_for_visit)) %>% 
-    filter(!is.na(HIV_positive)) %>% 
     group_by(HIV_positive, pain_reason_for_visit) %>% 
     summarise(count = n()) %>% 
     group_by(HIV_positive) %>% 
@@ -165,7 +171,7 @@ ggplot(data = data) +
     theme(legend.title = element_blank())
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r pain_the_reason2}
 # Boot functions
@@ -219,7 +225,7 @@ tibble(`HIV positive` = c('no', 'yes'),
     kable(caption = 'Pain was the reason for getting tested - by HIV status (95% CI)')
 ```
 
-## 95% confidence interval of the difference in proportions
+### 95% confidence interval of the difference in proportions
 
 The difference in the proportion of HIV-positive participants who got tested because of pain vs participants who were HIV-negative (HIV+ minus HIV-).
 
@@ -273,9 +279,9 @@ ggplot(data = tibble_tmp) +
 
 ----
 
-# Body sites affected by pain
+## Body sites affected by pain
 
-## Point estimates
+### Point estimates
 
 ```{r body_sites}
 # Total cohort
@@ -355,7 +361,7 @@ data %>%
                                      hjust = 1))
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r body_sites2}
 # Boot functions
@@ -528,7 +534,7 @@ tibble(`HIV positive` = rep(c('no', 'yes'), 12),
     kable(caption = 'Body sites affected by pain - by HIV status (95% CI)')
 ```
 
-## 95% confidence interval of the difference in proportions
+### 95% confidence interval of the difference in proportions
 
 The difference in the proportion of HIV-positive participants with pain at a body site vs participants who were HIV-negative (HIV+ minus HIV-).
 
@@ -633,9 +639,9 @@ ggplot(data = tibble_tmp) +
 
 ----
 
-# Number of body sites affected by pain
+## Number of body sites affected by pain
 
-## Point estimates
+### Point estimates
 
 ```{r body_sites4}
 # Total cohort
@@ -732,7 +738,7 @@ data %>%
     theme(legend.position = 'none')
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r body_sites5}
 # Use the Rcompanion groupwiseMean for numeric data
@@ -786,7 +792,7 @@ groupwiseMean(count ~ HIV_positive,
     kable(caption = 'Number of body sites with pain - by HIV status (95% CI')
 ```
 
-## 95% confidence interval for the difference in medians
+### 95% confidence interval for the difference in medians
 
 ```{r body_sites6}
 # Boot function
@@ -849,9 +855,9 @@ ggplot(data = tibble_tmp) +
 
 ----
 
-# Body site with the worst pain
+## Body site with the worst pain
 
-## Point estimates
+### Point estimates
 
 ```{r body_site7}
 # Total cohort
@@ -932,7 +938,7 @@ data %>%
     theme(legend.title = element_blank())
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r body_sites8}
 # Boot functions
@@ -1091,7 +1097,7 @@ tibble_tmp %>%
     kable(caption = 'Site of the worst pain - by HIV status (95% CI)')
 ```
 
-## 95% confidence interval of the difference in proportions
+### 95% confidence interval of the difference in proportions
 
 ```{r body_sites9}
 # Boot function
@@ -1165,11 +1171,11 @@ ggplot(data = tibble_tmp) +
 
 ----
 
-# Pain intensity
+## Pain intensity
 
 Worst pain in the last week.
 
-## Point estimates
+### Point estimates
 
 ```{r pain_intensity}
 # Fix 
@@ -1235,7 +1241,7 @@ data %>%
          x = 'HIV-positive') 
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r pain_intensity2}
 # Use the Rcompanion groupwiseMean for numeric data
@@ -1269,7 +1275,7 @@ groupwiseMean(pain_worst ~ HIV_positive,
     kable(caption = 'Pain at its worst in the past week - by HIV status (95% CI)')
 ```
 
-## 95% confidence interval of the difference in means
+### 95% confidence interval of the difference in means
 
 The difference in the mean intensity of the worst pain in the past week of HIV-positive participants vs participants who were HIV-negative (HIV+ minus HIV-).
 
@@ -1322,11 +1328,11 @@ ggplot(data = tibble_tmp) +
 
 ----
 
-# Did you receive treatment for your pain?
+## Did you receive treatment for your pain?
 
 Receiving treatment includes self-medication.
 
-## Point estimates
+### Point estimates
 
 ```{r pain_treatment}
 # Whole cohort
@@ -1377,7 +1383,7 @@ ggplot(data = data) +
     theme(legend.title = element_blank())
 ```
 
-## 95% confidence intervals for the point estimates
+### 95% confidence intervals for the point estimates
 
 ```{r pain_treatment2}
 # Boot functions
@@ -1431,7 +1437,7 @@ tibble(`HIV positive` = c('no', 'yes'),
     kable(caption = 'Receiving pain treatment - by HIV status (95% CI)')
 ```
 
-## 95% confidence interval of the difference in proportions
+### 95% confidence interval of the difference in proportions
 
 The difference in the proportion of HIV-positive participants receiving treatment for their pain vs participants who were HIV-negative (HIV+ minus HIV-).
 
@@ -1484,7 +1490,280 @@ ggplot(data = tibble_tmp) +
 ```
 
 ----
-## Session information
+
+## Medications/substances used for pain management
+
+### Process data
+
+```{r pain_drugs}
+drugs <- data %>% 
+    select(PID, HIV_positive, 
+           starts_with('medication'), 
+           starts_with('substance')) %>% 
+    unite(col = 'drugs', 3:8, sep = ' + ') %>% 
+    # Search terms based on visual inspection of the data
+    mutate(paracetamol = case_when(
+        str_detect(drugs, 'paracetamol') ~ 'yes',
+        TRUE ~ 'no'
+    )) %>% 
+    mutate(nsaids_aspirin = case_when(
+        str_detect(drugs, 'aspirin') |
+            str_detect(drugs, 'ibuprofen') |
+            str_detect(drugs, 'diclofenac') ~ 'yes',
+        TRUE ~ 'no'
+    )) %>% 
+    mutate(weak_opioids = case_when(
+        str_detect(drugs, 'tramadol') |
+            str_detect(drugs, 'codeine')  ~ 'yes',
+        TRUE ~ 'no'
+    )) %>% 
+    mutate(marijuana = case_when(
+        str_detect(drugs, 'marijuana') ~ 'yes',
+        TRUE ~ 'no'
+    )) %>% 
+    mutate(alcohol = case_when(
+        str_detect(drugs, 'alcohol') ~ 'yes',
+        TRUE ~ 'no'
+    )) %>% 
+    select(-drugs) %>% 
+    gather(key = drug,
+           value = drug_used,
+           -PID, -HIV_positive)
+```
+
+### Point estimates
+
+```{r pain_drugs2}
+# Total cohort
+drugs %>% 
+    group_by(drug, drug_used) %>% 
+    summarise(count = n()) %>% 
+    group_by(drug) %>% 
+    mutate(total = sum(count)) %>% 
+    filter(drug_used == 'yes') %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    select(-total) %>% 
+    kable(caption = 'Drugs used for pain - total cohort')
+
+## Plot
+ggplot(data = drugs) +
+    aes(x = drug,
+        fill = drug_used) +
+    geom_bar(position = position_fill()) +
+    scale_fill_manual(values = pal, 
+                      na.value = '#000000') +
+    labs(title = 'Drugs used to manage pain',
+         subtitle = 'Whole cohort',
+         y = 'Proportion',
+         x = 'Drug class') +
+    theme(legend.title = element_blank(),
+          axis.text.x = element_text(angle = 30, 
+                                     hjust = 1))
+    
+# By HIV status
+drugs %>% 
+    group_by(HIV_positive, drug, drug_used) %>% 
+    summarise(count = n()) %>% 
+    group_by(drug) %>% 
+    mutate(total = sum(count)) %>% 
+    filter(drug_used == 'yes') %>% 
+    mutate(proportion = round(count/total, 2)) %>% 
+    select(-total) %>% 
+    kable(caption = 'Drugs used for pain - total cohort')
+
+## Plot
+ggplot(data = drugs) +
+    aes(x = drug,
+        fill = drug_used) +
+    geom_bar(position = position_fill()) +
+    scale_fill_manual(values = pal, 
+                      na.value = '#000000') +
+    labs(title = 'Drugs used to manage pain',
+         subtitle = 'By HIV status',
+         y = 'Proportion',
+         x = 'Drug class') +
+    facet_wrap(~ HIV_positive,
+               ncol = 2) +
+    theme(legend.title = element_blank(),
+          axis.text.x = element_text(angle = 30, 
+                                     hjust = 1))
+
+```
+
+### 95% confidence intervals for the point estimates
+
+```{r pain_drugs3}
+# Boot functions
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(drug_used))
+    prop <- mean(data$drug_used == 'yes')
+    prop
+}
+
+# Whole cohort
+set.seed(2019)
+boot_tmp <- drugs %>% 
+    group_by(drug) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 4))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(`drug class` = boot_tmp$drug,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2), 
+                      round(boot_tmp$boot[[4]]$t0, 2),
+                      round(boot_tmp$boot[[5]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Drug classes used to manage pain - whole cohort (95% CI)')
+
+# By HIV status (HIV- reported first)
+set.seed(2019)
+boot_tmp <- drugs %>% 
+    group_by(HIV_positive, drug) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x, 
+                             statistic = func_tmp, 
+                             R = 999, 
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 4))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x, 
+                                   type = 'perc')))
+
+tibble(`HIV positive` = rep(c('no', 'yes'), 5),
+       `drug class` = boot_tmp$drug,
+       proportion = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                      round(boot_tmp$boot[[2]]$t0, 2),
+                      round(boot_tmp$boot[[3]]$t0, 2), 
+                      round(boot_tmp$boot[[4]]$t0, 2),
+                      round(boot_tmp$boot[[5]]$t0, 2), 
+                      round(boot_tmp$boot[[6]]$t0, 2),
+                      round(boot_tmp$boot[[7]]$t0, 2), 
+                      round(boot_tmp$boot[[8]]$t0, 2),
+                      round(boot_tmp$boot[[9]]$t0, 2), 
+                      round(boot_tmp$boot[[10]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[6]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[7]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[8]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[9]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[10]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[6]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[7]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[8]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[9]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[10]]$percent[[5]], 2))) %>% 
+    kable(caption = 'Body sites affected by pain - by HIV status (95% CI)')
+```
+
+### 95% confidence interval of the difference in proportions
+
+The difference in the proportion of HIV-positive participants using a drug vs participants who were HIV-negative (HIV+ minus HIV-).
+
+```{r pain_drugs4}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data %>% 
+        filter(!is.na(drug_used)) %>% 
+        filter(!is.na(HIV_positive))
+    data_hiv <- filter(data, HIV_positive == 'yes')
+    data_nohiv <- filter(data, HIV_positive == 'no')
+    prop_yes <- mean(data_hiv$drug_used == 'yes')
+    prop_no <- mean(data_nohiv$drug_used == 'yes')
+    prop_yes - prop_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- drugs %>% 
+    group_by(drug) %>% 
+    nest() %>% 
+    mutate(boot = map(.x = data,
+                      ~ boot(data = .x,
+                             statistic = func_tmp,
+                             R = 999,
+                             stype = 'i',
+                             parallel = 'multicore',
+                             ncpus = 4))) %>% 
+    mutate(boot_ci = map(.x = boot,
+                         ~ boot.ci(.x,
+                                   type = 'perc')))
+
+tibble_tmp <- tibble(`drug class` = boot_tmp$drug,
+       `difference in proportion` = c(round(boot_tmp$boot[[1]]$t0, 2), 
+                                      round(boot_tmp$boot[[2]]$t0, 2),
+                                      round(boot_tmp$boot[[3]]$t0, 2), 
+                                      round(boot_tmp$boot[[4]]$t0, 2),
+                                      round(boot_tmp$boot[[5]]$t0, 2)),
+       `lower 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[4]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[4]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[4]], 2)),
+       `upper 95% CI` = c(round(boot_tmp$boot_ci[[1]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[2]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[3]]$percent[[5]], 2), 
+                          round(boot_tmp$boot_ci[[4]]$percent[[5]], 2),
+                          round(boot_tmp$boot_ci[[5]]$percent[[5]], 2))) 
+
+tibble_tmp %>% 
+    kable(caption = 'Drugs used to manage pain - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = `drug class`,
+        y = `difference in proportion`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Drugs used to manage pain',
+         subtitle = '95% CI of the difference in proportion (HIV+ minus HIV-)',
+         y = 'Difference in proportion',
+         x = 'Drug class') +
+    theme(axis.text.x = element_text(angle = 30, 
+                                     hjust = 1))
+```
+
+----
+
+# Session information
+
 ```{r session_info}
 sessionInfo()
 ```

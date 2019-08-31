@@ -2,7 +2,7 @@
 title: "Supplement 1"
 subtitle: "Demographic characteristics"
 author: "Peter Kamerman"
-date: "Last knitted: `r format(Sys.Date(), '%d %B %Y')`"
+date: "Last updated: `r format(Sys.Date(), '%d %B %Y')`"
 ---
 
 ```{r setup, include = FALSE}
@@ -28,7 +28,7 @@ theme_set(new = theme_bw(base_size = 16))
 knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
                       message = FALSE,
-                      fig.path = './figures/analysis-3/')
+                      fig.path = './figures/supplement-1/')
 ```
 
 ----
@@ -51,11 +51,15 @@ general <- read_rds('data-cleaned/general_info.rds') %>%
 mental_health <- read_rds('data-cleaned/hscl.rds') %>% 
     select(PID, anxiety_score, depression_score, total_score)
 
+medical_info <- read_rds('data-cleaned/medical_info.rds') %>% 
+    select(PID, alcohol_consumption, alcohol_type, alcohol_freq, alcohol_per_sitting)
+
 # Join to core_info
 data <- read_rds('data-cleaned/hiv_test.rds') %>%
     select(PID, test_result, CD4_count) %>% 
     left_join(general) %>% 
-    left_join(mental_health) 
+    left_join(mental_health) %>% 
+    left_join(medical_info) 
 ```
 
 # Quick look
@@ -179,6 +183,7 @@ ggplot(data = data) +
 #### Whole cohort
 
 ```{r age3}
+set.seed(2019)
 groupwiseMean(age ~ 1,
               data = data,
               percent = TRUE) %>% 
@@ -188,6 +193,7 @@ groupwiseMean(age ~ 1,
 #### By HIV status
 
 ```{r age4}
+set.seed(2019)
 groupwiseMean(age ~ test_result,
               data = data,
               percent = TRUE) %>% 
@@ -285,6 +291,7 @@ cd4 <- data %>%
     filter(test_result != 'HIV negative') %>% 
     filter(!is.na(CD4_count))
 
+set.seed(2019)
 groupwiseMedian(CD4_count ~ 1,
                 data = cd4,
                 bca = FALSE,
@@ -292,11 +299,11 @@ groupwiseMedian(CD4_count ~ 1,
     select(-.id, -starts_with('Trad'))
 ```
 
-# Hopkins Symptom Checklist 25
+## Hopkins Symptom Checklist 25
 
 Check whether anxiety and depression subscales are correlated with each other and with the total score.
 
-## Depression vs anxiety
+### Depression vs anxiety
 
 ```{r DvsA}
 # Scatterplot
@@ -316,7 +323,7 @@ ggplot(data = data) +
 with(data, cor.test(depression_score, anxiety_score))
 ```
 
-## Total vs depression
+### Total vs depression
 
 ```{r DvsA2}
 # Scatterplot
@@ -336,7 +343,7 @@ ggplot(data = data) +
 with(data, cor.test(total_score, depression_score))
 ```
 
-## Total vs anxiety
+### Total vs anxiety
 
 ```{r DvsA3}
 # Scatterplot
@@ -428,6 +435,7 @@ ggplot(data = data) +
 #### Whole cohort
 
 ```{r hscl3}
+set.seed(2019)
 groupwiseMean(total_score ~ 1,
               data = data[!is.na(data$total_score), ],
               percent = TRUE) %>% 
@@ -437,6 +445,7 @@ groupwiseMean(total_score ~ 1,
 #### By HIV status
 
 ```{r hscl4}
+set.seed(2019)
 groupwiseMean(total_score ~ test_result,
               data = data[!is.na(data$total_score), ],
               percent = TRUE) %>% 
@@ -491,6 +500,173 @@ ggplot(data = tibble_tmp) +
     theme(axis.title.x = element_blank())
 ```
 
+## Alcohol consumption
+
+### Process data
+
+```{r alcohol}
+oh <- data %>%
+    filter(!is.na(alcohol_consumption)) %>% 
+    filter(!is.na(test_result)) %>% 
+    select(PID, test_result, starts_with('alcohol')) %>% 
+    mutate(oh_freq = case_when(
+        alcohol_freq == 'daily' ~ 30.4,
+        alcohol_freq == 'weekly' ~ 4.4,
+        alcohol_freq == 'monthly' ~ 1,
+        TRUE ~ 0
+    )) %>% 
+    mutate(oh_sitting = case_when(
+        alcohol_per_sitting == '1-2' ~ 1.5,
+        alcohol_per_sitting == '3-4' ~ 3.5,
+        alcohol_per_sitting == '>4' ~ 5,
+        TRUE ~ 0
+    )) %>% 
+    mutate(oh_type = case_when(
+        alcohol_type == 'beer' ~ 1.7,
+        alcohol_type == 'spirits' ~ 1,
+        TRUE ~ 0
+    )) %>% 
+    mutate(oh_units_per_month = oh_freq * oh_sitting * oh_type) %>% 
+    select(PID, test_result, oh_units_per_month)
+```
+
+### Point estimates
+
+#### Full cohort
+
+```{r alcohol2}
+# Tabular summary
+oh %>% 
+    select(oh_units_per_month) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'Estimated alcohol units per month (full cohort)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+# Graphical summary
+ggplot(data = oh) +
+    aes(x = 'Full cohort',
+        y = oh_units_per_month) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'Estimated alcohol units per month for the full cohort',
+         y = 'Alcohol units per month') +
+    theme(axis.title.x = element_blank())
+```
+
+#### By HIV status
+
+```{r alcohol3}
+# Tabular summary
+oh %>% 
+    select(test_result, oh_units_per_month) %>% 
+    group_by(test_result) %>% 
+    skim_to_wide() %>% 
+    select(-type, -hist) %>% 
+    kable(caption = 'Estimated alcohol units per month (by HIV status)') %>% 
+    kable_styling(latex_options = c('scale_down',
+                                    'hold_position'))
+
+
+# Graphical summary
+ggplot(data = oh) +
+    aes(x = test_result,
+        y = oh_units_per_month) +
+    geom_boxplot(alpha = 0.7,
+                 colour = '#000000',
+                 fill = '#999999') +
+    geom_point(position = position_jitter(height = 0),
+               fill = '#FFFFFF',
+               alpha = 0.7, 
+               stroke = 0.8,
+               size = 2,
+               shape = 21) +
+    labs(subtitle = 'Estimated alcohol units per month by HIV status',
+         y = 'Alcohol units per month') +
+    theme(axis.title.x = element_blank(),
+          legend.position = 'none')
+```
+
+### 95% CI of the point estimates
+
+#### Whole cohort
+
+```{r alcohol4}
+set.seed(2019)
+groupwiseMedian(oh_units_per_month ~ 1,
+                data = oh,
+                bca = FALSE,
+                percentile = TRUE) %>% 
+    select(-.id, -starts_with('Trad'))
+```
+
+#### By HIV status
+
+```{r alcohol5}
+set.seed(2019)
+groupwiseMedian(oh_units_per_month ~ test_result,
+                data = oh,
+                bca = FALSE,
+                percentile = TRUE) %>% 
+    select(-starts_with('Trad'))
+```
+
+#### 95% CI of the difference in median
+
+```{r alcohol7}
+# Boot function
+func_tmp <- function(d, i){
+    data <- d[i, ]
+    data <- data[!is.na(data$oh_units_per_month), ]
+    data_hiv <- filter(data, test_result == 'HIV positive')
+    data_nohiv <- filter(data, test_result == 'HIV negative')
+    median_yes <- median(data_hiv$oh_units_per_month, na.rm = TRUE)
+    median_no <- median(data_nohiv$oh_units_per_month, na.rm = TRUE)
+    median_yes - median_no
+}
+
+# Confidence interval of the difference in proportions (HIV+ minus HIV-)
+set.seed(2019)
+boot_tmp <- boot(data = oh,
+                 statistic = func_tmp,
+                 R = 999,
+                 stype = 'i')
+
+bootci_tmp <- boot.ci(boot_tmp,
+                      type = 'perc') # BCa gave extreme order statistics
+
+tibble_tmp <- tibble(`difference in mean` = round(boot_tmp$t0, 2),
+                     `lower 95% CI` = round(bootci_tmp$percent[[4]], 2),
+                     `upper 95% CI` = round(bootci_tmp$percent[[5]], 2))
+
+tibble_tmp %>% 
+    kable(caption = 'Alcohol units per month - 95% CI of the difference (HIV+ minus HIV-)')
+
+# Plot
+ggplot(data = tibble_tmp) +
+    aes(x = 'ID',
+        y = `difference in mean`,
+        ymin = `lower 95% CI`,
+        ymax = `upper 95% CI`) +
+    geom_point(size = 8) +
+    geom_errorbar(size = 1,
+                  width = 0.3) +
+    geom_hline(yintercept = 0,
+               linetype = 2) +
+    labs(title = 'Alcohol units per month',
+         subtitle = '95% CI of the difference in alcohol units per month (HIV+ minus HIV-)',
+         y = 'Difference in median') +
+    theme(axis.title.x = element_blank())
+```
+
 ----
 
 # Categorical data
@@ -504,6 +680,7 @@ ggplot(data = tibble_tmp) +
 ```{r sex}
 # Total cohort
 data %>% 
+    filter(!is.na(test_result)) %>% 
     filter(!is.na(sex)) %>% 
     group_by(sex) %>% 
     summarise(count = n()) %>% 
@@ -515,6 +692,7 @@ data %>%
 ## Plot
 data %>% 
     filter(!is.na(sex)) %>% 
+    filter(!is.na(test_result)) %>% 
     ggplot(data = .) +
     aes(x = 'ID',
         fill = sex) +
@@ -680,6 +858,7 @@ ggplot(data = tibble_tmp) +
 # Total cohort
 data %>% 
     filter(!is.na(educational_level)) %>% 
+    filter(!is.na(test_result)) %>% 
     group_by(educational_level) %>% 
     summarise(count = n()) %>% 
     ungroup() %>% 
@@ -690,6 +869,7 @@ data %>%
 ## Plot
 data %>% 
     filter(!is.na(educational_level)) %>% 
+    filter(!is.na(test_result)) %>% 
     ggplot(data = .) +
     aes(x = 'ID',
         fill = educational_level) +
@@ -739,8 +919,10 @@ data %>%
 ```{r school3}
 school_tmp <- data %>% 
     select(-CD4_count, -age, -sex, -employment, 
-           -anxiety_score, -depression_score, -total_score) %>% 
+           -anxiety_score, -depression_score, -total_score,
+           -starts_with('alcohol')) %>% 
     filter(!is.na(educational_level)) %>% 
+    filter(!is.na(test_result)) %>% 
     mutate(dummy = row_number()) %>% 
     spread(key = educational_level,
            value = dummy) %>% 
@@ -771,7 +953,7 @@ boot_tmp <- school_tmp %>%
                              R = 999, 
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x, 
                                    type = 'perc')))
@@ -812,7 +994,7 @@ boot_tmp <- school_tmp %>%
                              R = 999, 
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x, 
                                    type = 'perc')))
@@ -867,7 +1049,7 @@ boot_tmp <- school_tmp %>%
                              R = 999,
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x,
                                    type = 'perc')))
@@ -919,6 +1101,7 @@ ggplot(data = tibble_tmp) +
 # Total cohort
 data %>% 
     filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
     group_by(employment) %>% 
     summarise(count = n()) %>% 
     ungroup() %>% 
@@ -929,6 +1112,7 @@ data %>%
 ## Plot
 data %>% 
     filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
     ggplot(data = .) +
     aes(x = 'ID',
         fill = employment) +
@@ -951,6 +1135,7 @@ data %<>%
 # Total cohort
 data %>% 
     filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
     group_by(employment) %>% 
     summarise(count = n()) %>% 
     ungroup() %>% 
@@ -961,6 +1146,7 @@ data %>%
 ## Plot
 data %>% 
     filter(!is.na(employment)) %>% 
+    filter(!is.na(test_result)) %>% 
     ggplot(data = .) +
     aes(x = 'ID',
         fill = employment) +
@@ -1010,7 +1196,9 @@ data %>%
 ```{r employment3}
 employment_tmp <- data %>% 
     select(-CD4_count, -age, -sex, -educational_level, 
-           -anxiety_score, -depression_score, -total_score) %>% 
+           -anxiety_score, -depression_score, -total_score,
+           -starts_with('alcohol')) %>% 
+    filter(!is.na(test_result)) %>% 
     filter(!is.na(employment)) %>% 
     mutate(dummy = row_number()) %>% 
     spread(key = employment,
@@ -1042,7 +1230,7 @@ boot_tmp <- employment_tmp %>%
                              R = 999, 
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x, 
                                    type = 'perc')))
@@ -1083,7 +1271,7 @@ boot_tmp <- employment_tmp %>%
                              R = 999, 
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x, 
                                    type = 'perc')))
@@ -1138,7 +1326,7 @@ boot_tmp <- employment_tmp %>%
                              R = 999,
                              stype = 'i',
                              parallel = 'multicore',
-                             ncpus = 7))) %>% 
+                             ncpus = 4))) %>% 
     mutate(boot_ci = map(.x = boot,
                          ~ boot.ci(.x,
                                    type = 'perc')))
@@ -1178,6 +1366,6 @@ ggplot(data = tibble_tmp) +
 
 # Session information
 
-```{session_info}
+```{r session_info}
 sessionInfo()
 ```

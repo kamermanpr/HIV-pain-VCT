@@ -664,16 +664,16 @@ symptoms %<>%
            pins_needles_intensity = p_needles_other) %>%
     # Recode and order symptom intensity
     mutate_at(vars(ends_with('intensity')),
-              funs(ifelse(. == 1,
-                          yes = 'mild',
-                          no = ifelse(. == 2,
-                                      yes = 'moderate',
-                                      no = 'severe')))) %>%
+              ~ifelse(. == 1,
+                      yes = 'mild',
+                      no = ifelse(. == 2,
+                                  yes = 'moderate',
+                                  no = 'severe'))) %>%
     mutate_at(vars(ends_with('intensity')),
-              funs(factor(fct_relevel(.,
-                                      'mild',
-                                      'moderate',
-                                      'severe')))) %>%
+              ~factor(fct_relevel(.,
+                                  'mild',
+                                  'moderate',
+                                  'severe'))) %>%
     # Rename symptoms
     rename(painful = p_aching,
            numbness = numb_lack,
@@ -681,11 +681,11 @@ symptoms %<>%
            pins_needles = p_needles) %>%
     # Recode symptom occurrence
     mutate_at(vars(c(5, 7, 9, 11, 13, 15, 17)),
-              list(~ ifelse(. == 0,
-                            yes = 'no',
-                            no = ifelse(. == 1,
-                                        yes = 'unsure',
-                                        no = 'yes')))) %>%
+              ~ifelse(. == 0,
+                      yes = 'no',
+                      no = ifelse(. == 1,
+                                  yes = 'unsure',
+                                  no = 'yes'))) %>%
     # Reorder columns
     select(c(1:4, 19, 5:18))
 
@@ -1373,7 +1373,10 @@ wbpq %<>%
 #                                                          #
 ############################################################
 # Make directory
-dir.create(path = 'data-cleaned')
+if(!dir.exists('data-cleaned')) {
+    dir.create(path = 'data-cleaned')
+}
+
 
 # Get a list of data.frame objects
 df_names <- ls()

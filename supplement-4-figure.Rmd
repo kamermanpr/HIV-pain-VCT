@@ -1,0 +1,6 @@
+---
+title: "Supplement 4"
+subtitle: "Predicted probability of having pain for six predictor variables"
+author: "Peter Kamerman"
+date: "Last updated: `r format(Sys.Date(), '%d %B %Y')`"
+---
