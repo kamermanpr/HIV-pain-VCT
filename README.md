@@ -1,7 +1,10 @@
 # HIV-pain-VCT
 
 ## Bibliometric information
-Wadley AL, Lazarus E, Gray GE, Mitchell D, Kamerman PR. Pain in clients attending a South African voluntary counselling and testing centre was frequent and extensive but did not depend on HIV status. _JAIDS_ \[submitted 2019-06-27\]
+
+#### Preprint
+
+Wadley AL, Lazarus E, Gray GE, Mitchell D, Kamerman PR. Pain in clients attending a South African voluntary counselling and testing centre was frequent and extensive but did not depend on HIV status. _medRxiv_ **19001784**. DOI: [10.1101/19001784](https://doi.org/10.1101/19001784)
 
 ## Abstract
 **Background:** The frequency of pain is reported to be high in people living with HIV (PLWH), but valid comparisons between PLWH and HIV-negative cohorts are rare. We investigated whether HIV infection influenced frequency and characteristics of pain in adults undergoing voluntary testing for HIV.   
